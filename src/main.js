@@ -4,7 +4,7 @@ import { marked } from "marked";
 import { EOxMap } from "@eox/map/dist/eox-map.umd.cjs";
 import { EOxLayerControl } from "../../EOxElements/elements/layercontrol/src/main";
 import "@eox/map/dist/eox-map-advanced-layers-and-sources.js";
-import scrollama from "../node_modules/scrollama/src/entry";
+import scrollama from "scrollama";
 
 let ELEMENTS = {
   "eox-map": {
