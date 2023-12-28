@@ -4,6 +4,7 @@ import { marked } from "marked";
 import { EOxMap } from "@eox/map/dist/eox-map.umd.cjs";
 import { EOxLayerControl } from "../../EOxElements/elements/layercontrol/src/main";
 import "@eox/map/dist/eox-map-advanced-layers-and-sources.js";
+import scrollama from "../node_modules/scrollama/src/entry";
 
 let ELEMENTS = {
   "eox-map": {
@@ -35,6 +36,28 @@ marked.use({
   breaks: true,
   gfm: true,
 });
+
+// Function to render each segment
+function renderSegment(segment, isAfterHorizontalLine) {
+  if (isAfterHorizontalLine) {
+    return `<div class="wrap-main">${marked(segment)}</div>`;
+  } else {
+    return marked(segment);
+  }
+}
+
+// Split the markdown into segments based on horizontal lines
+function processMarkdown(markdown) {
+  const segments = markdown.split(/(?:^|\n)---\n/);
+  let isAfterHorizontalLine = false;
+  let html = "";
+  for (const segment of segments) {
+    html += renderSegment(segment, isAfterHorizontalLine);
+    isAfterHorizontalLine = true;
+  }
+
+  return html;
+}
 
 function renderHtmlString(htmlString) {
   const parser = new DOMParser();
@@ -148,7 +171,7 @@ Please find [descriptions, API docs and interactive examples here](https://eox-a
   }
 
   parseHTML() {
-    const parsedHtml = marked.parse(this.markdown || "");
+    const parsedHtml = processMarkdown(this.markdown || "");
     this.#html = DOMPurify.sanitize(parsedHtml, {
       CUSTOM_ELEMENT_HANDLING: {
         tagNameCheck: /^eox-/,
@@ -156,6 +179,22 @@ Please find [descriptions, API docs and interactive examples here](https://eox-a
         allowCustomizedBuiltInElements: true,
       },
     });
+
+    setTimeout(() => {
+      const scroller = scrollama();
+
+      scroller
+        .setup({
+          step: ".wrap-main",
+          parent: document.querySelector(".renderer-editor"),
+        })
+        .onStepEnter((response) => {
+          response.element.className = `${response.element.className} bg`;
+        })
+        .onStepExit((response) => {
+          response.element.className = `wrap-main`;
+        });
+    }, 500);
   }
 
   /**
@@ -207,8 +246,11 @@ Please find [descriptions, API docs and interactive examples here](https://eox-a
         display: flex;
       }
       .row {
-        width: 100%;
+        width: 50%;
         padding: 10px;
+      }
+      .renderer-editor {
+        overflow: scroll;
       }
       .editor-wrapper, textarea {
         background: #e7e7e7;
@@ -228,6 +270,13 @@ Please find [descriptions, API docs and interactive examples here](https://eox-a
         align-items: center;
         justify-content: center;
         height: 100%;
+      }
+      .wrap-main {
+        min-height: 50vh;
+        padding: 20px;
+      }
+      .bg {
+        background: #f7f7fd;
       }
     `;
 }
