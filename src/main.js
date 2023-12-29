@@ -6,6 +6,8 @@ import { EOxLayerControl } from "../../EOxElements/elements/layercontrol/src/mai
 import "@eox/map/dist/eox-map-advanced-layers-and-sources.js";
 import scrollama from "scrollama";
 
+const scroller = scrollama();
+
 let ELEMENTS = {
   "eox-map": {
     class: EOxMap,
@@ -100,6 +102,10 @@ export class Storytelling extends LitElement {
      */
     this.markdown = `# EOx Storytelling
 ---
++++
+subStep: [[-28.5682, -129.1632, 10], [-51.5662, 156.7488, 4], [66.1982, -30.1932, 9]]
+for: eox-map#main
++++
 ### Map Section
 <div style="display: flex">
 <eox-map id="main" style="width: 100%; height: 300px;" zoom="3" center="[15,48]" layers='[ { "type": "Group", "properties": { "id": "group2", "title": "Data Layers", "layerControlExpand": true, "description": "# Hello world" }, "layers": [ { "type": "Tile", "properties": { "id": "WIND", "title": "WIND" }, "source": { "type": "TileWMS", "url": "https://services.sentinel-hub.com/ogc/wms/0635c213-17a1-48ee-aef7-9d1731695a54", "params": { "LAYERS": "AWS_VIS_WIND_V_10M" } } }, { "type": "Tile", "properties": { "id": "NO2", "title": "NO2" }, "source": { "type": "TileWMS", "url": "https://services.sentinel-hub.com/ogc/wms/0635c213-17a1-48ee-aef7-9d1731695a54", "params": { "LAYERS": "AWS_NO2-VISUALISATION" } } }, { "type": "Vector", "properties": { "title": "Regions", "id": "regions", "description": "Ecological regions of the earth." }, "source": { "type": "Vector", "url": "https://openlayers.org/data/vector/ecoregions.json", "format": "GeoJSON", "attributions": "Regions: @ openlayers.org" } } ] }, { "type": "Group", "properties": { "id": "group1", "title": "Background Layers" }, "layers": [ { "type": "WebGLTile", "properties": { "id": "s2", "layerControlExclusive": true, "title": "s2" }, "style": { "variables": { "red": 1, "green": 2, "blue": 3, "redMax": 3000, "greenMax": 3000, "blueMax": 3000 }, "color": [ "array", [ "/", [ "band", [ "var", "red" ] ], [ "var", "redMax" ] ], [ "/", [ "band", [ "var", "green" ] ], [ "var", "greenMax" ] ], [ "/", [ "band", [ "var", "blue" ] ], [ "var", "blueMax" ] ], 1 ], "gamma": 1.1 }, "source": { "type": "GeoTIFF", "normalize": false, "sources": [ { "url": "https://s2downloads.eox.at/demo/EOxCloudless/2020/rgbnir/s2cloudless2020-16bits_sinlge-file_z0-4.tif" } ] } }, { "type": "Tile", "properties": { "id": "osm", "title": "Open Street Map", "layerControlExclusive": true }, "visible": false, "opacity": 0.5, "source": { "type": "OSM" } } ] } ]' zoom="7"></eox-map>
@@ -151,6 +157,54 @@ Please find [descriptions, API docs and interactive examples here](https://eox-a
 `;
   }
 
+  pauseScrolling() {
+    document.querySelector(".renderer-editor").style.overflow = "hidden";
+    document.body.style.overflow = "hidden";
+    // Additional logic to handle the "pause" can be added here
+  }
+
+  resumeScrolling() {
+    document.querySelector(".renderer-editor").style.overflow = "scroll";
+    document.body.style.overflow = "";
+  }
+
+  yourStepByStepFunction(element, callback) {
+    let functionsCalled = [false, false, false]; // Track which functions have been called
+    // const functionList = [func1, func2, func3]; // Array of your functions
+
+    const handleScroll = () => {
+      const scrollPosition = window.pageYOffset;
+
+      // Determine which function to call based on scrollPosition
+      // This is a placeholder logic, you need to replace it with your own logic
+      // const functionToCallIndex = determineFunctionIndex(scrollPosition);
+
+      // if (
+      //   functionToCallIndex !== null &&
+      //   !functionsCalled[functionToCallIndex]
+      // ) {
+      //   functionList[functionToCallIndex]();
+      //   functionsCalled[functionToCallIndex] = true;
+
+      //   // Check if all functions have been called
+      //   if (functionsCalled.every((called) => called)) {
+      //     cleanup();
+      //   }
+      // }
+
+      if (functionsCalled.every((called) => called)) {
+        cleanup();
+      }
+    };
+
+    const cleanup = () => {
+      window.removeEventListener("scroll", handleScroll);
+      callback(); // Resume normal scrolling
+    };
+
+    window.addEventListener("scroll", handleScroll);
+  }
+
   parseHTML() {
     this.#sectionMetaData = [];
     this.#storyMetaData = {};
@@ -164,8 +218,6 @@ Please find [descriptions, API docs and interactive examples here](https://eox-a
     });
 
     setTimeout(() => {
-      const scroller = scrollama();
-
       scroller
         .setup({
           step: ".wrap-main",
@@ -173,6 +225,37 @@ Please find [descriptions, API docs and interactive examples here](https://eox-a
         })
         .onStepEnter((response) => {
           response.element.className = `${response.element.className} bg`;
+          const sectionMeta = this.#sectionMetaData[response.index];
+
+          if (sectionMeta.subStep && sectionMeta.for) {
+            const eoxMap = document.querySelector(sectionMeta.for);
+            const subStep = JSON.parse(sectionMeta.subStep);
+            const view = eoxMap.map.getView();
+            let functionList = [];
+
+            subStep.forEach((step) => {
+              functionList.push(() => {
+                view.animate({
+                  center: [step[0], step[1]],
+                  duration: 2000,
+                  zoom: step[2],
+                });
+              });
+            });
+
+            console.log(functionList);
+            console.log(functionList[0]());
+            console.log(eoxMap.map.getView());
+            return;
+            // Pause scrolling
+            this.pauseScrolling();
+
+            // Call your step-by-step functions
+            this.yourStepByStepFunction(response.element, () => {
+              // Resume scrolling once the function is complete
+              this.resumeScrolling();
+            });
+          }
         })
         .onStepExit((response) => {
           response.element.className = `wrap-main`;
@@ -191,6 +274,8 @@ Please find [descriptions, API docs and interactive examples here](https://eox-a
 
   firstUpdated() {
     this.parseHTML();
+    // reinitialize Scrollama on resize
+    window.addEventListener("resize", scroller.resize);
     this.requestUpdate();
   }
 
