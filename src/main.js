@@ -37,28 +37,6 @@ marked.use({
   gfm: true,
 });
 
-// Function to render each segment
-function renderSegment(segment, isAfterHorizontalLine) {
-  if (isAfterHorizontalLine) {
-    return `<div class="wrap-main">${marked(segment)}</div>`;
-  } else {
-    return marked(segment);
-  }
-}
-
-// Split the markdown into segments based on horizontal lines
-function processMarkdown(markdown) {
-  const segments = markdown.split(/(?:^|\n)---\n/);
-  let isAfterHorizontalLine = false;
-  let html = "";
-  for (const segment of segments) {
-    html += renderSegment(segment, isAfterHorizontalLine);
-    isAfterHorizontalLine = true;
-  }
-
-  return html;
-}
-
 function renderHtmlString(htmlString) {
   const parser = new DOMParser();
   const doc = parser.parseFromString(htmlString, "text/html");
@@ -112,6 +90,8 @@ export class Storytelling extends LitElement {
   };
 
   #html = null;
+  #sectionMetaData = [];
+  #storyMetaData = {};
   constructor() {
     super();
 
@@ -172,7 +152,9 @@ Please find [descriptions, API docs and interactive examples here](https://eox-a
   }
 
   parseHTML() {
-    const parsedHtml = processMarkdown(this.markdown || "");
+    this.#sectionMetaData = [];
+    this.#storyMetaData = {};
+    const parsedHtml = this.processMarkdown(this.markdown || "");
     this.#html = DOMPurify.sanitize(parsedHtml, {
       CUSTOM_ELEMENT_HANDLING: {
         tagNameCheck: /^eox-/,
@@ -210,6 +192,52 @@ Please find [descriptions, API docs and interactive examples here](https://eox-a
   firstUpdated() {
     this.parseHTML();
     this.requestUpdate();
+  }
+
+  // Function to render each section
+  renderBlocks(section, isAfterHorizontalLine) {
+    // Extract metadata
+    const metadataRegex = /\+\+\+\n([\s\S]*?)\n\+\+\+/;
+    const metadataMatch = section.match(metadataRegex);
+    let metadata = {};
+    let content = section;
+
+    if (metadataMatch) {
+      // Parse metadata into a JSON object
+      metadataMatch[1]
+        .trim()
+        .split("\n")
+        .forEach((line) => {
+          const [key, value] = line.split(":").map((s) => s.trim());
+          metadata[key] = value;
+        });
+
+      // Remove metadata from the content
+      content = section.replace(metadataRegex, "");
+    }
+
+    const renderedContent = marked(content);
+
+    if (isAfterHorizontalLine) {
+      this.#sectionMetaData = [...this.#sectionMetaData, metadata];
+      return `<div class="wrap-main">${renderedContent}</div>`;
+    } else {
+      this.#storyMetaData = metadata;
+      return "";
+    }
+  }
+
+  // Split the markdown into sections based on horizontal lines
+  processMarkdown(markdown) {
+    const sections = markdown.split(/(?:^|\n)---\n/);
+    let isAfterHorizontalLine = false;
+    let html = "";
+    for (const section of sections) {
+      html += this.renderBlocks(section, isAfterHorizontalLine);
+      isAfterHorizontalLine = true;
+    }
+
+    return html;
   }
 
   createRenderRoot() {
