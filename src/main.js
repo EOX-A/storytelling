@@ -103,7 +103,8 @@ export class Storytelling extends LitElement {
     this.markdown = `# EOx Storytelling
 ---
 +++
-subStep: [[-28.5682, -129.1632, 10], [-51.5662, 156.7488, 4], [66.1982, -30.1932, 9]]
+subStep: [[-28.5682, -129.1632, 2], [-51.5662, 156.7488, 4], [66.1982, -30.1932, 1]]
+resetStep: [15, 48, 3]
 for: eox-map#main
 +++
 ### Map Section
@@ -168,41 +169,69 @@ Please find [descriptions, API docs and interactive examples here](https://eox-a
     document.body.style.overflow = "";
   }
 
-  yourStepByStepFunction(element, callback) {
-    let functionsCalled = [false, false, false]; // Track which functions have been called
+  yourStepByStepFunction(element, functionList, direction, callback) {
+    console.log(direction);
+    let functionIndex = direction === "up" ? functionList.length : 0; // Track which functions have been called
     // const functionList = [func1, func2, func3]; // Array of your functions
+    let lastScrollPosition = 0;
 
-    const handleScroll = () => {
+    let isWheeling = false;
+    let wheelTimer;
+
+    const handleScroll = (e) => {
+      if (!isWheeling) {
+        console.log(e);
+        isWheeling = true;
+
+        if (e.deltaY < 0) {
+          if (functionIndex) {
+            functionIndex = functionIndex - 1;
+            functionList[functionIndex]();
+            if (functionIndex === 0) cleanup();
+          } else cleanup();
+        } else if (e.deltaY > 0) {
+          functionIndex = functionIndex + 1;
+          functionList[functionIndex]();
+          if (functionList.length === functionIndex + 1) {
+            cleanup();
+          }
+        }
+
+        // Set a new timer
+        setTimeout(() => {
+          isWheeling = false;
+        }, 1500); // 200 milliseconds for example
+      }
+
       const scrollPosition = window.pageYOffset;
+      const currentScrollPosition =
+        window.pageYOffset || document.documentElement.scrollTop;
 
-      // Determine which function to call based on scrollPosition
-      // This is a placeholder logic, you need to replace it with your own logic
-      // const functionToCallIndex = determineFunctionIndex(scrollPosition);
-
-      // if (
-      //   functionToCallIndex !== null &&
-      //   !functionsCalled[functionToCallIndex]
-      // ) {
-      //   functionList[functionToCallIndex]();
-      //   functionsCalled[functionToCallIndex] = true;
-
-      //   // Check if all functions have been called
-      //   if (functionsCalled.every((called) => called)) {
-      //     cleanup();
-      //   }
+      // if (currentScrollPosition > lastScrollPosition) {
+      //   functionList;
+      // } else {
+      //   // Scrolling up
+      //   functionList[0]();
+      //   cleanup();
       // }
 
-      if (functionsCalled.every((called) => called)) {
-        cleanup();
-      }
+      // // Update the last scroll position
+      // lastScrollPosition =
+      //   currentScrollPosition <= 0 ? 0 : currentScrollPosition; // Setting to 0 in case of 'overscroll'
+
+      // if (functionsCalled.every((called) => called)) {
+      //   cleanup();
+      // }
     };
 
     const cleanup = () => {
-      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("wheel", handleScroll);
       callback(); // Resume normal scrolling
     };
 
-    window.addEventListener("scroll", handleScroll);
+    document
+      .querySelector(".renderer-editor")
+      .addEventListener("wheel", handleScroll);
   }
 
   parseHTML() {
@@ -221,7 +250,7 @@ Please find [descriptions, API docs and interactive examples here](https://eox-a
       scroller
         .setup({
           step: ".wrap-main",
-          parent: document.querySelector(".renderer-editor"),
+          container: document.querySelector(".renderer-editor"),
         })
         .onStepEnter((response) => {
           response.element.className = `${response.element.className} bg`;
@@ -230,14 +259,22 @@ Please find [descriptions, API docs and interactive examples here](https://eox-a
           if (sectionMeta.subStep && sectionMeta.for) {
             const eoxMap = document.querySelector(sectionMeta.for);
             const subStep = JSON.parse(sectionMeta.subStep);
+            const resetStep = JSON.parse(sectionMeta.resetStep);
             const view = eoxMap.map.getView();
             let functionList = [];
+
+            functionList.push(() => {
+              view.animate({
+                center: [resetStep[0], resetStep[1]],
+                zoom: resetStep[2],
+              });
+            });
 
             subStep.forEach((step) => {
               functionList.push(() => {
                 view.animate({
                   center: [step[0], step[1]],
-                  duration: 2000,
+                  duration: 1000,
                   zoom: step[2],
                 });
               });
@@ -245,16 +282,28 @@ Please find [descriptions, API docs and interactive examples here](https://eox-a
 
             console.log(functionList);
             console.log(functionList[0]());
-            console.log(eoxMap.map.getView());
-            return;
+            console.log(eoxMap.zoom);
+            // return;
             // Pause scrolling
+            // this.pauseScrolling();
+
+            const scrollTop =
+              window.pageYOffset || document.documentElement.scrollTop;
+            const scrollLeft =
+              window.pageXOffset || document.documentElement.scrollLeft;
+
             this.pauseScrolling();
 
             // Call your step-by-step functions
-            this.yourStepByStepFunction(response.element, () => {
-              // Resume scrolling once the function is complete
-              this.resumeScrolling();
-            });
+            this.yourStepByStepFunction(
+              response.element,
+              functionList,
+              response.direction,
+              () => {
+                // Resume scrolling once the function is complete
+                this.resumeScrolling();
+              }
+            );
           }
         })
         .onStepExit((response) => {
@@ -276,6 +325,7 @@ Please find [descriptions, API docs and interactive examples here](https://eox-a
     this.parseHTML();
     // reinitialize Scrollama on resize
     window.addEventListener("resize", scroller.resize);
+    window.addEventListener("scroll", console.log("s"));
     this.requestUpdate();
   }
 
@@ -330,6 +380,7 @@ Please find [descriptions, API docs and interactive examples here](https://eox-a
   }
 
   render() {
+    console.log(window.pageYOffset);
     return html`
       <style>
         ${this.#styling}
