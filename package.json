@@ -27,6 +27,7 @@
     "isomorphic-dompurify": "^2.0.0",
     "lit": "^3.1.0",
     "marked": "^11.1.0",
+    "ol": "^8.2.0",
     "scrollama": "^3.2.0"
   }
 }

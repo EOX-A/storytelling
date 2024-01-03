@@ -5,6 +5,7 @@ import { EOxMap } from "@eox/map/dist/eox-map.umd.cjs";
 import { EOxLayerControl } from "../../EOxElements/elements/layercontrol/src/main";
 import "@eox/map/dist/eox-map-advanced-layers-and-sources.js";
 import scrollama from "scrollama";
+import { fromLonLat } from "ol/proj.js";
 
 const scroller = scrollama();
 const ELEMENTS = {
@@ -99,90 +100,7 @@ export class Storytelling extends LitElement {
 
   constructor() {
     super();
-    this.markdown = `
-+++
-type: simple
-+++
----
-### Map Section
-<div style="display: flex">
-<eox-map id="maino" style="width: 100%; height: 300px;" zoom="3" center="[15,48]" layers='[ { "type": "Group", "properties": { "id": "group2", "title": "Data Layers", "layerControlExpand": true, "description": "# Hello world" }, "layers": [ { "type": "Tile", "properties": { "id": "WIND", "title": "WIND" }, "source": { "type": "TileWMS", "url": "https://services.sentinel-hub.com/ogc/wms/0635c213-17a1-48ee-aef7-9d1731695a54", "params": { "LAYERS": "AWS_VIS_WIND_V_10M" } } }, { "type": "Tile", "properties": { "id": "NO2", "title": "NO2" }, "source": { "type": "TileWMS", "url": "https://services.sentinel-hub.com/ogc/wms/0635c213-17a1-48ee-aef7-9d1731695a54", "params": { "LAYERS": "AWS_NO2-VISUALISATION" } } }, { "type": "Vector", "properties": { "title": "Regions", "id": "regions", "description": "Ecological regions of the earth." }, "source": { "type": "Vector", "url": "https://openlayers.org/data/vector/ecoregions.json", "format": "GeoJSON", "attributions": "Regions: @ openlayers.org" } } ] }, { "type": "Group", "properties": { "id": "group1", "title": "Background Layers" }, "layers": [ { "type": "WebGLTile", "properties": { "id": "s2", "layerControlExclusive": true, "title": "s2" }, "style": { "variables": { "red": 1, "green": 2, "blue": 3, "redMax": 3000, "greenMax": 3000, "blueMax": 3000 }, "color": [ "array", [ "/", [ "band", [ "var", "red" ] ], [ "var", "redMax" ] ], [ "/", [ "band", [ "var", "green" ] ], [ "var", "greenMax" ] ], [ "/", [ "band", [ "var", "blue" ] ], [ "var", "blueMax" ] ], 1 ], "gamma": 1.1 }, "source": { "type": "GeoTIFF", "normalize": false, "sources": [ { "url": "https://s2downloads.eox.at/demo/EOxCloudless/2020/rgbnir/s2cloudless2020-16bits_sinlge-file_z0-4.tif" } ] } }, { "type": "Tile", "properties": { "id": "osm", "title": "Open Street Map", "layerControlExclusive": true }, "visible": false, "opacity": 0.5, "source": { "type": "OSM" } } ] } ]' zoom="7"></eox-map>
-<eox-layercontrol style="width: 100%; height: 300px;" idProperty="id" titleProperty="title" unstyled="false" for="eox-map#maino"></eox-layercontrol>
-</div>
-
----
-**caption here**   
-
-# EOxElements
-
-A Web Component collection of geospatial UI elements, crafted by EOX.
-
-## Documentation, Examples
-
-Please find [descriptions, API docs and interactive examples here](https://eox-a.github.io/EOxElements).
-
-## Elements
-
-- ⭕️ **Alpha** elements are in-development and may have many frequent breaking
-  changes.
-- 🟡 **Beta** elements are mostly polished and ready for use, but may still have
-  breaking changes.
-- ✅ **Stable** elements are reviewed, documented, and API complete.
-
----
-+++
-subStep: [[-28.5682, -129.1632, 2], [-51.5662, 156.7488, 4], [66.1982, -30.1932, 1]]
-resetStep: [15, 48, 3]
-for: eox-map#main
-+++
-### Map Section
-<div style="display: flex">
-<eox-map id="main" style="width: 100%; height: 300px;" zoom="3" center="[15,48]" layers='[ { "type": "Group", "properties": { "id": "group2", "title": "Data Layers", "layerControlExpand": true, "description": "# Hello world" }, "layers": [ { "type": "Tile", "properties": { "id": "WIND", "title": "WIND" }, "source": { "type": "TileWMS", "url": "https://services.sentinel-hub.com/ogc/wms/0635c213-17a1-48ee-aef7-9d1731695a54", "params": { "LAYERS": "AWS_VIS_WIND_V_10M" } } }, { "type": "Tile", "properties": { "id": "NO2", "title": "NO2" }, "source": { "type": "TileWMS", "url": "https://services.sentinel-hub.com/ogc/wms/0635c213-17a1-48ee-aef7-9d1731695a54", "params": { "LAYERS": "AWS_NO2-VISUALISATION" } } }, { "type": "Vector", "properties": { "title": "Regions", "id": "regions", "description": "Ecological regions of the earth." }, "source": { "type": "Vector", "url": "https://openlayers.org/data/vector/ecoregions.json", "format": "GeoJSON", "attributions": "Regions: @ openlayers.org" } } ] }, { "type": "Group", "properties": { "id": "group1", "title": "Background Layers" }, "layers": [ { "type": "WebGLTile", "properties": { "id": "s2", "layerControlExclusive": true, "title": "s2" }, "style": { "variables": { "red": 1, "green": 2, "blue": 3, "redMax": 3000, "greenMax": 3000, "blueMax": 3000 }, "color": [ "array", [ "/", [ "band", [ "var", "red" ] ], [ "var", "redMax" ] ], [ "/", [ "band", [ "var", "green" ] ], [ "var", "greenMax" ] ], [ "/", [ "band", [ "var", "blue" ] ], [ "var", "blueMax" ] ], 1 ], "gamma": 1.1 }, "source": { "type": "GeoTIFF", "normalize": false, "sources": [ { "url": "https://s2downloads.eox.at/demo/EOxCloudless/2020/rgbnir/s2cloudless2020-16bits_sinlge-file_z0-4.tif" } ] } }, { "type": "Tile", "properties": { "id": "osm", "title": "Open Street Map", "layerControlExclusive": true }, "visible": false, "opacity": 0.5, "source": { "type": "OSM" } } ] } ]' zoom="7"></eox-map>
-</div>
-
----
-**caption here**   
-
-# EOxElements
-
-A Web Component collection of geospatial UI elements, crafted by EOX.
-
-## Documentation, Examples
-
-Please find [descriptions, API docs and interactive examples here](https://eox-a.github.io/EOxElements).
-
-## Elements
-
-- ⭕️ **Alpha** elements are in-development and may have many frequent breaking
-  changes.
-- 🟡 **Beta** elements are mostly polished and ready for use, but may still have
-  breaking changes.
-- ✅ **Stable** elements are reviewed, documented, and API complete.
-
-<table>
-  <tr>
-    <th>Element</th>
-    <th>Description</th>
-    <th>Docs & Examples</th>
-    <th>Version</th>
-    <th>State</th>
-  </tr>
-  <tr>
-    <td><a href="./elements/chart/">eox-chart</a></td>
-    <td>Dynamic chart with built-in data fetching</td>
-    <td><a href="https://eox-a.github.io/EOxElements/index.html?path=/docs/elements-eox-chart--docs">Docs & Examples</a></td>
-    <td><a href="elements/chart/CHANGELOG.md"><img src="https://img.shields.io/npm/v/@eox/chart.svg?label=%20" /></a></td>
-    <td>⭕️</td>
-  </tr>
-  <tr>
-    <td><a href="./elements/drawtools/">eox-drawtools</a></td>
-    <td>Draw and manage features on a map</td>
-    <td><a href="https://eox-a.github.io/EOxElements/index.html?path=/docs/elements-eox-drawtools--docs">Docs & Examples</a></td>
-    <td><a href="elements/drawtools/CHANGELOG.md"><img src="https://img.shields.io/npm/v/@eox/drawtools.svg?label=%20" /></a></td>
-    <td>🟡</td>
-  </tr>
-</table>
-`;
+    this.markdown = null;
   }
 
   pauseScrolling() {
@@ -250,42 +168,61 @@ Please find [descriptions, API docs and interactive examples here](https://eox-a
   }
 
   initializeScroller() {
+    scroller.destroy();
     scroller
       .setup({
         step: ".wrap-main",
         container: this.#RenderEditor,
-        threshold: 15000,
       })
       .onStepEnter((response) => {
         this.handleStepEnter(response);
       })
       .onStepExit((response) => {
-        response.element.className = `wrap-main`;
+        response.element.className = "wrap-main";
       });
   }
 
   handleStepEnter(response) {
-    response.element.className = `${response.element.className} bg`;
+    const storyMeta = this.#storyMetaData;
+    if (storyMeta.type === "simple") {
+      const existingFocusedElement = this.#RenderEditor.querySelector(".bg");
+      if (existingFocusedElement)
+        existingFocusedElement.className = "wrap-main";
+
+      response.element.className = `${response.element.className} bg`;
+    }
     const sectionMeta = this.#sectionMetaData[response.index];
 
-    if (sectionMeta.subStep && sectionMeta.for) {
+    if (storyMeta.type === "map-bg") {
+      const eoxMap = document.querySelector(`#${storyMeta.id}`);
+      const view = eoxMap.map.getView();
+      const step = JSON.parse(sectionMeta.step);
+
+      view.animate({
+        center: fromLonLat([step[1], step[0]]),
+        duration: 1000,
+        zoom: step[2],
+      });
+    }
+
+    if (sectionMeta.steps && sectionMeta.for && storyMeta.type === "simple") {
       const eoxMap = document.querySelector(sectionMeta.for);
-      const subStep = JSON.parse(sectionMeta.subStep);
+      const steps = JSON.parse(sectionMeta.steps);
       const resetStep = JSON.parse(sectionMeta.resetStep);
       const view = eoxMap.map.getView();
       let functionList = [];
 
       functionList.push(() => {
         view.animate({
-          center: [resetStep[0], resetStep[1]],
+          center: fromLonLat([resetStep[1], resetStep[0]]),
           zoom: resetStep[2],
         });
       });
 
-      subStep.forEach((step) => {
+      steps.forEach((step) => {
         functionList.push(() => {
           view.animate({
-            center: [step[0], step[1]],
+            center: fromLonLat([step[1], step[0]]),
             duration: 1000,
             zoom: step[2],
           });
@@ -307,7 +244,6 @@ Please find [descriptions, API docs and interactive examples here](https://eox-a
   }
 
   firstUpdated() {
-    scroller.destroy();
     this.parseHTML();
     window.addEventListener("resize", scroller.resize);
     this.#RenderEditor = document.querySelector(".renderer-editor");
@@ -325,7 +261,7 @@ Please find [descriptions, API docs and interactive examples here](https://eox-a
         .trim()
         .split("\n")
         .forEach((line) => {
-          const [key, value] = line.split(":").map((s) => s.trim());
+          const [key, value] = line.split("=").map((s) => s.trim());
           metadata[key] = value;
         });
 
@@ -339,6 +275,14 @@ Please find [descriptions, API docs and interactive examples here](https://eox-a
       return `<div class="wrap-main">${renderedContent}</div>`;
     } else {
       this.#storyMetaData = metadata;
+
+      if (metadata.type === "map-bg") {
+        return `<div style='position: fixed; top: 0; z-index: -1; width: 50%; height: 100%;'><eox-map id='${
+          metadata.id
+        }' style='${metadata.style}' center='${metadata.center}' layers='${
+          metadata.layers
+        }' zoom=${Number(metadata.zoom)}></eox-map></div>`;
+      }
       return "";
     }
   }
@@ -391,7 +335,6 @@ Please find [descriptions, API docs and interactive examples here](https://eox-a
       }
       .row {
         width: 50%;
-        padding: 10px;
       }
       .renderer-editor {
         overflow: scroll;
@@ -416,8 +359,7 @@ Please find [descriptions, API docs and interactive examples here](https://eox-a
         height: 100%;
       }
       .wrap-main {
-        min-height: 50vh;
-        padding: 20px;
+        padding: 100px 20px;
       }
       .bg {
         background: #cecef6;
