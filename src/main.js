@@ -342,6 +342,9 @@ export class Storytelling extends LitElement {
       .editor-wrapper, textarea {
         background: #e7e7e7;
       }
+      .editor-wrapper {
+        padding: 20px;
+      }
       textarea {
         width: 100%;
         height: 100%;
