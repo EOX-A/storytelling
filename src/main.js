@@ -7,8 +7,7 @@ import "@eox/map/dist/eox-map-advanced-layers-and-sources.js";
 import scrollama from "scrollama";
 
 const scroller = scrollama();
-
-let ELEMENTS = {
+const ELEMENTS = {
   "eox-map": {
     class: EOxMap,
     properties: {},
@@ -19,20 +18,24 @@ let ELEMENTS = {
   },
 };
 
-let propertiesKeys = [];
-
-Object.keys(ELEMENTS).forEach((key) => {
-  const ele = ELEMENTS[key];
-  ele.class.elementProperties.forEach((i, prop) => {
-    propertiesKeys = [...propertiesKeys, ...prop];
-    if (!i.attribute && !i.state) {
-      ELEMENTS[key].properties = {
-        ...ELEMENTS[key].properties,
-        [prop]: i.type?.name || "Array",
-      };
-    }
+function generatePropertiesKeys(elements) {
+  let propertiesKeys = [];
+  Object.keys(elements).forEach((key) => {
+    const ele = elements[key];
+    ele.class.elementProperties.forEach((i, prop) => {
+      propertiesKeys = [...propertiesKeys, ...prop];
+      if (!i.attribute && !i.state) {
+        elements[key].properties = {
+          ...elements[key].properties,
+          [prop]: i.type?.name || "Array",
+        };
+      }
+    });
   });
-});
+  return propertiesKeys;
+}
+
+const propertiesKeys = generatePropertiesKeys(ELEMENTS);
 
 marked.use({
   breaks: true,
@@ -43,64 +46,63 @@ function renderHtmlString(htmlString) {
   const parser = new DOMParser();
   const doc = parser.parseFromString(htmlString, "text/html");
   return Array.from(doc.body.childNodes).map((node) => {
-    // Check if the node is a <p> element
     if (node.nodeName === "P" || node.nodeName === "DIV") {
-      // Get all child elements of the node
       const childElements = node.querySelectorAll("*");
-
-      // Check if any child elements' tag name starts with 'eox-'
-      for (let element of childElements) {
+      childElements.forEach((element) => {
         if (element.tagName.toLowerCase().startsWith("eox-")) {
-          const eleNodeName = element.nodeName.toLowerCase();
-          if (Object.keys(ELEMENTS).includes(eleNodeName)) {
-            const ele = ELEMENTS[eleNodeName];
-            Object.keys(ele.properties).forEach((propName) => {
-              const propValue = element.getAttribute(propName);
-              const propType = ele.properties[propName];
-
-              if (propValue) {
-                switch (propType) {
-                  case "Number":
-                    element[propName] = Number(propValue);
-                    break;
-                  case "Boolean":
-                    element[propName] =
-                      propValue.toLowerCase() === "false" ? false : true;
-                  case "Array":
-                  case "Object":
-                    element[propName] = JSON.parse(
-                      propValue.replaceAll("&quot;", '"')
-                    );
-                    break;
-                  default:
-                    break;
-                }
-              }
-            });
-          }
+          processCustomElement(element);
         }
-      }
+      });
     }
     return node;
   });
 }
 
+function processCustomElement(element) {
+  const eleNodeName = element.nodeName.toLowerCase();
+  if (Object.keys(ELEMENTS).includes(eleNodeName)) {
+    const ele = ELEMENTS[eleNodeName];
+    Object.keys(ele.properties).forEach((propName) => {
+      const propValue = element.getAttribute(propName);
+      const propType = ele.properties[propName];
+
+      if (propValue) {
+        element[propName] = parsePropertyValue(propType, propValue);
+      }
+    });
+  }
+}
+
+function parsePropertyValue(propType, propValue) {
+  switch (propType) {
+    case "Number":
+      return Number(propValue);
+    case "Boolean":
+      return propValue.toLowerCase() !== "false";
+    case "Array":
+    case "Object":
+      return JSON.parse(propValue.replaceAll("&quot;", '"'));
+    default:
+      return propValue;
+  }
+}
+
 export class Storytelling extends LitElement {
-  // Define static properties for the component
   static properties = {
     markdown: { attribute: "markdown-property", type: String },
   };
 
   #html = null;
   #sectionMetaData = [];
+  #RenderEditor = null;
   #storyMetaData = {};
+
   constructor() {
     super();
-
-    /**
-     * @type {String}
-     */
-    this.markdown = `# EOx Storytelling
+    this.markdown = `
++++
+type: simple
++++
 ---
 ### Map Section
 <div style="display: flex">
@@ -184,17 +186,16 @@ Please find [descriptions, API docs and interactive examples here](https://eox-a
   }
 
   pauseScrolling() {
-    document.querySelector(".renderer-editor").style.overflow = "hidden";
+    this.#RenderEditor.style.overflow = "hidden";
     document.body.style.overflow = "hidden";
-    // Additional logic to handle the "pause" can be added here
   }
 
   resumeScrolling() {
-    document.querySelector(".renderer-editor").style.overflow = "scroll";
+    this.#RenderEditor.style.overflow = "scroll";
     document.body.style.overflow = "";
   }
 
-  yourStepByStepFunction(element, functionList, direction, callback) {
+  yourStepByStepFunction(functionList, direction, callback) {
     let functionIndex = direction === "up" ? functionList.length : 0;
     let isWheeling = false;
 
@@ -217,20 +218,16 @@ Please find [descriptions, API docs and interactive examples here](https://eox-a
         // Set a new timer
         setTimeout(() => {
           isWheeling = false;
-        }, 1500); // 200 milliseconds for example
+        }, 1500);
       }
     };
 
     const cleanup = () => {
-      document
-        .querySelector(".renderer-editor")
-        .removeEventListener("wheel", handleScroll);
+      this.#RenderEditor.removeEventListener("wheel", handleScroll);
       callback(); // Resume normal scrolling
     };
 
-    document
-      .querySelector(".renderer-editor")
-      .addEventListener("wheel", handleScroll);
+    this.#RenderEditor.addEventListener("wheel", handleScroll);
   }
 
   parseHTML() {
@@ -245,63 +242,64 @@ Please find [descriptions, API docs and interactive examples here](https://eox-a
       },
     });
 
-    setTimeout(() => {
-      scroller
-        .setup({
-          step: ".wrap-main",
-          container: document.querySelector(".renderer-editor"),
-        })
-        .onStepEnter((response) => {
-          response.element.className = `${response.element.className} bg`;
-          const sectionMeta = this.#sectionMetaData[response.index];
-
-          if (sectionMeta.subStep && sectionMeta.for) {
-            const eoxMap = document.querySelector(sectionMeta.for);
-            const subStep = JSON.parse(sectionMeta.subStep);
-            const resetStep = JSON.parse(sectionMeta.resetStep);
-            const view = eoxMap.map.getView();
-            let functionList = [];
-
-            functionList.push(() => {
-              view.animate({
-                center: [resetStep[0], resetStep[1]],
-                zoom: resetStep[2],
-              });
-            });
-
-            subStep.forEach((step) => {
-              functionList.push(() => {
-                view.animate({
-                  center: [step[0], step[1]],
-                  duration: 1000,
-                  zoom: step[2],
-                });
-              });
-            });
-
-            this.pauseScrolling();
-
-            // Call your step-by-step functions
-            this.yourStepByStepFunction(
-              response.element,
-              functionList,
-              response.direction,
-              () => {
-                // Resume scrolling once the function is complete
-                this.resumeScrolling();
-              }
-            );
-          }
-        })
-        .onStepExit((response) => {
-          response.element.className = `wrap-main`;
-        });
-    }, 500);
+    if (this.markdown && this.#html?.includes("wrap-main")) {
+      setTimeout(() => {
+        this.initializeScroller();
+      }, 500);
+    }
   }
 
-  /**
-   * @param {{target: { value: string }}} evt
-   */
+  initializeScroller() {
+    scroller
+      .setup({
+        step: ".wrap-main",
+        container: this.#RenderEditor,
+        threshold: 15000,
+      })
+      .onStepEnter((response) => {
+        this.handleStepEnter(response);
+      })
+      .onStepExit((response) => {
+        response.element.className = `wrap-main`;
+      });
+  }
+
+  handleStepEnter(response) {
+    response.element.className = `${response.element.className} bg`;
+    const sectionMeta = this.#sectionMetaData[response.index];
+
+    if (sectionMeta.subStep && sectionMeta.for) {
+      const eoxMap = document.querySelector(sectionMeta.for);
+      const subStep = JSON.parse(sectionMeta.subStep);
+      const resetStep = JSON.parse(sectionMeta.resetStep);
+      const view = eoxMap.map.getView();
+      let functionList = [];
+
+      functionList.push(() => {
+        view.animate({
+          center: [resetStep[0], resetStep[1]],
+          zoom: resetStep[2],
+        });
+      });
+
+      subStep.forEach((step) => {
+        functionList.push(() => {
+          view.animate({
+            center: [step[0], step[1]],
+            duration: 1000,
+            zoom: step[2],
+          });
+        });
+      });
+
+      this.pauseScrolling();
+
+      this.yourStepByStepFunction(functionList, response.direction, () => {
+        this.resumeScrolling();
+      });
+    }
+  }
+
   #handleMarkDown(evt) {
     this.markdown = evt.target.value;
     this.parseHTML();
@@ -309,22 +307,20 @@ Please find [descriptions, API docs and interactive examples here](https://eox-a
   }
 
   firstUpdated() {
+    scroller.destroy();
     this.parseHTML();
-    // reinitialize Scrollama on resize
     window.addEventListener("resize", scroller.resize);
+    this.#RenderEditor = document.querySelector(".renderer-editor");
     this.requestUpdate();
   }
 
-  // Function to render each section
   renderBlocks(section, isAfterHorizontalLine) {
-    // Extract metadata
     const metadataRegex = /\+\+\+\n([\s\S]*?)\n\+\+\+/;
     const metadataMatch = section.match(metadataRegex);
     let metadata = {};
     let content = section;
 
     if (metadataMatch) {
-      // Parse metadata into a JSON object
       metadataMatch[1]
         .trim()
         .split("\n")
@@ -333,7 +329,6 @@ Please find [descriptions, API docs and interactive examples here](https://eox-a
           metadata[key] = value;
         });
 
-      // Remove metadata from the content
       content = section.replace(metadataRegex, "");
     }
 
@@ -348,7 +343,6 @@ Please find [descriptions, API docs and interactive examples here](https://eox-a
     }
   }
 
-  // Split the markdown into sections based on horizontal lines
   processMarkdown(markdown) {
     const sections = markdown.split(/(?:^|\n)---\n/);
     let isAfterHorizontalLine = false;
@@ -428,6 +422,6 @@ Please find [descriptions, API docs and interactive examples here](https://eox-a
       .bg {
         background: #cecef6;
       }
-    `;
+  `;
 }
 customElements.define("story-telling", Storytelling);
