@@ -195,12 +195,8 @@ Please find [descriptions, API docs and interactive examples here](https://eox-a
   }
 
   yourStepByStepFunction(element, functionList, direction, callback) {
-    let functionIndex = direction === "up" ? functionList.length : 0; // Track which functions have been called
-    // const functionList = [func1, func2, func3]; // Array of your functions
-    let lastScrollPosition = 0;
-
+    let functionIndex = direction === "up" ? functionList.length : 0;
     let isWheeling = false;
-    let wheelTimer;
 
     const handleScroll = (e) => {
       if (!isWheeling) {
@@ -208,24 +204,14 @@ Please find [descriptions, API docs and interactive examples here](https://eox-a
 
         if (e.deltaY < 0) {
           if (functionIndex) {
-            console.log("functionIndex", functionIndex);
             functionIndex = functionIndex - 1;
-            console.log("new functionIndex", functionIndex);
             functionList[functionIndex]();
-            if (functionIndex === 0) {
-              cleanup();
-              console.log("cleanup");
-            }
+            if (functionIndex === 0) cleanup();
           } else cleanup();
         } else if (e.deltaY > 0) {
-          console.log("functionIndex", functionIndex);
           functionIndex = functionIndex + 1;
-          console.log("new functionIndex", functionIndex);
           functionList[functionIndex]();
-          if (functionList.length === functionIndex + 1) {
-            cleanup();
-            console.log("cleanup");
-          }
+          if (functionList.length === functionIndex + 1) cleanup();
         }
 
         // Set a new timer
@@ -233,26 +219,6 @@ Please find [descriptions, API docs and interactive examples here](https://eox-a
           isWheeling = false;
         }, 1500); // 200 milliseconds for example
       }
-
-      const scrollPosition = window.pageYOffset;
-      const currentScrollPosition =
-        window.pageYOffset || document.documentElement.scrollTop;
-
-      // if (currentScrollPosition > lastScrollPosition) {
-      //   functionList;
-      // } else {
-      //   // Scrolling up
-      //   functionList[0]();
-      //   cleanup();
-      // }
-
-      // // Update the last scroll position
-      // lastScrollPosition =
-      //   currentScrollPosition <= 0 ? 0 : currentScrollPosition; // Setting to 0 in case of 'overscroll'
-
-      // if (functionsCalled.every((called) => called)) {
-      //   cleanup();
-      // }
     };
 
     const cleanup = () => {
