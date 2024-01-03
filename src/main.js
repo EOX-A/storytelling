@@ -102,6 +102,32 @@ export class Storytelling extends LitElement {
      */
     this.markdown = `# EOx Storytelling
 ---
+### Map Section
+<div style="display: flex">
+<eox-map id="maino" style="width: 100%; height: 300px;" zoom="3" center="[15,48]" layers='[ { "type": "Group", "properties": { "id": "group2", "title": "Data Layers", "layerControlExpand": true, "description": "# Hello world" }, "layers": [ { "type": "Tile", "properties": { "id": "WIND", "title": "WIND" }, "source": { "type": "TileWMS", "url": "https://services.sentinel-hub.com/ogc/wms/0635c213-17a1-48ee-aef7-9d1731695a54", "params": { "LAYERS": "AWS_VIS_WIND_V_10M" } } }, { "type": "Tile", "properties": { "id": "NO2", "title": "NO2" }, "source": { "type": "TileWMS", "url": "https://services.sentinel-hub.com/ogc/wms/0635c213-17a1-48ee-aef7-9d1731695a54", "params": { "LAYERS": "AWS_NO2-VISUALISATION" } } }, { "type": "Vector", "properties": { "title": "Regions", "id": "regions", "description": "Ecological regions of the earth." }, "source": { "type": "Vector", "url": "https://openlayers.org/data/vector/ecoregions.json", "format": "GeoJSON", "attributions": "Regions: @ openlayers.org" } } ] }, { "type": "Group", "properties": { "id": "group1", "title": "Background Layers" }, "layers": [ { "type": "WebGLTile", "properties": { "id": "s2", "layerControlExclusive": true, "title": "s2" }, "style": { "variables": { "red": 1, "green": 2, "blue": 3, "redMax": 3000, "greenMax": 3000, "blueMax": 3000 }, "color": [ "array", [ "/", [ "band", [ "var", "red" ] ], [ "var", "redMax" ] ], [ "/", [ "band", [ "var", "green" ] ], [ "var", "greenMax" ] ], [ "/", [ "band", [ "var", "blue" ] ], [ "var", "blueMax" ] ], 1 ], "gamma": 1.1 }, "source": { "type": "GeoTIFF", "normalize": false, "sources": [ { "url": "https://s2downloads.eox.at/demo/EOxCloudless/2020/rgbnir/s2cloudless2020-16bits_sinlge-file_z0-4.tif" } ] } }, { "type": "Tile", "properties": { "id": "osm", "title": "Open Street Map", "layerControlExclusive": true }, "visible": false, "opacity": 0.5, "source": { "type": "OSM" } } ] } ]' zoom="7"></eox-map>
+<eox-layercontrol style="width: 100%; height: 300px;" idProperty="id" titleProperty="title" unstyled="false" for="eox-map#maino"></eox-layercontrol>
+</div>
+
+---
+**caption here**   
+
+# EOxElements
+
+A Web Component collection of geospatial UI elements, crafted by EOX.
+
+## Documentation, Examples
+
+Please find [descriptions, API docs and interactive examples here](https://eox-a.github.io/EOxElements).
+
+## Elements
+
+- ⭕️ **Alpha** elements are in-development and may have many frequent breaking
+  changes.
+- 🟡 **Beta** elements are mostly polished and ready for use, but may still have
+  breaking changes.
+- ✅ **Stable** elements are reviewed, documented, and API complete.
+
+---
 +++
 subStep: [[-28.5682, -129.1632, 2], [-51.5662, 156.7488, 4], [66.1982, -30.1932, 1]]
 resetStep: [15, 48, 3]
@@ -110,7 +136,6 @@ for: eox-map#main
 ### Map Section
 <div style="display: flex">
 <eox-map id="main" style="width: 100%; height: 300px;" zoom="3" center="[15,48]" layers='[ { "type": "Group", "properties": { "id": "group2", "title": "Data Layers", "layerControlExpand": true, "description": "# Hello world" }, "layers": [ { "type": "Tile", "properties": { "id": "WIND", "title": "WIND" }, "source": { "type": "TileWMS", "url": "https://services.sentinel-hub.com/ogc/wms/0635c213-17a1-48ee-aef7-9d1731695a54", "params": { "LAYERS": "AWS_VIS_WIND_V_10M" } } }, { "type": "Tile", "properties": { "id": "NO2", "title": "NO2" }, "source": { "type": "TileWMS", "url": "https://services.sentinel-hub.com/ogc/wms/0635c213-17a1-48ee-aef7-9d1731695a54", "params": { "LAYERS": "AWS_NO2-VISUALISATION" } } }, { "type": "Vector", "properties": { "title": "Regions", "id": "regions", "description": "Ecological regions of the earth." }, "source": { "type": "Vector", "url": "https://openlayers.org/data/vector/ecoregions.json", "format": "GeoJSON", "attributions": "Regions: @ openlayers.org" } } ] }, { "type": "Group", "properties": { "id": "group1", "title": "Background Layers" }, "layers": [ { "type": "WebGLTile", "properties": { "id": "s2", "layerControlExclusive": true, "title": "s2" }, "style": { "variables": { "red": 1, "green": 2, "blue": 3, "redMax": 3000, "greenMax": 3000, "blueMax": 3000 }, "color": [ "array", [ "/", [ "band", [ "var", "red" ] ], [ "var", "redMax" ] ], [ "/", [ "band", [ "var", "green" ] ], [ "var", "greenMax" ] ], [ "/", [ "band", [ "var", "blue" ] ], [ "var", "blueMax" ] ], 1 ], "gamma": 1.1 }, "source": { "type": "GeoTIFF", "normalize": false, "sources": [ { "url": "https://s2downloads.eox.at/demo/EOxCloudless/2020/rgbnir/s2cloudless2020-16bits_sinlge-file_z0-4.tif" } ] } }, { "type": "Tile", "properties": { "id": "osm", "title": "Open Street Map", "layerControlExclusive": true }, "visible": false, "opacity": 0.5, "source": { "type": "OSM" } } ] } ]' zoom="7"></eox-map>
-<eox-layercontrol style="width: 100%; height: 300px;" idProperty="id" titleProperty="title" unstyled="false" for="eox-map#main"></eox-layercontrol>
 </div>
 
 ---
@@ -170,7 +195,6 @@ Please find [descriptions, API docs and interactive examples here](https://eox-a
   }
 
   yourStepByStepFunction(element, functionList, direction, callback) {
-    console.log(direction);
     let functionIndex = direction === "up" ? functionList.length : 0; // Track which functions have been called
     // const functionList = [func1, func2, func3]; // Array of your functions
     let lastScrollPosition = 0;
@@ -180,20 +204,27 @@ Please find [descriptions, API docs and interactive examples here](https://eox-a
 
     const handleScroll = (e) => {
       if (!isWheeling) {
-        console.log(e);
         isWheeling = true;
 
         if (e.deltaY < 0) {
           if (functionIndex) {
+            console.log("functionIndex", functionIndex);
             functionIndex = functionIndex - 1;
+            console.log("new functionIndex", functionIndex);
             functionList[functionIndex]();
-            if (functionIndex === 0) cleanup();
+            if (functionIndex === 0) {
+              cleanup();
+              console.log("cleanup");
+            }
           } else cleanup();
         } else if (e.deltaY > 0) {
+          console.log("functionIndex", functionIndex);
           functionIndex = functionIndex + 1;
+          console.log("new functionIndex", functionIndex);
           functionList[functionIndex]();
           if (functionList.length === functionIndex + 1) {
             cleanup();
+            console.log("cleanup");
           }
         }
 
@@ -225,7 +256,9 @@ Please find [descriptions, API docs and interactive examples here](https://eox-a
     };
 
     const cleanup = () => {
-      window.removeEventListener("wheel", handleScroll);
+      document
+        .querySelector(".renderer-editor")
+        .removeEventListener("wheel", handleScroll);
       callback(); // Resume normal scrolling
     };
 
@@ -280,18 +313,6 @@ Please find [descriptions, API docs and interactive examples here](https://eox-a
               });
             });
 
-            console.log(functionList);
-            console.log(functionList[0]());
-            console.log(eoxMap.zoom);
-            // return;
-            // Pause scrolling
-            // this.pauseScrolling();
-
-            const scrollTop =
-              window.pageYOffset || document.documentElement.scrollTop;
-            const scrollLeft =
-              window.pageXOffset || document.documentElement.scrollLeft;
-
             this.pauseScrolling();
 
             // Call your step-by-step functions
@@ -325,7 +346,6 @@ Please find [descriptions, API docs and interactive examples here](https://eox-a
     this.parseHTML();
     // reinitialize Scrollama on resize
     window.addEventListener("resize", scroller.resize);
-    window.addEventListener("scroll", console.log("s"));
     this.requestUpdate();
   }
 
@@ -380,7 +400,6 @@ Please find [descriptions, API docs and interactive examples here](https://eox-a
   }
 
   render() {
-    console.log(window.pageYOffset);
     return html`
       <style>
         ${this.#styling}
