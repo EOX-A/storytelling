@@ -1,11 +1,12 @@
 import DOMPurify from "isomorphic-dompurify";
-import { html, LitElement } from "lit";
+import { html, LitElement, nothing } from "lit";
 import { marked } from "marked";
 import { EOxMap } from "@eox/map/dist/eox-map.umd.cjs";
 import { EOxLayerControl } from "../../EOxElements/elements/layercontrol/src/main";
 import "@eox/map/dist/eox-map-advanced-layers-and-sources.js";
 import scrollama from "scrollama";
 import { fromLonLat } from "ol/proj.js";
+import { SAMPLE_COMPONENTS } from "./enums";
 
 const scroller = scrollama();
 const ELEMENTS = {
@@ -97,6 +98,8 @@ export class Storytelling extends LitElement {
   #sectionMetaData = [];
   #RenderEditor = null;
   #storyMetaData = {};
+  #mode = "editor";
+  #addSection = null;
 
   constructor() {
     super();
@@ -148,17 +151,21 @@ export class Storytelling extends LitElement {
     this.#RenderEditor.addEventListener("wheel", handleScroll);
   }
 
-  parseHTML() {
-    this.#sectionMetaData = [];
-    this.#storyMetaData = {};
-    const parsedHtml = this.processMarkdown(this.markdown || "");
-    this.#html = DOMPurify.sanitize(parsedHtml, {
+  #purifyDOM(parsedHtml) {
+    return DOMPurify.sanitize(parsedHtml, {
       CUSTOM_ELEMENT_HANDLING: {
         tagNameCheck: /^eox-/,
         attributeNameCheck: new RegExp(propertiesKeys.join("|")),
         allowCustomizedBuiltInElements: true,
       },
     });
+  }
+
+  parseHTML() {
+    this.#sectionMetaData = [];
+    this.#storyMetaData = {};
+    const parsedHtml = this.processMarkdown(this.markdown || "");
+    this.#html = this.#purifyDOM(parsedHtml);
 
     if (this.markdown && this.#html?.includes("wrap-main")) {
       setTimeout(() => {
@@ -250,7 +257,9 @@ export class Storytelling extends LitElement {
     this.requestUpdate();
   }
 
-  renderBlocks(section, isAfterHorizontalLine) {
+  getSectionBlock;
+
+  renderBlocks(section, isAfterHorizontalLine, last, index) {
     const metadataRegex = /\+\+\+\n([\s\S]*?)\n\+\+\+/;
     const metadataMatch = section.match(metadataRegex);
     let metadata = {};
@@ -272,7 +281,11 @@ export class Storytelling extends LitElement {
 
     if (isAfterHorizontalLine) {
       this.#sectionMetaData = [...this.#sectionMetaData, metadata];
-      return `<div class="wrap-main">${renderedContent}</div>`;
+      return `<div class="wrap-main"><div class="add-wrap"><span data-key="${index}">+</span></div>${renderedContent}${
+        last
+          ? `<div class="add-wrap bottom"><span data-key="${index}" data-position="bottom">+</span></div>`
+          : ""
+      }</div>`;
     } else {
       this.#storyMetaData = metadata;
 
@@ -287,20 +300,66 @@ export class Storytelling extends LitElement {
     }
   }
 
+  getSection(markdown) {
+    return markdown.split(/(?:^|\n)---\n/);
+  }
+
   processMarkdown(markdown) {
-    const sections = markdown.split(/(?:^|\n)---\n/);
+    const sections = this.getSection(markdown);
     let isAfterHorizontalLine = false;
     let html = "";
-    for (const section of sections) {
-      html += this.renderBlocks(section, isAfterHorizontalLine);
+    sections.forEach((section, index) => {
+      html += this.renderBlocks(
+        section,
+        isAfterHorizontalLine,
+        Boolean(sections.length === index + 1),
+        index
+      );
       isAfterHorizontalLine = true;
-    }
+    });
 
     return html;
   }
 
   createRenderRoot() {
     return this;
+  }
+
+  #handleMode(mode) {
+    this.#mode = mode;
+    this.parseHTML();
+    this.requestUpdate();
+  }
+
+  addSection(e, index, position) {
+    this.#addSection = Number(index) + (position === "top" ? 0 : 1);
+    this.requestUpdate();
+  }
+
+  addComponent(index) {
+    let sections = this.getSection(this.markdown || "");
+    sections.splice(this.#addSection, 0, SAMPLE_COMPONENTS[index].markdown);
+    const markdown = sections.join("\n---\n");
+    this.#addSection = null;
+    this.resumeScrolling();
+    this.#handleMarkDown({
+      target: {
+        value: markdown,
+      },
+    });
+  }
+
+  updated() {
+    const addList = document.querySelectorAll(".add-wrap span");
+    if (addList?.length) {
+      addList.forEach((add) => {
+        const index = add.getAttribute("data-key");
+        const position = add.getAttribute("data-position") || "top";
+        add.addEventListener("click", (e) =>
+          this.addSection(e, index, position)
+        );
+      });
+    }
   }
 
   render() {
@@ -322,6 +381,35 @@ export class Storytelling extends LitElement {
           ></textarea>
         </div>
       </div>
+      ${this.#addSection
+        ? html`
+            <div class="modal">
+              <div class="modal-section">
+                <h3>Sample Components</h3>
+                <div class="grid-container">
+                  ${SAMPLE_COMPONENTS.map(
+                    (component, index) => html`<div
+                      class="grid-item"
+                      @click=${() => this.addComponent(index)}
+                    >
+                      <div class="component-icon">Icon ${index + 1}</div>
+                      <p>${component.name}</p>
+                    </div>`
+                  )}
+                </div>
+              </div>
+              <p
+                style="color: white;font-weight: 600"
+                @click=${() => {
+                  this.#addSection = null;
+                  this.requestUpdate();
+                }}
+              >
+                Close
+              </p>
+            </div>
+          `
+        : nothing}
     `;
   }
 
@@ -344,6 +432,7 @@ export class Storytelling extends LitElement {
       }
       .editor-wrapper {
         padding: 20px;
+        position: relative;
       }
       textarea {
         width: 100%;
@@ -354,6 +443,7 @@ export class Storytelling extends LitElement {
         font-weight: 600;
         font-size: 14px;
         line-height: 140%;
+        resize: none;
       }
       .empty-preview {
         display: flex;
@@ -361,11 +451,78 @@ export class Storytelling extends LitElement {
         justify-content: center;
         height: 100%;
       }
+      .wrap-main .add-wrap {
+        position: absolute;
+        display: flex;
+        justify-content: center;
+        padding: 0;
+        margin: 0;
+        top: -10px;
+        left: 0;
+        width: 100%;
+      }
+      .wrap-main .add-wrap.bottom {
+        top: unset;
+        bottom: -10px;
+      }
+      .wrap-main .add-wrap span {
+        background: white;
+        padding: 2px 8px;
+        border-radius: 100%;
+        font-weight: 800;
+        box-shadow: 1px 1px 10px #80808094;
+        cursor: pointer;
+      }
       .wrap-main {
         padding: 100px 20px;
+        position: relative;
       }
       .bg {
         background: #cecef6;
+      }
+      .modal {
+        background: #000000a1;
+        width: 100%;
+        height: 100%;
+        position: fixed;
+        top:0;
+        left:0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+      }
+      .modal-section {
+        width: 60%;
+        padding: 12px 20px;
+        background: white;
+        border-radius: 10px;
+      }
+      .grid-container {
+        display: grid;
+        grid-template-columns: auto auto auto;
+        gap: 10px;
+      }
+      .grid-item {
+        text-align: center;
+        border: 4px gray dotted;
+        border-radius: 6px;
+        cursor: pointer;
+      }
+      .component-icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100px;
+        font-size: 36px;
+        font-weight: 600;
+      }
+      .modal-section p {
+        border-top: 3px dotted gray;
+        padding-top: 14px;
+      }
+      .modal-section .grid-item:hover {
+        background: #8080803b;
       }
   `;
 }
