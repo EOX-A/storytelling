@@ -24,12 +24,12 @@ async function loadMarkdown(url) {
   try {
     const response = await fetch(url);
     if (!response.ok) {
-      throw new Error('Network response was not ok');
+      throw new Error("Network response was not ok");
     }
     const markdown = await response.text();
-    return markdown
+    return markdown;
   } catch (error) {
-    console.error('There has been a problem with your fetch operation:', error);
+    console.error("There has been a problem with your fetch operation:", error);
   }
 }
 
@@ -106,6 +106,7 @@ export class Storytelling extends LitElement {
   static properties = {
     markdown: { attribute: "markdown-property", type: String },
     url: { attribute: "url-property", type: String },
+    editor: { attribute: false, type: Boolean },
   };
 
   #html = null;
@@ -118,17 +119,18 @@ export class Storytelling extends LitElement {
   constructor() {
     super();
     this.markdown = null;
+    this.editor = false;
     this.url = null;
   }
 
   pauseScrolling() {
-    this.#RenderEditor.style.overflow = "hidden";
-    document.body.style.overflow = "hidden";
+    this.#RenderEditor.style.overflowY = "hidden";
+    document.body.style.overflowY = "hidden";
   }
 
   resumeScrolling() {
-    this.#RenderEditor.style.overflow = "scroll";
-    document.body.style.overflow = "";
+    this.#RenderEditor.style.overflowY = "scroll";
+    document.body.style.overflowY = "";
   }
 
   yourStepByStepFunction(functionList, direction, callback) {
@@ -267,24 +269,22 @@ export class Storytelling extends LitElement {
 
   async firstUpdated() {
     window.addEventListener("resize", scroller.resize);
-    this.#RenderEditor = document.querySelector(".renderer-editor");
-    if(this.url) {
-      const markdown = await loadMarkdown(this.url)
+    this.#RenderEditor = document.querySelector(".preview-wrapper");
+    if (this.url) {
+      const markdown = await loadMarkdown(this.url);
       this.#handleMarkDown({
         target: {
-          value: markdown
-        }
-      })
+          value: markdown,
+        },
+      });
     } else {
       this.#handleMarkDown({
         target: {
-          value: this.markdown
-        }
-      })
+          value: this.markdown,
+        },
+      });
     }
   }
-
-  getSectionBlock;
 
   renderBlocks(section, isAfterHorizontalLine, last, index) {
     const metadataRegex = /\[([^\]]+)\]:\s*(.+)/g;
@@ -315,8 +315,12 @@ export class Storytelling extends LitElement {
 
     if (isAfterHorizontalLine) {
       this.#sectionMetaData = [...this.#sectionMetaData, metadata];
-      return `<div class="wrap-main"><div class="add-wrap"><span data-key="${index}">+</span></div>${renderedContent}${
-        last
+      return `<div class="wrap-main">${
+        this.editor
+          ? `<div class="add-wrap"><span data-key="${index}">+</span></div>`
+          : ""
+      }${renderedContent}${
+        last && this.editor
           ? `<div class="add-wrap bottom"><span data-key="${index}" data-position="bottom">+</span></div>`
           : ""
       }</div>`;
@@ -403,21 +407,23 @@ export class Storytelling extends LitElement {
       <style>
         ${this.#styling}
       </style>
-      <div class="main">
-        <div class="row renderer-editor">
+      <div class="main ${this.editor ? "" : `no-editor`}">
+        <div class="preview-wrapper row">
           ${this.markdown
             ? html`<div>${renderHtmlString(this.#html)}</div>`
             : html`<div class="empty-preview">No Preview</div>`}
         </div>
-        <div class="row editor-wrapper">
-          <textarea
-            placeholder="Add your markdown"
-            @input=${this.#handleMarkDown}
-            .value=${this.markdown}
-          ></textarea>
-        </div>
+        ${this.editor
+          ? html`<div class="row editor-wrapper">
+              <textarea
+                placeholder="Add your markdown"
+                @input=${this.#handleMarkDown}
+                .value=${this.markdown}
+              ></textarea>
+            </div>`
+          : nothing}
       </div>
-      ${this.#addSection
+      ${this.#addSection && this.editor
         ? html`
             <div class="modal">
               <div class="modal-section">
@@ -460,8 +466,11 @@ export class Storytelling extends LitElement {
       .row {
         width: 50%;
       }
-      .renderer-editor {
-        overflow: scroll;
+      .no-editor .row {
+        width: 100%;
+      }
+      .preview-wrapper {
+        overflow-y: scroll;
       }
       .editor-wrapper, textarea {
         background: #e7e7e7;
