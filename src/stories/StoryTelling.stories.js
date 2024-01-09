@@ -1,5 +1,6 @@
-import { MAP_BG_MARKDOWN, SIMPLE_MARKDOWN } from "../enums";
 import { StoryTelling } from "./StoryTelling";
+import mapBgMarkdown from "../markdown/map-bg.md?raw"
+import simpleMarkdown from "../markdown/simple.md?raw"
 
 export default {
   title: "Module",
@@ -8,14 +9,14 @@ export default {
 
 export const Simple = {
   args: {
-    markdown: SIMPLE_MARKDOWN,
+    markdown: simpleMarkdown,
   },
   render: (args) => StoryTelling(args),
 };
 
 export const MapBackground = {
   args: {
-    markdown: MAP_BG_MARKDOWN,
+    markdown: mapBgMarkdown,
   },
   render: (args) => StoryTelling(args),
 };
@@ -23,6 +24,14 @@ export const MapBackground = {
 export const BlankPreview = {
   args: {
     markdown: "",
+  },
+  render: (args) => StoryTelling(args),
+};
+
+export const MarkdownAsURL = {
+  args: {
+    markdown: "",
+    url: `${window.location.origin}/simple.md`
   },
   render: (args) => StoryTelling(args),
 };

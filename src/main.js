@@ -20,6 +20,19 @@ const ELEMENTS = {
   },
 };
 
+async function loadMarkdown(url) {
+  try {
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error('Network response was not ok');
+    }
+    const markdown = await response.text();
+    return markdown
+  } catch (error) {
+    console.error('There has been a problem with your fetch operation:', error);
+  }
+}
+
 function generatePropertiesKeys(elements) {
   let propertiesKeys = [];
   Object.keys(elements).forEach((key) => {
@@ -92,6 +105,7 @@ function parsePropertyValue(propType, propValue) {
 export class Storytelling extends LitElement {
   static properties = {
     markdown: { attribute: "markdown-property", type: String },
+    url: { attribute: "url-property", type: String },
   };
 
   #html = null;
@@ -104,6 +118,7 @@ export class Storytelling extends LitElement {
   constructor() {
     super();
     this.markdown = null;
+    this.url = null;
   }
 
   pauseScrolling() {
@@ -250,11 +265,23 @@ export class Storytelling extends LitElement {
     this.requestUpdate();
   }
 
-  firstUpdated() {
-    this.parseHTML();
+  async firstUpdated() {
     window.addEventListener("resize", scroller.resize);
     this.#RenderEditor = document.querySelector(".renderer-editor");
-    this.requestUpdate();
+    if(this.url) {
+      const markdown = await loadMarkdown(this.url)
+      this.#handleMarkDown({
+        target: {
+          value: markdown
+        }
+      })
+    } else {
+      this.#handleMarkDown({
+        target: {
+          value: this.markdown
+        }
+      })
+    }
   }
 
   getSectionBlock;
@@ -380,7 +407,7 @@ export class Storytelling extends LitElement {
         <div class="row renderer-editor">
           ${this.markdown
             ? html`<div>${renderHtmlString(this.#html)}</div>`
-            : html` <div class="empty-preview">No Preview</div> `}
+            : html`<div class="empty-preview">No Preview</div>`}
         </div>
         <div class="row editor-wrapper">
           <textarea

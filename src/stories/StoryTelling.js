@@ -4,9 +4,9 @@ import "../main";
 /**
  * Primary UI component for user interaction
  */
-export const StoryTelling = ({ markdown }) => {
+export const StoryTelling = ({ markdown, url }) => {
   return html`
-    <story-telling .markdown=${markdown}></story-telling>
+    <story-telling .url=${url || null} .markdown=${markdown}></story-telling>
     <style>
       @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap");
       * {

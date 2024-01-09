@@ -4,8 +4,9 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "start": "npm run storybook",
+    "start": "concurrently \"npm run storybook\" \"npm run vite\"",
     "build": "npm run build-storybook",
+    "vite": "vite",
     "preview": "vite preview",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build"
@@ -16,6 +17,7 @@
     "@storybook/blocks": "^7.6.7",
     "@storybook/web-components": "^7.6.7",
     "@storybook/web-components-vite": "^7.6.7",
+    "concurrently": "^8.2.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "storybook": "^7.6.7",
