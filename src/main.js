@@ -2,7 +2,7 @@ import DOMPurify from "isomorphic-dompurify";
 import { html, LitElement, nothing } from "lit";
 import { marked } from "marked";
 import { EOxMap } from "@eox/map/dist/eox-map.umd.cjs";
-import { EOxLayerControl } from "../../EOxElements/elements/layercontrol/src/main";
+import { EOxLayerControl } from "@eox/layercontrol/dist/eox-layercontrol.umd.cjs";
 import "@eox/map/dist/eox-map-advanced-layers-and-sources.js";
 import scrollama from "scrollama";
 import { fromLonLat } from "ol/proj.js";
