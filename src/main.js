@@ -203,7 +203,7 @@ export class Storytelling extends LitElement {
     if (storyMeta.type === "map-bg") {
       const eoxMap = document.querySelector(`#${storyMeta.id}`);
       const view = eoxMap.map.getView();
-      const step = JSON.parse(sectionMeta.step);
+      const step = sectionMeta.step;
 
       view.animate({
         center: fromLonLat([step[1], step[0]]),
@@ -214,8 +214,8 @@ export class Storytelling extends LitElement {
 
     if (sectionMeta.steps && sectionMeta.for && storyMeta.type === "simple") {
       const eoxMap = document.querySelector(sectionMeta.for);
-      const steps = JSON.parse(sectionMeta.steps);
-      const resetStep = JSON.parse(sectionMeta.resetStep);
+      const steps = sectionMeta.steps;
+      const resetStep = sectionMeta.resetStep;
       const view = eoxMap.map.getView();
       let functionList = [];
 
@@ -260,21 +260,28 @@ export class Storytelling extends LitElement {
   getSectionBlock;
 
   renderBlocks(section, isAfterHorizontalLine, last, index) {
-    const metadataRegex = /\+\+\+\n([\s\S]*?)\n\+\+\+/;
-    const metadataMatch = section.match(metadataRegex);
+    const metadataRegex = /\[([^\]]+)\]:\s*(.+)/g;
+    let metadataMatch;
     let metadata = {};
     let content = section;
 
-    if (metadataMatch) {
-      metadataMatch[1]
-        .trim()
-        .split("\n")
-        .forEach((line) => {
-          const [key, value] = line.split("=").map((s) => s.trim());
-          metadata[key] = value;
-        });
+    while ((metadataMatch = metadataRegex.exec(section)) !== null) {
+      let value = metadataMatch[2].trim();
+      if (
+        (value.startsWith("[") && value.endsWith("]")) ||
+        (value.startsWith("{") && value.endsWith("}"))
+      ) {
+        // Attempt to parse as an array
+        try {
+          value = JSON.parse(value.replace(/'/g, '"'));
+        } catch (e) {
+          console.error("Error parsing array: ", e);
+        }
+      } else if (!isNaN(value)) {
+        value = Number(value);
+      }
 
-      content = section.replace(metadataRegex, "");
+      metadata[metadataMatch[1]] = value;
     }
 
     const renderedContent = marked(content);
@@ -292,9 +299,11 @@ export class Storytelling extends LitElement {
       if (metadata.type === "map-bg") {
         return `<div style='position: fixed; top: 0; z-index: -1; width: 50%; height: 100%;'><eox-map id='${
           metadata.id
-        }' style='${metadata.style}' center='${metadata.center}' layers='${
+        }' style='${
+          metadata.style
+        }' center='[${metadata.center.toString()}]' layers='${JSON.stringify(
           metadata.layers
-        }' zoom=${Number(metadata.zoom)}></eox-map></div>`;
+        )}' zoom=${Number(metadata.zoom)}></eox-map></div>`;
       }
       return "";
     }
