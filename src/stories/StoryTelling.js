@@ -1,5 +1,6 @@
 import { html } from "lit";
 import "../main";
+import picoCSS from "../picocss";
 
 /**
  * Primary UI component for user interaction
@@ -19,6 +20,7 @@ export const StoryTelling = ({ markdown, url, editor }) => {
       .sb-show-main.sb-main-padded {
         padding: 0;
       }
+      ${picoCSS}
     </style>
   `;
 };
