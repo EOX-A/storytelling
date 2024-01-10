@@ -3,7 +3,7 @@ import { html, LitElement } from "lit";
  * Markdown -
  *
  * [section-type]:hero
- * [sub-type]:full|cropped
+ * [sub-type]:full|cropped?
  * [v-position]:top|middle|bottom
  * [h-position]:left|center|right
  * [img]:https://www.gstatic.com/prettyearth/assets/full/1804.jpg
@@ -33,7 +33,6 @@ export class StoryTellingHero extends LitElement {
     return this;
   }
   render() {
-    console.log(this.hPosition)
     return html`
       <style>
         ${this.#styling}
@@ -51,7 +50,7 @@ export class StoryTellingHero extends LitElement {
             Exploring 19 years of particulate matter in the air we breathe
           </p>
           <p class="sub-description">
-            Exploring 19 years of particulate matter in the air we breathe
+            Sub Description
           </p>
         </div>
       </div>
@@ -96,7 +95,11 @@ export class StoryTellingHero extends LitElement {
     }
     .hero-content p.description {
       font-size: 1.25rem;
-      font-weight: 500;
+      font-weight: 400;
+    }
+    .hero-content p.sub-description {
+      font-size: 0.75rem;
+      font-weight: 600;
     }
     .hero-center {
       align-items: center;

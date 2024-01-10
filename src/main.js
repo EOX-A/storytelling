@@ -389,7 +389,10 @@ export class Storytelling extends LitElement {
         width: 100%;
       }
       .preview-wrapper {
-        overflow-y: scroll;
+        overflow-y: unset;
+      }
+      .no-editor .preview-wrapper {
+        overflow-y: auto;
       }
       .editor-wrapper, textarea {
         background: #e7e7e7;

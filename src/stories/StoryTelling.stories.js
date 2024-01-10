@@ -58,16 +58,24 @@ export const ComponentPreview = {
   },
   render: (args) => html`
       <sample-component></sample-component>
+      <link rel="preconnect" href="https://fonts.googleapis.com">
+      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+      <link href="https://fonts.googleapis.com/css2?family=Mukta:wght@300;400;500;700&family=Signika+Negative:wght@400;500;600;700&display=swap" rel="stylesheet">
       <style>
-        ${picoCSS}
-        @import url('https://fonts.googleapis.com/css2?family=Kanit:wght@400;500;600&display=swap');
-        @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap");
-        @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;700&display=swap");
-        * {
-          font-family: "Poppins", sans-serif;
+        ${picoCSS}* {
+          font-family: "Mukta", sans-serif;
         }
         h1, h2, h3 {
-          font-family: "Kanit", sans-serif;
+          font-family: "Signika Negative", sans-serif;
+          line-height: 120%;
+          margin-top: 0.8rem;
+          margin-bottom: 0.8rem;
+        }
+        p {
+          font-weight: 400;
+          line-height: 170%;
+          margin-top: 0.8rem;
+          margin-bottom: 1.6rem;
         }
         body {
           padding: 0;

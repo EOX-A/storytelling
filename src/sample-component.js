@@ -2,6 +2,7 @@ import { html, LitElement } from "lit";
 import { marked } from "marked";
 import "@eox/map/dist/eox-map-advanced-layers-and-sources.js";
 import "./components/hero"
+import "./components/basic"
 import scrollama from "scrollama";
 import { ELEMENTS } from "./helpers";
 
@@ -18,11 +19,13 @@ export class SampleComponent extends LitElement {
     return html`
       <style>
         ${this.#styling}
+        ${this.#elementStyling}
       </style>
       <div class="main no-editor">
         <div class="preview-wrapper row">
         
           <story-telling-hero .hPosition=${"center"} .vPosition=${"middle"}></story-telling-hero>
+          <story-telling-basic></storytelling-basic>
         
         </div>
       </div>
@@ -30,9 +33,7 @@ export class SampleComponent extends LitElement {
   }
 
   #elementStyling = `
-    h1 {
-      font-family:
-    }
+    
   `
 
   #styling = `
@@ -51,6 +52,9 @@ export class SampleComponent extends LitElement {
       }
       .preview-wrapper {
         overflow-y: scroll;
+      }
+      .no-editor .preview-wrapper {
+        overflow-y: unset;
       }
       .editor-wrapper, textarea {
         background: #e7e7e7;
@@ -99,6 +103,7 @@ export class SampleComponent extends LitElement {
         cursor: pointer;
       }
       .wrap-main {
+        padding: 3.2rem 0rem;
         // padding: 100px 20px;
         position: relative;
       }
