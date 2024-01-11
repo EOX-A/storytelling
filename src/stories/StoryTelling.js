@@ -7,11 +7,34 @@ import picoCSS from "../picocss";
  */
 export const StoryTelling = ({ markdown, url, editor }) => {
   return html`
-    <story-telling .editor=${editor || false} .url=${url || null} .markdown=${markdown}></story-telling>
+    <story-telling
+      .editor=${editor || false}
+      .url=${url || null}
+      .markdown=${markdown}
+    ></story-telling>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Mukta:wght@300;400;500;700&family=Signika+Negative:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
     <style>
-      @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap");
-      * {
-        font-family: "Roboto", sans-serif;
+      ${picoCSS}* {
+        font-family: "Mukta", sans-serif;
+      }
+      h1,
+      h2,
+      h3 {
+        font-family: "Signika Negative", sans-serif;
+        line-height: 120%;
+        margin-top: 0.8rem;
+        margin-bottom: 0.8rem;
+      }
+      p {
+        font-weight: 400;
+        line-height: 170%;
+        margin-top: 0.8rem;
+        margin-bottom: 1.6rem;
       }
       body {
         padding: 0;
@@ -20,7 +43,6 @@ export const StoryTelling = ({ markdown, url, editor }) => {
       .sb-show-main.sb-main-padded {
         padding: 0;
       }
-      ${picoCSS}
     </style>
   `;
 };

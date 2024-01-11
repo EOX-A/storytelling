@@ -1,10 +1,11 @@
 import { html, LitElement } from "lit";
 import { marked } from "marked";
 import "@eox/map/dist/eox-map-advanced-layers-and-sources.js";
-import "./components/hero"
-import "./components/basic"
+import "./components/sections/hero"
+import "./components/sections/basic"
 import scrollama from "scrollama";
-import { ELEMENTS } from "./helpers";
+import {
+  CUSTOM_ELEMENTS} from "./custom-elements" 
 
 marked.use({
   breaks: true,

@@ -7,14 +7,14 @@ import { fromLonLat } from "ol/proj.js";
 import { SAMPLE_COMPONENTS } from "./enums";
 import picoCSS from "./picocss";
 import {
-  ELEMENTS,
   loadMarkdown,
-  generatePropertiesKeys,
   renderHtmlString,
 } from "./helpers";
+import {
+  CUSTOM_ELEMENTS, PROPERTIES_KEYS} from "./custom-elements" 
+import renderSection from "./components/sections/render-section";
 
 const scroller = scrollama();
-const propertiesKeys = generatePropertiesKeys(ELEMENTS);
 
 marked.use({
   breaks: true,
@@ -90,8 +90,8 @@ export class Storytelling extends LitElement {
   #purifyDOM(parsedHtml) {
     return DOMPurify.sanitize(parsedHtml, {
       CUSTOM_ELEMENT_HANDLING: {
-        tagNameCheck: /^eox-/,
-        attributeNameCheck: new RegExp(propertiesKeys.join("|")),
+        tagNameCheck: /^eox-|^story-telling-/,
+        attributeNameCheck: new RegExp(PROPERTIES_KEYS.join("|")),
         allowCustomizedBuiltInElements: true,
       },
     });
@@ -118,7 +118,7 @@ export class Storytelling extends LitElement {
         container: this.#RenderEditor,
       })
       .onStepEnter((response) => {
-        this.handleStepEnter(response);
+        // this.handleStepEnter(response);
       })
       .onStepExit((response) => {
         response.element.className = "wrap-main";
@@ -234,15 +234,16 @@ export class Storytelling extends LitElement {
 
     if (isAfterHorizontalLine) {
       this.#sectionMetaData = [...this.#sectionMetaData, metadata];
-      return `<div class="wrap-main container">${
-        this.editor
-          ? `<div class="add-wrap"><span data-key="${index}">+</span></div>`
-          : ""
-      }${renderedContent}${
-        last && this.editor
-          ? `<div class="add-wrap bottom"><span data-key="${index}" data-position="bottom">+</span></div>`
-          : ""
-      }</div>`;
+      return renderSection(metadata, renderedContent, index, last, this.editor)
+      // return `<div class="wrap-main container">${
+      //   this.editor
+      //     ? `<div class="add-wrap"><span data-key="${index}">+</span></div>`
+      //     : ""
+      // }${renderedContent}${
+      //   last && this.editor
+      //     ? `<div class="add-wrap bottom"><span data-key="${index}" data-position="bottom">+</span></div>`
+      //     : ""
+      // }</div>`;
     } else {
       this.#storyMetaData = metadata;
 
@@ -389,10 +390,10 @@ export class Storytelling extends LitElement {
         width: 100%;
       }
       .preview-wrapper {
-        overflow-y: unset;
+        overflow-y: scroll;
       }
       .no-editor .preview-wrapper {
-        overflow-y: auto;
+        overflow-y: unset;
       }
       .editor-wrapper, textarea {
         background: #e7e7e7;
@@ -427,6 +428,7 @@ export class Storytelling extends LitElement {
         top: -10px;
         left: 0;
         width: 100%;
+        z-index: 3;
       }
       .wrap-main .add-wrap.bottom {
         top: unset;
@@ -434,14 +436,13 @@ export class Storytelling extends LitElement {
       }
       .wrap-main .add-wrap span {
         background: white;
-        padding: 2px 8px;
+        padding: 0px 8px;
         border-radius: 100%;
         font-weight: 800;
         box-shadow: 1px 1px 10px #80808094;
         cursor: pointer;
       }
       .wrap-main {
-        // padding: 100px 20px;
         position: relative;
       }
       .bg {

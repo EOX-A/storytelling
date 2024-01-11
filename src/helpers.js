@@ -1,16 +1,4 @@
-import { EOxMap } from "@eox/map/dist/eox-map.umd.cjs";
-import { EOxLayerControl } from "@eox/layercontrol/dist/eox-layercontrol.umd.cjs";
-
-const ELEMENTS = {
-  "eox-map": {
-    class: EOxMap,
-    properties: {},
-  },
-  "eox-layercontrol": {
-    class: EOxLayerControl,
-    properties: {},
-  },
-};
+import {CUSTOM_ELEMENTS} from "./custom-elements"
 
 async function loadMarkdown(url) {
   try {
@@ -25,31 +13,18 @@ async function loadMarkdown(url) {
   }
 }
 
-function generatePropertiesKeys(elements) {
-  let propertiesKeys = [];
-  Object.keys(elements).forEach((key) => {
-    const ele = elements[key];
-    ele.class.elementProperties.forEach((i, prop) => {
-      propertiesKeys = [...propertiesKeys, ...prop];
-      if (!i.attribute && !i.state) {
-        elements[key].properties = {
-          ...elements[key].properties,
-          [prop]: i.type?.name || "Array",
-        };
-      }
-    });
-  });
-  return propertiesKeys;
-}
-
 function renderHtmlString(htmlString) {
   const parser = new DOMParser();
   const doc = parser.parseFromString(htmlString, "text/html");
   return Array.from(doc.body.childNodes).map((node) => {
-    if (node.nodeName === "P" || node.nodeName === "DIV" || node.nodeName === "MAIN") {
+    if (
+      node.nodeName === "P" ||
+      node.nodeName === "DIV" ||
+      node.nodeName === "MAIN"
+    ) {
       const childElements = node.querySelectorAll("*");
       childElements.forEach((element) => {
-        if (element.tagName.toLowerCase().startsWith("eox-")) {
+        if (/^(eox-|story-telling-)/.test(element.tagName.toLowerCase())) {
           processCustomElement(element);
         }
       });
@@ -60,12 +35,11 @@ function renderHtmlString(htmlString) {
 
 function processCustomElement(element) {
   const eleNodeName = element.nodeName.toLowerCase();
-  if (Object.keys(ELEMENTS).includes(eleNodeName)) {
-    const ele = ELEMENTS[eleNodeName];
+  if (Object.keys(CUSTOM_ELEMENTS).includes(eleNodeName)) {
+    const ele = CUSTOM_ELEMENTS[eleNodeName];
     Object.keys(ele.properties).forEach((propName) => {
       const propValue = element.getAttribute(propName);
       const propType = ele.properties[propName];
-
       if (propValue) {
         element[propName] = parsePropertyValue(propType, propValue);
       }
@@ -88,9 +62,7 @@ function parsePropertyValue(propType, propValue) {
 }
 
 export {
-  ELEMENTS,
   loadMarkdown,
-  generatePropertiesKeys,
   renderHtmlString,
   processCustomElement,
   parsePropertyValue,

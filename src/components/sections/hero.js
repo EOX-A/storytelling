@@ -2,22 +2,27 @@ import { html, LitElement } from "lit";
 /**
  * Markdown -
  *
- * [section-type]:hero
- * [sub-type]:full|cropped?
- * [v-position]:top|middle|bottom
- * [h-position]:left|center|right
+ * [sectionType]:hero
+ * [subType]:full|cropped?
+ * [vPosition]:top|middle|bottom
+ * [hPosition]:left|center|right
  * [img]:https://www.gstatic.com/prettyearth/assets/full/1804.jpg
- * [img-alt]:https://www.gstatic.com/prettyearth/assets/full/1804.jpg
- *
+ * [imgAlt]:https://www.gstatic.com/prettyearth/assets/full/1804.jpg
+ * [title]:Text
+ * [description]:Text
+ * [subDescription]:Text
  */
 
 export class StoryTellingHero extends LitElement {
   static properties = {
     subType: { attribute: "sub-type", type: String },
     vPosition: { attribute: "v-position", type: String },
-    hPosition: { attribute: "h-position-property", type: String },
+    hPosition: { attribute: "h-position", type: String },
     img: { attribute: "img", type: String },
     imgAlt: { attribute: "img-alt", type: String },
+    title: { attribute: "title", type: String },
+    description: { attribute: "description", type: String },
+    subDescription: { attribute: "subDescription", type: String },
   };
 
   constructor() {
@@ -27,6 +32,9 @@ export class StoryTellingHero extends LitElement {
     this.hPosition = "center"
     this.img = "https://www.gstatic.com/prettyearth/assets/full/14617.jpg"
     this.imgAlt = null
+    this.title = null
+    this.description = null
+    this.subDescription = null
   }
 
   createRenderRoot() {
@@ -37,7 +45,7 @@ export class StoryTellingHero extends LitElement {
       <style>
         ${this.#styling}
       </style>
-      <div class="wrap-main hero hero-${this.subType}">
+      <div class="hero hero-${this.subType}">
         <img
           class="hero-img"
           src="https://www.gstatic.com/prettyearth/assets/full/14617.jpg"
@@ -45,13 +53,9 @@ export class StoryTellingHero extends LitElement {
         />
         <div class="hero-overlay"></div>
         <div class="hero-content hero-${this.hPosition} hero-${this.vPosition} container">
-          <h1 class="title">Global Air Quality</h1>
-          <p class="description">
-            Exploring 19 years of particulate matter in the air we breathe
-          </p>
-          <p class="sub-description">
-            Sub Description
-          </p>
+          <h1 class="title">${this.title}</h1>
+          <p class="description">${this.description}</p>
+          <p class="sub-description">${this.subDescription}</p>
         </div>
       </div>
     `;
