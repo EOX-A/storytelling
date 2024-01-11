@@ -6,16 +6,30 @@ const addSectionHTML = (index, editor, position) => {
   else return "";
 };
 
+const valueAsPerType = (propType, value) => {
+  switch (propType) {
+    case "Number":
+      return Number(value)
+    case "Array":
+      return JSON.stringify(value)
+    case "Object":
+      return JSON.stringify(value)
+    default:
+      return value
+  }
+}
+
 const getSectionHTML = (metadata, renderedContent) => {
   const element = `story-telling-${metadata.sectionType || "basic"}`;
   let html = `<${element}`;
   const properties = Object.keys(CUSTOM_ELEMENTS[element].properties);
 
   properties.forEach((prop) => {
-    if (metadata[prop]) html += ` ${prop}="${metadata[prop]}"`;
+    const propType = CUSTOM_ELEMENTS[element].properties[prop]
+    if (metadata[prop]) html += ` ${prop}='${valueAsPerType(propType, metadata[prop])}'`;
   });
   if(renderedContent) html += ` content="${renderedContent}"`
- 
+
   return `${html}></${element}>`;
 };
 

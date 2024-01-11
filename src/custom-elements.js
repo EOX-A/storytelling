@@ -2,6 +2,7 @@ import { EOxMap } from "@eox/map/dist/eox-map.umd.cjs";
 import { EOxLayerControl } from "@eox/layercontrol/dist/eox-layercontrol.umd.cjs";
 import { StoryTellingHero } from "./components/sections/hero"
 import { StoryTellingBasic } from "./components/sections/basic"
+import { StoryTellingMap } from "./components/sections/map";
 
 export const CUSTOM_ELEMENTS = {
   "eox-map": {
@@ -18,6 +19,10 @@ export const CUSTOM_ELEMENTS = {
   },
   "story-telling-basic": {
     class: StoryTellingBasic,
+    properties: {},
+  },
+  "story-telling-map": {
+    class: StoryTellingMap,
     properties: {},
   },
 };

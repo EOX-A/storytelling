@@ -3,12 +3,8 @@ import { renderHtmlString } from "../../helpers";
 /**
  * Markdown -
  *
- * [section-type]:hero
- * [sub-type]:full|cropped?
- * [v-position]:top|middle|bottom
- * [h-position]:left|center|right
- * [img]:https://www.gstatic.com/prettyearth/assets/full/1804.jpg
- * [img-alt]:https://www.gstatic.com/prettyearth/assets/full/1804.jpg
+ * [sectionType]: basic
+ * [content]:<p>some text</p>
  *
  */
 
@@ -41,7 +37,7 @@ export class StoryTellingBasic extends LitElement {
     .basic {
         width: 41rem;
         margin: 0rem auto;
-        padding: 3.2rem 0rem;
+        padding: 1rem 0rem;
     }
   `;
 }
