@@ -11,6 +11,14 @@ export default {
   render: (args) => StoryTelling(args),
 };
 
+export const ComponentPreview = {
+  args: {
+    editor: false,
+    markdown: experimentMarkdown
+  },
+  render: (args) => StoryTelling(args),
+};
+
 export const Experiment = {
   args: {
     editor: true,
@@ -55,15 +63,6 @@ export const Preview = {
   args: {
     editor: false,
     markdown: simpleMarkdown
-  },
-  render: (args) => StoryTelling(args),
-};
-
-
-export const ComponentPreview = {
-  args: {
-    editor: false,
-    markdown: experimentMarkdown
   },
   render: (args) => StoryTelling(args),
 };
