@@ -23,7 +23,6 @@ export class StoryTellingBasic extends LitElement {
   }
   render() {
     return html`
-      <slot></slot>
       <style>
         ${this.#styling}
       </style>

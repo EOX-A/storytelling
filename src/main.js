@@ -186,24 +186,7 @@ export class Storytelling extends LitElement {
     this.requestUpdate();
   }
 
-  async firstUpdated() {
-    window.addEventListener("resize", scroller.resize);
-    this.#RenderEditor = document.querySelector(".preview-wrapper");
-    if (this.url) {
-      const markdown = await loadMarkdown(this.url);
-      this.#handleMarkDown({
-        target: {
-          value: markdown,
-        },
-      });
-    } else {
-      this.#handleMarkDown({
-        target: {
-          value: this.markdown,
-        },
-      });
-    }
-  }
+  
 
   renderBlocks(section, isAfterHorizontalLine, last, index) {
     const metadataRegex = /\[([^\]]+)\]:\s*(.+)/g;
@@ -281,19 +264,17 @@ export class Storytelling extends LitElement {
     return html;
   }
 
-  createRenderRoot() {
-    return this;
-  }
+  
 
   #handleMode(mode) {
     this.#mode = mode;
     this.parseHTML();
-    this.requestUpdate();
+    // this.requestUpdate();
   }
 
   addSection(e, index, position) {
     this.#addSection = Number(index) + (position === "top" ? 0 : 1);
-    this.requestUpdate();
+    // this.requestUpdate();
   }
 
   addComponent(index) {
@@ -309,6 +290,25 @@ export class Storytelling extends LitElement {
     });
   }
 
+  async firstUpdated() {
+    window.addEventListener("resize", scroller.resize);
+    this.#RenderEditor = document.querySelector(".preview-wrapper");
+    if (this.url) {
+      const markdown = await loadMarkdown(this.url);
+      this.#handleMarkDown({
+        target: {
+          value: markdown,
+        },
+      });
+    } else {
+      this.#handleMarkDown({
+        target: {
+          value: this.markdown,
+        },
+      });
+    }
+  }
+
   updated() {
     const addList = document.querySelectorAll(".add-wrap span");
     if (addList?.length) {
@@ -322,6 +322,11 @@ export class Storytelling extends LitElement {
     }
   }
 
+  createRenderRoot() {
+    return this;
+  }
+  
+
   render() {
     return html`
       <style>
@@ -329,7 +334,7 @@ export class Storytelling extends LitElement {
       </style>
       <div class="main ${this.editor ? "" : `no-editor`}">
         <div class="preview-wrapper row">
-          ${this.markdown
+          ${this.#html
             ? html`<div>${renderHtmlString(this.#html)}</div>`
             : html`<div class="empty-preview">No Preview</div>`}
         </div>
@@ -364,7 +369,7 @@ export class Storytelling extends LitElement {
                 style="color: white;font-weight: 600"
                 @click=${() => {
                   this.#addSection = null;
-                  this.requestUpdate();
+                  // this.requestUpdate();
                 }}
               >
                 Close

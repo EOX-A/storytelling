@@ -19,6 +19,14 @@ const valueAsPerType = (propType, value) => {
   }
 }
 
+const noSpaceOrComments = (html) => {
+  return html
+  .replace(/<!--[\s\S]*?-->/gm,"") // comments
+  .replace(/^(\s+)?|(\s+)?$/gm,"") // leading and trailing whitespace
+  .replace(/\r|\n/g,"") // trailing newlines
+}
+
+
 const getSectionHTML = (metadata, renderedContent) => {
   const element = `story-telling-${metadata.sectionType || "basic"}`;
   let html = `<${element}`;
@@ -28,7 +36,7 @@ const getSectionHTML = (metadata, renderedContent) => {
     const propType = CUSTOM_ELEMENTS[element].properties[prop]
     if (metadata[prop]) html += ` ${prop}='${valueAsPerType(propType, metadata[prop])}'`;
   });
-  if(renderedContent) html += ` content="${renderedContent}"`
+  if(renderedContent) html += ` content='${noSpaceOrComments(renderedContent).replaceAll("'", '"')}'`
 
   return `${html}></${element}>`;
 };
@@ -42,6 +50,7 @@ export default function (metadata, renderedContent, index, last, editor) {
 
   switch (metadata.sectionType) {
     case "basic":
+    case "map":
     case undefined:
       sectionHTML = getSectionHTML(metadata, renderedContent);
       break;
