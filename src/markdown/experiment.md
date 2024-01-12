@@ -60,6 +60,47 @@ The current **EPA threshold is 12 micrograms per cubic meter**, 20% higher than 
 
 
 ---
+[id]:tour
+[sectionType]:map
+[subType]:tour
+[center]:[15,48]
+[layers]:[{"type":"Tile","source":{"type":"OSM"}}]
+[zoom]:7
+[disableInteractions]:["MouseWheelZoom"]
+[sidecarPosition]:right
+[tourVPosition]:middle
+[tourHPosition]:left
+[tourSteps]:[[20.5937,78.9629,5],[-30.5662,130.7488,4],[66.1982,-30.1932,1]]
+
+<div class="map-content">
+    <h3>India</h3>
+    <p>The current EPA threshold is 12 micrograms per cubic meter, 20% higher than the World Health Organization’s recommended limit of 10 micrograms per cubic meter. Researchers have found that PM 2.5 is harmful at any concentration, and that lowering thresholds even below 10 micrograms per cubic meter could save thousands of lives.[9,10]</p>
+    <p>The current EPA threshold is 12 micrograms per cubic meter, 20% higher than the World Health Organization’s recommended limit of 10 micrograms per cubic meter. Researchers have found that PM 2.5 is harmful at any concentration, and that lowering thresholds even below 10 micrograms per cubic meter could save thousands of lives.[9,10]</p>
+    <p>The current EPA threshold is 12 micrograms per cubic meter, 20% higher than the World Health Organization’s recommended limit of 10 micrograms per cubic meter. Researchers have found that PM 2.5 is harmful at any concentration, and that lowering thresholds even below 10 micrograms per cubic meter could save thousands of lives.[9,10]</p>
+    <p>The current EPA threshold is 12 micrograms per cubic meter, 20% higher than the World Health Organization’s recommended limit of 10 micrograms per cubic meter. Researchers have found that PM 2.5 is harmful at any concentration, and that lowering thresholds even below 10 micrograms per cubic meter could save thousands of lives.[9,10]</p>
+    <p>The current EPA threshold is 12 micrograms per cubic meter, 20% higher than the World Health Organization’s recommended limit of 10 micrograms per cubic meter. Researchers have found that PM 2.5 is harmful at any concentration, and that lowering thresholds even below 10 micrograms per cubic meter could save thousands of lives.[9,10]</p>
+</div>
+
+<div class="map-content">
+    <h3>Australia</h3>
+    <p>The current EPA threshold is 12 micrograms per cubic meter, 20% higher than the World Health Organization’s recommended limit of 10 micrograms per cubic meter. Researchers have found that PM 2.5 is harmful at any concentration, and that lowering thresholds even below 10 micrograms per cubic meter could save thousands of lives.[9,10]</p>
+    <p>The current EPA threshold is 12 micrograms per cubic meter, 20% higher than the World Health Organization’s recommended limit of 10 micrograms per cubic meter. Researchers have found that PM 2.5 is harmful at any concentration, and that lowering thresholds even below 10 micrograms per cubic meter could save thousands of lives.[9,10]</p>
+    <p>The current EPA threshold is 12 micrograms per cubic meter, 20% higher than the World Health Organization’s recommended limit of 10 micrograms per cubic meter. Researchers have found that PM 2.5 is harmful at any concentration, and that lowering thresholds even below 10 micrograms per cubic meter could save thousands of lives.[9,10]</p>
+    <p>The current EPA threshold is 12 micrograms per cubic meter, 20% higher than the World Health Organization’s recommended limit of 10 micrograms per cubic meter. Researchers have found that PM 2.5 is harmful at any concentration, and that lowering thresholds even below 10 micrograms per cubic meter could save thousands of lives.[9,10]</p>
+    <p>The current EPA threshold is 12 micrograms per cubic meter, 20% higher than the World Health Organization’s recommended limit of 10 micrograms per cubic meter. Researchers have found that PM 2.5 is harmful at any concentration, and that lowering thresholds even below 10 micrograms per cubic meter could save thousands of lives.[9,10]</p>
+</div>
+
+<div class="map-content">
+    <h3>World</h3>
+    <p>The current EPA threshold is 12 micrograms per cubic meter, 20% higher than the World Health Organization’s recommended limit of 10 micrograms per cubic meter. Researchers have found that PM 2.5 is harmful at any concentration, and that lowering thresholds even below 10 micrograms per cubic meter could save thousands of lives.[9,10]</p>
+    <p>The current EPA threshold is 12 micrograms per cubic meter, 20% higher than the World Health Organization’s recommended limit of 10 micrograms per cubic meter. Researchers have found that PM 2.5 is harmful at any concentration, and that lowering thresholds even below 10 micrograms per cubic meter could save thousands of lives.[9,10]</p>
+    <p>The current EPA threshold is 12 micrograms per cubic meter, 20% higher than the World Health Organization’s recommended limit of 10 micrograms per cubic meter. Researchers have found that PM 2.5 is harmful at any concentration, and that lowering thresholds even below 10 micrograms per cubic meter could save thousands of lives.[9,10]</p>
+    <p>The current EPA threshold is 12 micrograms per cubic meter, 20% higher than the World Health Organization’s recommended limit of 10 micrograms per cubic meter. Researchers have found that PM 2.5 is harmful at any concentration, and that lowering thresholds even below 10 micrograms per cubic meter could save thousands of lives.[9,10]</p>
+    <p>The current EPA threshold is 12 micrograms per cubic meter, 20% higher than the World Health Organization’s recommended limit of 10 micrograms per cubic meter. Researchers have found that PM 2.5 is harmful at any concentration, and that lowering thresholds even below 10 micrograms per cubic meter could save thousands of lives.[9,10]</p>
+</div>
+
+
+---
 [sectionType]:map
 [subType]:full
 [center]:[15,48]

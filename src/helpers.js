@@ -37,12 +37,12 @@ function renderHtmlString(htmlString, eventObj) {
   if (!eventObj) return dom;
 
   const sectionId = eventObj.id;
-  const sidecarSteps = eventObj.sidecarSteps;
+  const steps = eventObj.sidecarSteps || eventObj.tourSteps;
 
   let currentSection = null;
 
   const func = () => {
-    const EOxMap = document.querySelector(`#${sectionId} eox-map#map-sidecar`);
+    const EOxMap = document.querySelector(`#${sectionId} eox-map#map-${sectionId}`);
     const mapContentChildren = document.querySelectorAll(
       `#${sectionId} .map-content`
     );
@@ -67,9 +67,9 @@ function renderHtmlString(htmlString, eventObj) {
 
       if (currentSection) {
         const index = currentSection.index;
-        const lat = sidecarSteps[index][0];
-        const lon = sidecarSteps[index][1];
-        const zoom = sidecarSteps[index][2];
+        const lat = steps[index][0];
+        const lon = steps[index][1];
+        const zoom = steps[index][2];
 
         EOxMap.map.getView().setCenter(fromLonLat([lon, lat]));
         EOxMap.map.getView().setZoom(zoom);
@@ -79,7 +79,7 @@ function renderHtmlString(htmlString, eventObj) {
 
   setTimeout(() => {
     const mapContentParent = document.querySelector(
-      `#${sectionId} .map-type-sidecar`
+      `#${sectionId} .map-type-${sectionId}`
     );
     mapContentParent.removeEventListener("wheel", func);
     setTimeout(() => mapContentParent.addEventListener("wheel", func), 1000);
