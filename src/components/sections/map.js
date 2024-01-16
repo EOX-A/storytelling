@@ -1,5 +1,5 @@
 import { html, LitElement, nothing } from "lit";
-import { renderHtmlString } from "../../helpers";
+import { changeMapLayer, renderHtmlString } from "../../helpers";
 
 // <div class="map-content" data-lat="-28.5682" data-lon="-129.1632" data-zoom="2"><p>1. Lorem ipsum dolor sit amet, consectetur adipiscing elit. 1</p><p>2. Lorem ipsum dolor sit amet, consectetur adipiscing elit. 1</p></div><div class="map-content" data-lat="-51.5662" data-lon="156.7488" data-zoom="4"><p>1. Lorem ipsum dolor sit amet, consectetur adipiscing elit. 2</p><p>2. Lorem ipsum dolor sit amet, consectetur adipiscing elit. 2</p></div><div class="map-content" data-lat="66.1982" data-lon="-30.1932" data-zoom="1"><p>1. Lorem ipsum dolor sit amet, consectetur adipiscing elit. 3</p><p>2. Lorem ipsum dolor sit amet, consectetur adipiscing elit. 3</p></div>
 
@@ -18,9 +18,11 @@ import { renderHtmlString } from "../../helpers";
  * [controls]:{"zoom":{}}
  * [sidecarPosition]:left|right
  * [sidecarSteps]:[[-28.5682,-129.1632,2],[-51.5662,156.7488,4],[66.1982,-30.1932,1]]
+ * [sidecarLayers]:[["regions","WIND"],["WIND"],["regions","NO2"]]
  * [tourVPosition]:top|middle|bottom
  * [tourHPosition]:left|center|right
  * [tourSteps]:[[-28.5682,-129.1632,2],[-51.5662,156.7488,4],[66.1982,-30.1932,1]]
+ * [tourLayers]:[["regions","WIND"],["WIND"],["regions","NO2"]]
  *
  */
 
@@ -38,9 +40,11 @@ export class StoryTellingMap extends LitElement {
     controls: { attribute: false, type: Object },
     sidecarPosition: { attribute: "sidecar-position", type: String },
     sidecarSteps: { attribute: false, type: Array },
+    sidecarLayers: { attribute: false, type: Array },
     tourVPosition: { attribute: "tour-v-position", type: String },
     tourHPosition: { attribute: "tour-h-position", type: String },
     tourSteps: { attribute: false, type: Array },
+    tourLayers: { attribute: false, type: Array },
   };
 
   #style = "";
@@ -57,6 +61,8 @@ export class StoryTellingMap extends LitElement {
     this.sidecarPosition = "left";
     this.sidecarSteps = null;
     this.content = null;
+    this.sidecarLayers = null;
+    this.tourLayers = null;
   }
 
   createRenderRoot() {
@@ -65,6 +71,7 @@ export class StoryTellingMap extends LitElement {
 
   firstUpdated() {
     const steps = this.sidecarSteps || this.tourSteps;
+    const layers = this.sidecarLayers || this.tourLayers;
 
     if (steps?.length) {
       const firstStep = steps[0];
@@ -72,6 +79,11 @@ export class StoryTellingMap extends LitElement {
         this.center = [firstStep[1], firstStep[0]];
         this.zoom = firstStep[2];
       }
+    }
+
+    if (layers?.length) {
+      const currLayer = layers[0];
+      changeMapLayer(this.id, currLayer);
     }
   }
 
@@ -89,8 +101,9 @@ export class StoryTellingMap extends LitElement {
               >
                 ${renderHtmlString(this.content, {
                   id: this.id,
-                  sidecarSteps: this.sidecarSteps,
-                  tourSteps: this.tourSteps,
+                  subType: this.subType,
+                  steps: this.sidecarSteps || this.tourSteps,
+                  layers: this.sidecarLayers || this.tourLayers,
                 })}
               </div>
             `

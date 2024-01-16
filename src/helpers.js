@@ -14,6 +14,34 @@ async function loadMarkdown(url) {
   }
 }
 
+function getEOxMap(sectionId) {
+  return document.querySelector(
+    `#${sectionId} eox-map#map-${sectionId}`
+  );
+}
+
+function getMapContentChildren(sectionId) {
+  return document.querySelectorAll(
+    `#${sectionId} .map-content`
+  );
+}
+
+export function changeMapLayer(sectionId, currLayer) {
+  const EOxMap = getEOxMap(sectionId)
+
+  EOxMap.map.getLayers().getArray().forEach((layer) => {
+    const layerId = layer.get("id")
+    if(currLayer.includes(layerId)) {
+      const index = currLayer.indexOf(layerId)
+      layer.setVisible(true)
+      layer.setZIndex(currLayer.length - index)
+    }
+    else {
+      layer.setVisible(false)
+    }
+  })
+}
+
 function renderHtmlString(htmlString, eventObj) {
   const parser = new DOMParser();
   const doc = parser.parseFromString(htmlString, "text/html");
@@ -37,15 +65,16 @@ function renderHtmlString(htmlString, eventObj) {
   if (!eventObj) return dom;
 
   const sectionId = eventObj.id;
-  const steps = eventObj.sidecarSteps || eventObj.tourSteps;
+  const subType = eventObj.subType;
+  const steps = eventObj.steps;
+  const layers = eventObj.layers;
 
   let currentSection = null;
 
   const func = () => {
-    const EOxMap = document.querySelector(`#${sectionId} eox-map#map-${sectionId}`);
-    const mapContentChildren = document.querySelectorAll(
-      `#${sectionId} .map-content`
-    );
+    const EOxMap = getEOxMap(sectionId)
+    const mapContentChildren = getMapContentChildren(sectionId)
+
     const scrollY = window.scrollY;
     let newCurrentSection = null;
 
@@ -71,6 +100,13 @@ function renderHtmlString(htmlString, eventObj) {
         const lon = steps[index][1];
         const zoom = steps[index][2];
 
+        
+
+        if(layers) {
+          const currLayer = layers[index]
+          changeMapLayer(sectionId, currLayer)
+        }
+
         EOxMap.map.getView().setCenter(fromLonLat([lon, lat]));
         EOxMap.map.getView().setZoom(zoom);
       }
@@ -79,7 +115,7 @@ function renderHtmlString(htmlString, eventObj) {
 
   setTimeout(() => {
     const mapContentParent = document.querySelector(
-      `#${sectionId} .map-type-${sectionId}`
+      `#${sectionId} .map-type-${subType}`
     );
     mapContentParent.removeEventListener("wheel", func);
     setTimeout(() => mapContentParent.addEventListener("wheel", func), 1000);
