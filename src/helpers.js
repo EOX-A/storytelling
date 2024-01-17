@@ -1,6 +1,14 @@
 import { CUSTOM_ELEMENTS } from "./custom-elements";
 import { fromLonLat } from "ol/proj";
 
+function isBooleanString(str) {
+  // Convert the string to lowercase for case-insensitive comparison
+  str = str.toLowerCase();
+  
+  // Check if it's "true" or "false"
+  return str === "true" || str === "false";
+}
+
 async function loadMarkdown(url) {
   try {
     const response = await fetch(url);
@@ -157,4 +165,5 @@ export {
   renderHtmlString,
   processCustomElement,
   parsePropertyValue,
+  isBooleanString
 };

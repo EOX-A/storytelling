@@ -7,6 +7,7 @@ import { fromLonLat } from "ol/proj.js";
 import { SAMPLE_COMPONENTS } from "./enums";
 import picoCSS from "./picocss";
 import {
+  isBooleanString,
   loadMarkdown,
   renderHtmlString,
 } from "./helpers";
@@ -206,6 +207,8 @@ export class Storytelling extends LitElement {
         } catch (e) {
           console.error("Error parsing array: ", e);
         }
+      } else if (isBooleanString(value)) {
+        value = Boolean(value.toLowerCase())
       } else if (!isNaN(value)) {
         value = Number(value);
       }
@@ -218,15 +221,6 @@ export class Storytelling extends LitElement {
     if (isAfterHorizontalLine) {
       this.#sectionMetaData = [...this.#sectionMetaData, metadata];
       return renderSection(metadata, renderedContent, index, last, this.editor)
-      // return `<div class="wrap-main container">${
-      //   this.editor
-      //     ? `<div class="add-wrap"><span data-key="${index}">+</span></div>`
-      //     : ""
-      // }${renderedContent}${
-      //   last && this.editor
-      //     ? `<div class="add-wrap bottom"><span data-key="${index}" data-position="bottom">+</span></div>`
-      //     : ""
-      // }</div>`;
     } else {
       this.#storyMetaData = metadata;
 

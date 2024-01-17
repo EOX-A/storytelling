@@ -12,7 +12,7 @@ import { changeMapLayer, renderHtmlString } from "../../helpers";
  * [center]:[0,0]
  * [config]:{}
  * [layers]:[{}]
- * [disableInteractions]:["MouseWheelZoom"]
+ * [preventScroll]:true
  * [sync]:""
  * [zoom]:2
  * [controls]:{"zoom":{}}
@@ -36,7 +36,7 @@ export class StoryTellingMap extends LitElement {
     layers: { attribute: false, type: Array },
     sync: { attribute: "sync", type: String },
     zoom: { attribute: false, type: Number },
-    disableInteractions: { attribute: false, type: Array },
+    preventScroll: { attribute: false, type: Boolean },
     controls: { attribute: false, type: Object },
     sidecarPosition: { attribute: "sidecar-position", type: String },
     sidecarSteps: { attribute: false, type: Array },
@@ -57,7 +57,7 @@ export class StoryTellingMap extends LitElement {
     this.layers = null;
     this.sync = null;
     this.zoom = null;
-    this.disableInteractions = null;
+    this.preventScroll = false;
     this.sidecarPosition = "left";
     this.sidecarSteps = null;
     this.content = null;
@@ -115,7 +115,7 @@ export class StoryTellingMap extends LitElement {
           .center="${this.center}"
           .layers="${this.layers}"
           .zoom="${this.zoom}"
-          .disableInteractions="${this.disableInteractions}"
+          .preventScroll="${this.preventScroll}"
           .controls="${this.config}"
           .controls="${this.controls}"
         ></eox-map>
