@@ -1,13 +1,11 @@
-import { html, LitElement, nothing } from "lit";
+import { html, LitElement } from "lit";
 import { changeMapLayer, renderHtmlString } from "../../helpers";
-
-// <div class="map-content" data-lat="-28.5682" data-lon="-129.1632" data-zoom="2"><p>1. Lorem ipsum dolor sit amet, consectetur adipiscing elit. 1</p><p>2. Lorem ipsum dolor sit amet, consectetur adipiscing elit. 1</p></div><div class="map-content" data-lat="-51.5662" data-lon="156.7488" data-zoom="4"><p>1. Lorem ipsum dolor sit amet, consectetur adipiscing elit. 2</p><p>2. Lorem ipsum dolor sit amet, consectetur adipiscing elit. 2</p></div><div class="map-content" data-lat="66.1982" data-lon="-30.1932" data-zoom="1"><p>1. Lorem ipsum dolor sit amet, consectetur adipiscing elit. 3</p><p>2. Lorem ipsum dolor sit amet, consectetur adipiscing elit. 3</p></div>
 
 /**
  * Markdown -
  *
  * [id]:some-id
- * [sectionType]:basic
+ * [sectionType]:map
  * [subType]:simple|container|full|sidecar|tour|slideshow
  * [center]:[0,0]
  * [config]:{}
@@ -50,6 +48,7 @@ export class StoryTellingMap extends LitElement {
   #style = "";
   constructor() {
     super();
+    this.sectionType = "map";
     this.subType = "simple";
     this.id = null;
     this.center = [0, 0];
@@ -62,6 +61,8 @@ export class StoryTellingMap extends LitElement {
     this.sidecarSteps = null;
     this.content = null;
     this.sidecarLayers = null;
+    this.tourVPosition = "middle";
+    this.tourHPosition = "left";
     this.tourLayers = null;
   }
 
@@ -83,7 +84,7 @@ export class StoryTellingMap extends LitElement {
 
     if (layers?.length) {
       const currLayer = layers[0];
-      changeMapLayer(this.id, currLayer);
+      changeMapLayer(this.id, currLayer, this.sectionType);
     }
   }
 
@@ -104,6 +105,7 @@ export class StoryTellingMap extends LitElement {
                   subType: this.subType,
                   steps: this.sidecarSteps || this.tourSteps,
                   layers: this.sidecarLayers || this.tourLayers,
+                  sectionType: this.sectionType
                 })}
               </div>
             `

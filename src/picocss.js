@@ -903,7 +903,6 @@ audio:not([controls]) {
 
 img {
   max-width: 100%;
-  height: auto;
   border-style: none;
 }
 

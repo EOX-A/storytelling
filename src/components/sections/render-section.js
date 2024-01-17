@@ -51,6 +51,7 @@ export default function (metadata, renderedContent, index, last, editor) {
   switch (metadata.sectionType) {
     case "basic":
     case "map":
+    case "media":
     case undefined:
       sectionHTML = getSectionHTML(metadata, renderedContent);
       break;

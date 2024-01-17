@@ -21,11 +21,11 @@ function highlightNavigation() {
     if (scrollY > sectionTop && scrollY <= sectionTop + sectionHeight)
       document
         .querySelector(`.navigation li.nav-${sectionId}`)
-        .classList.add("active");
+        ?.classList.add("active");
     else
       document
         .querySelector(`.navigation li.nav-${sectionId}`)
-        .classList.remove("active");
+        ?.classList.remove("active");
   });
 }
 
@@ -42,16 +42,20 @@ async function loadMarkdown(url) {
   }
 }
 
-function getEOxMap(sectionId) {
-  return document.querySelector(`#${sectionId} eox-map#map-${sectionId}`);
+function getEOxMap(sectionId, sectionType) {
+  return document.querySelector(`#${sectionId} eox-map#${sectionType}-${sectionId}`);
 }
 
-function getMapContentChildren(sectionId) {
-  return document.querySelectorAll(`#${sectionId} .map-content`);
+function getMedia(sectionId, sectionType) {
+  return document.querySelectorAll(`#${sectionId} #${sectionType}-${sectionId}`);
 }
 
-export function changeMapLayer(sectionId, currLayer) {
-  const EOxMap = getEOxMap(sectionId);
+function getContentChildren(sectionId, sectionType) {
+  return document.querySelectorAll(`#${sectionId} .${sectionType}-content`);
+}
+
+export function changeMapLayer(sectionId, currLayer, sectionType) {
+  const EOxMap = getEOxMap(sectionId, sectionType);
 
   EOxMap.map
     .getLayers()
@@ -66,6 +70,17 @@ export function changeMapLayer(sectionId, currLayer) {
         layer.setVisible(false);
       }
     });
+}
+
+export function changeMediaLayer(sectionId, sectionType, index) {
+  const nodeEle = getMedia(sectionId, sectionType);
+
+  nodeEle.forEach((node, nodeIndex) => {
+    if(nodeIndex === index) 
+      node.style.display = "block"
+    else 
+      node.style.display = "none"
+  })
 }
 
 function renderHtmlString(htmlString, eventObj) {
@@ -94,25 +109,26 @@ function renderHtmlString(htmlString, eventObj) {
   const subType = eventObj.subType;
   const steps = eventObj.steps;
   const layers = eventObj.layers;
+  const sectionType = eventObj.sectionType
 
   let currentSection = null;
 
   const func = () => {
-    const EOxMap = getEOxMap(sectionId);
-    const mapContentChildren = getMapContentChildren(sectionId);
+    const nodeEle = sectionType === "map" ? getEOxMap(sectionId, sectionType) : getMedia(sectionId, sectionType);
+    const contentChildren = getContentChildren(sectionId, sectionType);
 
     const scrollY = window.scrollY;
     let newCurrentSection = null;
 
-    mapContentChildren.forEach((mapContent, key) => {
-      const rect = mapContent.getBoundingClientRect();
+    contentChildren.forEach((content, key) => {
+      const rect = content.getBoundingClientRect();
       const sectionTop = rect.top + window.scrollY;
       const sectionBottom = sectionTop + rect.height;
 
       if (scrollY >= sectionTop && scrollY < sectionBottom) {
         newCurrentSection = {
           index: key,
-          dom: mapContent,
+          dom: content,
         };
       }
     });
@@ -122,27 +138,33 @@ function renderHtmlString(htmlString, eventObj) {
 
       if (currentSection) {
         const index = currentSection.index;
-        const lat = steps[index][0];
-        const lon = steps[index][1];
-        const zoom = steps[index][2];
 
-        if (layers) {
-          const currLayer = layers[index];
-          changeMapLayer(sectionId, currLayer);
+        if(sectionType === "map"){
+          const lat = steps[index][0];
+          const lon = steps[index][1];
+          const zoom = steps[index][2];
+
+          if (layers) {
+            const currLayer = layers[index];
+            changeMapLayer(sectionId, currLayer);
+          }
+
+          nodeEle.map.getView().setCenter(fromLonLat([lon, lat]));
+          nodeEle.map.getView().setZoom(zoom);
+        } else {
+          changeMediaLayer(sectionId, sectionType, index)
         }
-
-        EOxMap.map.getView().setCenter(fromLonLat([lon, lat]));
-        EOxMap.map.getView().setZoom(zoom);
       }
     }
   };
 
   setTimeout(() => {
-    const mapContentParent = document.querySelector(
-      `#${sectionId} .map-type-${subType}`
+    const contentParent = document.querySelector(
+      `#${sectionId} .${sectionType}-type-${subType}`
     );
-    mapContentParent.removeEventListener("wheel", func);
-    setTimeout(() => mapContentParent.addEventListener("wheel", func), 1000);
+
+    contentParent.removeEventListener("wheel", func);
+    setTimeout(() => contentParent.addEventListener("wheel", func), 1000);
   }, 200);
 
   return dom;
