@@ -4,9 +4,29 @@ import { fromLonLat } from "ol/proj";
 function isBooleanString(str) {
   // Convert the string to lowercase for case-insensitive comparison
   str = str.toLowerCase();
-  
+
   // Check if it's "true" or "false"
   return str === "true" || str === "false";
+}
+
+function highlightNavigation() {
+  const sections = document.querySelectorAll(".wrap-main");
+  let scrollY = window.pageYOffset;
+
+  sections.forEach((current) => {
+    const sectionHeight = current.offsetHeight;
+    const sectionTop = current.offsetTop - 300;
+    const sectionId = current.getAttribute("id");
+
+    if (scrollY > sectionTop && scrollY <= sectionTop + sectionHeight)
+      document
+        .querySelector(`.navigation li.nav-${sectionId}`)
+        .classList.add("active");
+    else
+      document
+        .querySelector(`.navigation li.nav-${sectionId}`)
+        .classList.remove("active");
+  });
 }
 
 async function loadMarkdown(url) {
@@ -23,31 +43,29 @@ async function loadMarkdown(url) {
 }
 
 function getEOxMap(sectionId) {
-  return document.querySelector(
-    `#${sectionId} eox-map#map-${sectionId}`
-  );
+  return document.querySelector(`#${sectionId} eox-map#map-${sectionId}`);
 }
 
 function getMapContentChildren(sectionId) {
-  return document.querySelectorAll(
-    `#${sectionId} .map-content`
-  );
+  return document.querySelectorAll(`#${sectionId} .map-content`);
 }
 
 export function changeMapLayer(sectionId, currLayer) {
-  const EOxMap = getEOxMap(sectionId)
+  const EOxMap = getEOxMap(sectionId);
 
-  EOxMap.map.getLayers().getArray().forEach((layer) => {
-    const layerId = layer.get("id")
-    if(currLayer.includes(layerId)) {
-      const index = currLayer.indexOf(layerId)
-      layer.setVisible(true)
-      layer.setZIndex(currLayer.length - index)
-    }
-    else {
-      layer.setVisible(false)
-    }
-  })
+  EOxMap.map
+    .getLayers()
+    .getArray()
+    .forEach((layer) => {
+      const layerId = layer.get("id");
+      if (currLayer.includes(layerId)) {
+        const index = currLayer.indexOf(layerId);
+        layer.setVisible(true);
+        layer.setZIndex(currLayer.length - index);
+      } else {
+        layer.setVisible(false);
+      }
+    });
 }
 
 function renderHtmlString(htmlString, eventObj) {
@@ -80,8 +98,8 @@ function renderHtmlString(htmlString, eventObj) {
   let currentSection = null;
 
   const func = () => {
-    const EOxMap = getEOxMap(sectionId)
-    const mapContentChildren = getMapContentChildren(sectionId)
+    const EOxMap = getEOxMap(sectionId);
+    const mapContentChildren = getMapContentChildren(sectionId);
 
     const scrollY = window.scrollY;
     let newCurrentSection = null;
@@ -108,11 +126,9 @@ function renderHtmlString(htmlString, eventObj) {
         const lon = steps[index][1];
         const zoom = steps[index][2];
 
-        
-
-        if(layers) {
-          const currLayer = layers[index]
-          changeMapLayer(sectionId, currLayer)
+        if (layers) {
+          const currLayer = layers[index];
+          changeMapLayer(sectionId, currLayer);
         }
 
         EOxMap.map.getView().setCenter(fromLonLat([lon, lat]));
@@ -165,5 +181,6 @@ export {
   renderHtmlString,
   processCustomElement,
   parsePropertyValue,
-  isBooleanString
+  isBooleanString,
+  highlightNavigation,
 };

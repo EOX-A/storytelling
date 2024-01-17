@@ -1,7 +1,8 @@
 [type]: simple
-[navigation]:[{"":""}]
+[navigation]:{"hero-section":"Hero","basic-section":"Basic","sidecar":"Sidecar Steps", "sidecar-layers":"Sidecar Layer"}
 
 ---
+[id]:hero-section
 [sectionType]:hero
 [subType]: full
 [vPosition]: middle
@@ -14,6 +15,7 @@
 
 ---
 [sectionType]:basic
+[id]:basic-section
 
 ## Black Americans are disproportionately burdened.
 
@@ -60,7 +62,7 @@ The current **EPA threshold is 12 micrograms per cubic meter**, 20% higher than 
 </div>
 
 ---
-[id]:sidecars
+[id]:sidecar-layers
 [sectionType]:map
 [subType]:sidecar
 [center]:[15,48]

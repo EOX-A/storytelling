@@ -59,5 +59,5 @@ export default function (metadata, renderedContent, index, last, editor) {
       break;
   }
 
-  return `<div class="wrap-main ${position}">${topAddSection}<main>${sectionHTML}</main>${bottomAddSection}</div>`;
+  return `<div class="wrap-main" id="${metadata.id}" ${position}">${topAddSection}<main>${sectionHTML}</main>${bottomAddSection}</div>`;
 }

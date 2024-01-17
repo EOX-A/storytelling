@@ -7,12 +7,12 @@ import { fromLonLat } from "ol/proj.js";
 import { SAMPLE_COMPONENTS } from "./enums";
 import picoCSS from "./picocss";
 import {
+  highlightNavigation,
   isBooleanString,
   loadMarkdown,
   renderHtmlString,
 } from "./helpers";
-import {
-  CUSTOM_ELEMENTS, PROPERTIES_KEYS} from "./custom-elements" 
+import { CUSTOM_ELEMENTS, PROPERTIES_KEYS } from "./custom-elements";
 import renderSection from "./components/sections/render-section";
 
 const scroller = scrollama();
@@ -184,10 +184,9 @@ export class Storytelling extends LitElement {
   #handleMarkDown(evt) {
     this.markdown = evt.target.value;
     this.parseHTML();
+    setTimeout(() => highlightNavigation(), 400)
     this.requestUpdate();
   }
-
-  
 
   renderBlocks(section, isAfterHorizontalLine, last, index) {
     const metadataRegex = /\[([^\]]+)\]:\s*(.+)/g;
@@ -208,7 +207,7 @@ export class Storytelling extends LitElement {
           console.error("Error parsing array: ", e);
         }
       } else if (isBooleanString(value)) {
-        value = Boolean(value.toLowerCase())
+        value = Boolean(value.toLowerCase());
       } else if (!isNaN(value)) {
         value = Number(value);
       }
@@ -220,7 +219,7 @@ export class Storytelling extends LitElement {
 
     if (isAfterHorizontalLine) {
       this.#sectionMetaData = [...this.#sectionMetaData, metadata];
-      return renderSection(metadata, renderedContent, index, last, this.editor)
+      return renderSection(metadata, renderedContent, index, last, this.editor);
     } else {
       this.#storyMetaData = metadata;
 
@@ -257,8 +256,6 @@ export class Storytelling extends LitElement {
 
     return html;
   }
-
-  
 
   #handleMode(mode) {
     this.#mode = mode;
@@ -301,6 +298,8 @@ export class Storytelling extends LitElement {
         },
       });
     }
+    
+    document.addEventListener("scroll", highlightNavigation);
   }
 
   updated() {
@@ -319,13 +318,26 @@ export class Storytelling extends LitElement {
   createRenderRoot() {
     return this;
   }
-  
 
   render() {
     return html`
       <style>
         ${this.#styling}
       </style>
+      ${Object.keys(this.#storyMetaData.navigation || {}).length
+        ? html`<div class="navigation">
+            <div class="container">
+              <ul>
+                ${Object.keys(this.#storyMetaData.navigation).slice(0, 5).map(
+                  (id) =>
+                    html`<li class="nav-${id}">
+                      <a href="#${id}">${this.#storyMetaData.navigation[id]}</a>
+                    </li>`
+                )}
+              </ul>
+            </div>
+          </div>`
+        : nothing}
       <div class="main ${this.editor ? "" : `no-editor`}">
         <div class="preview-wrapper row">
           ${this.#html
@@ -384,6 +396,48 @@ export class Storytelling extends LitElement {
       }
       .row {
         width: 50%;
+      }
+      .navigation {
+        width: 100%;
+        background: white;
+        padding: 10px 0px;
+        position: fixed;
+        top:0;
+        z-index: 999;
+        color: black;
+        box-shadow: 0px 0px 13px 3px #8080802e;
+      }
+      .navigation .container ul {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .navigation .container ul li {
+        list-style: none;
+        margin: 0px 10px;
+      }
+      .navigation li a {
+        color: black;
+        font-weight: 300;
+        text-decoration: none;
+        position: relative;
+        display: inline-grid;
+      }
+      .navigation li a:after {
+        content: "";
+        bottom: -10px;
+        width: 100%;
+        height: 2px;
+        background: transparent;
+      }
+      .navigation li a:hover:after {
+        background: black;
+      }
+      .navigation li.active a {
+        font-weight: 900;
+      }
+      .navigation li.active a:after {
+        background: black;
       }
       .no-editor .row {
         width: 100%;
