@@ -3,6 +3,7 @@ import mapBgMarkdown from "../markdown/map-bg.md?raw"
 import simpleMarkdown from "../markdown/simple.md?raw"
 import simplePreviewMarkdown from "../markdown/simple-preview.md?raw"
 import paginationPreviewMarkdown from "../markdown/pagination-preview.md?raw"
+import storyTellingPreviewMarkdown from "../markdown/storytelling-preview.md?raw"
 import "../sample-component";
 
 export default {
@@ -22,6 +23,14 @@ export const PaginationPreview = {
   args: {
     editor: false,
     markdown: paginationPreviewMarkdown
+  },
+  render: (args) => StoryTelling(args),
+};
+
+export const StoryTellingPreview = {
+  args: {
+    editor: false,
+    markdown: storyTellingPreviewMarkdown
   },
   render: (args) => StoryTelling(args),
 };

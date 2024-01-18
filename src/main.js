@@ -3,9 +3,7 @@ import { html, LitElement, nothing } from "lit";
 import { marked } from "marked";
 import "@eox/map/dist/eox-map-advanced-layers-and-sources.js";
 import scrollama from "scrollama";
-import { fromLonLat } from "ol/proj.js";
 import { SAMPLE_COMPONENTS } from "./enums";
-import picoCSS from "./picocss";
 import {
   getHandlerMarkdown,
   highlightNavigation,
@@ -13,8 +11,11 @@ import {
   loadMarkdown,
   renderHtmlString,
 } from "./helpers";
-import { CUSTOM_ELEMENTS, PROPERTIES_KEYS } from "./custom-elements";
+import { PROPERTIES_KEYS } from "./custom-elements";
 import renderSection from "./components/sections/render-section";
+import "./components/navigation"
+import "./components/pagination"
+import { when } from "lit/directives/when.js";
 
 const scroller = scrollama();
 
@@ -55,41 +56,6 @@ export class Storytelling extends LitElement {
     document.body.style.overflowY = "";
   }
 
-  yourStepByStepFunction(functionList, direction, callback) {
-    let functionIndex = direction === "up" ? functionList.length : 0;
-    let isWheeling = false;
-
-    const handleScroll = (e) => {
-      if (!isWheeling) {
-        isWheeling = true;
-
-        if (e.deltaY < 0) {
-          if (functionIndex) {
-            functionIndex = functionIndex - 1;
-            functionList[functionIndex]();
-            if (functionIndex === 0) cleanup();
-          } else cleanup();
-        } else if (e.deltaY > 0) {
-          functionIndex = functionIndex + 1;
-          functionList[functionIndex]();
-          if (functionList.length === functionIndex + 1) cleanup();
-        }
-
-        // Set a new timer
-        setTimeout(() => {
-          isWheeling = false;
-        }, 1500);
-      }
-    };
-
-    const cleanup = () => {
-      this.#RenderEditor.removeEventListener("wheel", handleScroll);
-      callback(); // Resume normal scrolling
-    };
-
-    this.#RenderEditor.addEventListener("wheel", handleScroll);
-  }
-
   #purifyDOM(parsedHtml) {
     return DOMPurify.sanitize(parsedHtml, {
       CUSTOM_ELEMENT_HANDLING: {
@@ -120,74 +86,24 @@ export class Storytelling extends LitElement {
         step: ".wrap-main",
         container: this.#RenderEditor,
       })
-      .onStepEnter((response) => {
-        // this.handleStepEnter(response);
-      })
+      .onStepEnter(() => {})
       .onStepExit((response) => {
         response.element.className = "wrap-main";
       });
-  }
-
-  handleStepEnter(response) {
-    const storyMeta = this.#storyMetaData;
-    if (storyMeta.type === "simple") {
-      // TODO: Section selection code
-      // const existingFocusedElement = this.#RenderEditor.querySelector(".bg");
-      // if (existingFocusedElement)
-      //   existingFocusedElement.className = "wrap-main";
-      // response.element.className = `${response.element.className} bg`;
-    }
-    const sectionMeta = this.#sectionMetaData[response.index];
-
-    if (storyMeta.type === "map-bg") {
-      const eoxMap = document.querySelector(`#${storyMeta.id}`);
-      const view = eoxMap.map.getView();
-      const step = sectionMeta.step;
-
-      view.animate({
-        center: fromLonLat([step[1], step[0]]),
-        duration: 1000,
-        zoom: step[2],
-      });
-    }
-
-    if (sectionMeta.steps && sectionMeta.for && storyMeta.type === "simple") {
-      const eoxMap = document.querySelector(sectionMeta.for);
-      const steps = sectionMeta.steps;
-      const resetStep = sectionMeta.resetStep;
-      const view = eoxMap.map.getView();
-      let functionList = [];
-
-      functionList.push(() => {
-        view.animate({
-          center: fromLonLat([resetStep[1], resetStep[0]]),
-          zoom: resetStep[2],
-        });
-      });
-
-      steps.forEach((step) => {
-        functionList.push(() => {
-          view.animate({
-            center: fromLonLat([step[1], step[0]]),
-            duration: 1000,
-            zoom: step[2],
-          });
-        });
-      });
-
-      this.pauseScrolling();
-
-      this.yourStepByStepFunction(functionList, response.direction, () => {
-        this.resumeScrolling();
-      });
-    }
   }
 
   #handleMarkDown(evt) {
     this.markdown = evt.target.value;
     this.parseHTML();
     setTimeout(() => highlightNavigation(), 400);
+    
     this.requestUpdate();
+    this.dispatchEvent(
+      new CustomEvent(`change`, {
+        bubbles: true,
+        composed: true,
+      })
+    );
   }
 
   renderBlocks(section, isAfterHorizontalLine, last, index) {
@@ -267,12 +183,6 @@ export class Storytelling extends LitElement {
     return html;
   }
 
-  #handleMode(mode) {
-    this.#mode = mode;
-    this.parseHTML();
-    // this.requestUpdate();
-  }
-
   addSection(e, index, position) {
     this.#addSection = Number(index) + (position === "top" ? 0 : 1);
     // this.requestUpdate();
@@ -330,24 +240,15 @@ export class Storytelling extends LitElement {
       <style>
         ${this.#styling}
       </style>
-      ${Object.keys(this.#storyMetaData.navigations?.[this.#currentPageIndex] || {}).length
-        ? html`<div class="navigation">
-            <div class="container">
-              <ul>
-                ${Object.keys(this.#storyMetaData.navigations[this.#currentPageIndex])
-                  .slice(0, 5)
-                  .map(
-                    (id) =>
-                      html`<li class="nav-${id}">
-                        <a href="#${id}"
-                          >${this.#storyMetaData.navigations[this.#currentPageIndex][id]}</a
-                        >
-                      </li>`
-                  )}
-              </ul>
-            </div>
-          </div>`
-        : nothing}
+      ${when(
+        this.#storyMetaData.navigations && this.#currentPageIndex >= 0,
+        () => html`
+          <story-telling-navigation 
+            .navigations=${this.#storyMetaData.navigations}
+            .currentPageIndex=${this.#currentPageIndex}
+          ></story-telling-navigation>
+        `
+      )}
       <div class="main ${this.editor ? "" : `no-editor`} ${this.#storyMetaData.navigations ? "extra-nav-padding": ""}">
         <div class="preview-wrapper row">
           ${this.#html
@@ -364,27 +265,16 @@ export class Storytelling extends LitElement {
             </div>`
           : nothing}
       </div>
-      ${this.#storyMetaData.pageIds
-        ? html`
-          <div class="pagination">
-            <ul>
-              <li
-               .onclick="${() =>
-                 this.handelPageChange(this.#currentPageIndex - 1)}"
-               class="pagination-left ${
-                 this.#currentPageIndex === 0 ? "disabled" : "enabled"
-               }"></li>
-              <li .onclick="${() =>
-                this.handelPageChange(this.#currentPageIndex + 1)}" 
-              class="pagination-right ${
-                this.#currentPageIndex >= this.#storyMetaData.pageIds.length - 1
-                  ? "disabled"
-                  : "enabled"
-              }"></li>
-            <ul>
-          </div>
-      `
-        : nothing}
+      ${when(
+        this.#storyMetaData.pageIds && this.#currentPageIndex >= 0,
+        () => html`
+          <story-telling-pagination
+            .pageIds=${this.#storyMetaData.pageIds}
+            .currentPageIndex=${this.#currentPageIndex}
+            .handelPageChange=${this.handelPageChange}
+          ></story-telling-pagination>
+        `
+      )}
       ${this.#addSection && this.editor
         ? html`
             <div class="modal">
@@ -433,95 +323,6 @@ export class Storytelling extends LitElement {
       }
       .extra-nav-padding {
         padding-top: 60px;
-      }
-      .navigation {
-        width: 100%;
-        background: white;
-        padding: 10px 0px;
-        position: fixed;
-        top:0;
-        z-index: 999;
-        color: black;
-        box-shadow: 0px 0px 13px 3px #8080802e;
-      }
-      .navigation .container ul {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-      }
-      .navigation .container ul li {
-        list-style: none;
-        margin: 0px 10px;
-      }
-      .navigation li a {
-        color: black;
-        font-weight: 300;
-        text-decoration: none;
-        position: relative;
-        display: inline-grid;
-      }
-      .navigation li a:after {
-        content: "";
-        bottom: -10px;
-        width: 100%;
-        height: 2px;
-        background: transparent;
-      }
-      .navigation li a:hover:after {
-        background: black;
-      }
-      .navigation li.active a {
-        font-weight: 900;
-      }
-      .navigation li.active a:after {
-        background: black;
-      }
-      .pagination {
-        position: fixed;
-        bottom: 20px;
-        width: 100%;
-        z-index:999;
-      }
-      .pagination ul {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-      }
-      .pagination ul li {
-        list-style: none;
-        border-radius: 100%;
-        background: white;
-        margin: 0px 0.4rem;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: 0.1rem;
-        cursor: pointer;
-        box-shadow: 1px 2px 10px 1px #7e7e7e1f;
-      }
-      .pagination ul li:hover {
-        background: #f2f2f2;
-        box-shadow: 1px 2px 3px 1px #7e7e7e42;
-      }
-      .pagination ul li.disabled {
-        opacity: 0.4;
-        cursor: not-allowed;
-      }
-      .pagination ul li.disabled:hover {
-        background: white;
-        box-shadow: 1px 2px 10px 1px #7e7e7e1f;
-      }
-      .pagination ul li::before {
-        width: 2rem;
-        height: 2rem;
-        color: black;
-        display: inline-block;
-      }
-      .pagination ul li.pagination-left::before {
-        content: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ctitle%3Emenu-left%3C/title%3E%3Cpath d='M14,7L9,12L14,17V7Z' /%3E%3C/svg%3E");
-      }
-      .pagination ul li.pagination-right::before {
-        content: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ctitle%3Emenu-right%3C/title%3E%3Cpath d='M10,17L15,12L10,7V17Z' /%3E%3C/svg%3E");
       }
       .no-editor .row {
         width: 100%;
