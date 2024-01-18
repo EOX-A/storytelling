@@ -9,23 +9,22 @@ const addSectionHTML = (index, editor, position) => {
 const valueAsPerType = (propType, value) => {
   switch (propType) {
     case "Number":
-      return Number(value)
+      return Number(value);
     case "Array":
-      return JSON.stringify(value)
+      return JSON.stringify(value);
     case "Object":
-      return JSON.stringify(value)
+      return JSON.stringify(value);
     default:
-      return value
+      return value;
   }
-}
+};
 
 const noSpaceOrComments = (html) => {
   return html
-  .replace(/<!--[\s\S]*?-->/gm,"") // comments
-  .replace(/^(\s+)?|(\s+)?$/gm,"") // leading and trailing whitespace
-  .replace(/\r|\n/g,"") // trailing newlines
-}
-
+    .replace(/<!--[\s\S]*?-->/gm, "") // comments
+    .replace(/^(\s+)?|(\s+)?$/gm, "") // leading and trailing whitespace
+    .replace(/\r|\n/g, ""); // trailing newlines
+};
 
 const getSectionHTML = (metadata, renderedContent) => {
   const element = `story-telling-${metadata.sectionType || "basic"}`;
@@ -33,18 +32,32 @@ const getSectionHTML = (metadata, renderedContent) => {
   const properties = Object.keys(CUSTOM_ELEMENTS[element].properties);
 
   properties.forEach((prop) => {
-    const propType = CUSTOM_ELEMENTS[element].properties[prop]
-    if (metadata[prop]) html += ` ${prop}='${valueAsPerType(propType, metadata[prop])}'`;
+    const propType = CUSTOM_ELEMENTS[element].properties[prop];
+    if (metadata[prop])
+      html += ` ${prop}='${valueAsPerType(propType, metadata[prop])}'`;
   });
-  if(renderedContent) html += ` content='${noSpaceOrComments(renderedContent).replaceAll("'", '"')}'`
+  if (renderedContent)
+    html += ` content='${noSpaceOrComments(renderedContent).replaceAll(
+      "'",
+      '"'
+    )}'`;
 
   return `${html}></${element}>`;
 };
 
-export default function (metadata, renderedContent, index, last, editor) {
-  const position = last ? "bottom" : "top";
-  const topAddSection = addSectionHTML(index, editor, position);
-  const bottomAddSection = last ? addSectionHTML(index, editor, position) : "";
+export default function (
+  metadata,
+  renderedContent,
+  sectionIndex,
+  isLastSection,
+  currPageId,
+  editor
+) {
+  const position = isLastSection ? "bottom" : "top";
+  const topAddSection = addSectionHTML(sectionIndex, editor, position);
+  const bottomAddSection = isLastSection
+    ? addSectionHTML(sectionIndex, editor, position)
+    : "";
 
   let sectionHTML = ``;
 
@@ -60,5 +73,9 @@ export default function (metadata, renderedContent, index, last, editor) {
       break;
   }
 
-  return `<div class="wrap-main" id="${metadata.id}" ${position}">${topAddSection}<main>${sectionHTML}</main>${bottomAddSection}</div>`;
+  return `<div class="wrap-main ${
+    metadata.pageId !== currPageId ? "page-hidden" : ""
+  }" id="${
+    metadata.id
+  }" ${position}">${topAddSection}<main>${sectionHTML}</main>${bottomAddSection}</div>`;
 }

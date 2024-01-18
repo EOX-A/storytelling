@@ -198,6 +198,14 @@ function parsePropertyValue(propType, propValue) {
   }
 }
 
+function getHandlerMarkdown(markdown) {
+  return {
+    target: {
+      value: markdown,
+    },
+  }
+}
+
 export {
   loadMarkdown,
   renderHtmlString,
@@ -205,4 +213,5 @@ export {
   parsePropertyValue,
   isBooleanString,
   highlightNavigation,
+  getHandlerMarkdown
 };

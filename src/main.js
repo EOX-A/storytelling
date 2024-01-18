@@ -7,6 +7,7 @@ import { fromLonLat } from "ol/proj.js";
 import { SAMPLE_COMPONENTS } from "./enums";
 import picoCSS from "./picocss";
 import {
+  getHandlerMarkdown,
   highlightNavigation,
   isBooleanString,
   loadMarkdown,
@@ -35,6 +36,7 @@ export class Storytelling extends LitElement {
   #storyMetaData = {};
   #mode = "editor";
   #addSection = null;
+  #currentPageIndex = 0;
 
   constructor() {
     super();
@@ -184,7 +186,7 @@ export class Storytelling extends LitElement {
   #handleMarkDown(evt) {
     this.markdown = evt.target.value;
     this.parseHTML();
-    setTimeout(() => highlightNavigation(), 400)
+    setTimeout(() => highlightNavigation(), 400);
     this.requestUpdate();
   }
 
@@ -219,7 +221,15 @@ export class Storytelling extends LitElement {
 
     if (isAfterHorizontalLine) {
       this.#sectionMetaData = [...this.#sectionMetaData, metadata];
-      return renderSection(metadata, renderedContent, index, last, this.editor);
+      const pageId = this.#storyMetaData.pageIds?.[this.#currentPageIndex];
+      return renderSection(
+        metadata,
+        renderedContent,
+        index,
+        last,
+        pageId,
+        this.editor
+      );
     } else {
       this.#storyMetaData = metadata;
 
@@ -274,31 +284,27 @@ export class Storytelling extends LitElement {
     const markdown = sections.join("\n---\n");
     this.#addSection = null;
     this.resumeScrolling();
-    this.#handleMarkDown({
-      target: {
-        value: markdown,
-      },
-    });
+    this.#handleMarkDown(getHandlerMarkdown(markdown));
   }
+
+  handelPageChange = (newPageIndex) => {
+    if (
+      newPageIndex >= 0 &&
+      newPageIndex < this.#storyMetaData.pageIds.length
+    ) {
+      this.#currentPageIndex = newPageIndex;
+      this.#handleMarkDown(getHandlerMarkdown(this.markdown));
+    }
+  };
 
   async firstUpdated() {
     window.addEventListener("resize", scroller.resize);
     this.#RenderEditor = document.querySelector(".preview-wrapper");
     if (this.url) {
       const markdown = await loadMarkdown(this.url);
-      this.#handleMarkDown({
-        target: {
-          value: markdown,
-        },
-      });
-    } else {
-      this.#handleMarkDown({
-        target: {
-          value: this.markdown,
-        },
-      });
-    }
-    
+      this.#handleMarkDown(getHandlerMarkdown(markdown));
+    } else this.#handleMarkDown(getHandlerMarkdown(this.markdown));
+
     document.addEventListener("scroll", highlightNavigation);
   }
 
@@ -324,21 +330,25 @@ export class Storytelling extends LitElement {
       <style>
         ${this.#styling}
       </style>
-      ${Object.keys(this.#storyMetaData.navigation || {}).length
+      ${Object.keys(this.#storyMetaData.navigations?.[this.#currentPageIndex] || {}).length
         ? html`<div class="navigation">
             <div class="container">
               <ul>
-                ${Object.keys(this.#storyMetaData.navigation).slice(0, 5).map(
-                  (id) =>
-                    html`<li class="nav-${id}">
-                      <a href="#${id}">${this.#storyMetaData.navigation[id]}</a>
-                    </li>`
-                )}
+                ${Object.keys(this.#storyMetaData.navigations[this.#currentPageIndex])
+                  .slice(0, 5)
+                  .map(
+                    (id) =>
+                      html`<li class="nav-${id}">
+                        <a href="#${id}"
+                          >${this.#storyMetaData.navigations[this.#currentPageIndex][id]}</a
+                        >
+                      </li>`
+                  )}
               </ul>
             </div>
           </div>`
         : nothing}
-      <div class="main ${this.editor ? "" : `no-editor`}">
+      <div class="main ${this.editor ? "" : `no-editor`} ${this.#storyMetaData.navigations ? "extra-nav-padding": ""}">
         <div class="preview-wrapper row">
           ${this.#html
             ? html`<div>${renderHtmlString(this.#html)}</div>`
@@ -354,6 +364,27 @@ export class Storytelling extends LitElement {
             </div>`
           : nothing}
       </div>
+      ${this.#storyMetaData.pageIds
+        ? html`
+          <div class="pagination">
+            <ul>
+              <li
+               .onclick="${() =>
+                 this.handelPageChange(this.#currentPageIndex - 1)}"
+               class="pagination-left ${
+                 this.#currentPageIndex === 0 ? "disabled" : "enabled"
+               }"></li>
+              <li .onclick="${() =>
+                this.handelPageChange(this.#currentPageIndex + 1)}" 
+              class="pagination-right ${
+                this.#currentPageIndex >= this.#storyMetaData.pageIds.length - 1
+                  ? "disabled"
+                  : "enabled"
+              }"></li>
+            <ul>
+          </div>
+      `
+        : nothing}
       ${this.#addSection && this.editor
         ? html`
             <div class="modal">
@@ -397,6 +428,12 @@ export class Storytelling extends LitElement {
       .row {
         width: 50%;
       }
+      .page-hidden {
+        display: none;
+      }
+      .extra-nav-padding {
+        padding-top: 60px;
+      }
       .navigation {
         width: 100%;
         background: white;
@@ -438,6 +475,53 @@ export class Storytelling extends LitElement {
       }
       .navigation li.active a:after {
         background: black;
+      }
+      .pagination {
+        position: fixed;
+        bottom: 20px;
+        width: 100%;
+        z-index:999;
+      }
+      .pagination ul {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .pagination ul li {
+        list-style: none;
+        border-radius: 100%;
+        background: white;
+        margin: 0px 0.4rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0.1rem;
+        cursor: pointer;
+        box-shadow: 1px 2px 10px 1px #7e7e7e1f;
+      }
+      .pagination ul li:hover {
+        background: #f2f2f2;
+        box-shadow: 1px 2px 3px 1px #7e7e7e42;
+      }
+      .pagination ul li.disabled {
+        opacity: 0.4;
+        cursor: not-allowed;
+      }
+      .pagination ul li.disabled:hover {
+        background: white;
+        box-shadow: 1px 2px 10px 1px #7e7e7e1f;
+      }
+      .pagination ul li::before {
+        width: 2rem;
+        height: 2rem;
+        color: black;
+        display: inline-block;
+      }
+      .pagination ul li.pagination-left::before {
+        content: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ctitle%3Emenu-left%3C/title%3E%3Cpath d='M14,7L9,12L14,17V7Z' /%3E%3C/svg%3E");
+      }
+      .pagination ul li.pagination-right::before {
+        content: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ctitle%3Emenu-right%3C/title%3E%3Cpath d='M10,17L15,12L10,7V17Z' /%3E%3C/svg%3E");
       }
       .no-editor .row {
         width: 100%;

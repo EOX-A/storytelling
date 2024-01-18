@@ -1,20 +1,27 @@
 import { StoryTelling } from "./StoryTelling";
 import mapBgMarkdown from "../markdown/map-bg.md?raw"
 import simpleMarkdown from "../markdown/simple.md?raw"
-import experimentMarkdown from "../markdown/experiment.md?raw"
-import "../sample-component"
-import { html } from "lit";
-import picoCSS from "../picocss";
+import simplePreviewMarkdown from "../markdown/simple-preview.md?raw"
+import paginationPreviewMarkdown from "../markdown/pagination-preview.md?raw"
+import "../sample-component";
 
 export default {
   title: "Module",
   render: (args) => StoryTelling(args),
 };
 
-export const ComponentPreview = {
+export const SimplePreview = {
   args: {
     editor: false,
-    markdown: experimentMarkdown
+    markdown: simplePreviewMarkdown
+  },
+  render: (args) => StoryTelling(args),
+};
+
+export const PaginationPreview = {
+  args: {
+    editor: false,
+    markdown: paginationPreviewMarkdown
   },
   render: (args) => StoryTelling(args),
 };
@@ -22,7 +29,7 @@ export const ComponentPreview = {
 export const Experiment = {
   args: {
     editor: true,
-    markdown: experimentMarkdown,
+    markdown: simplePreviewMarkdown,
   },
   render: (args) => StoryTelling(args),
 };
