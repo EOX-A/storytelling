@@ -129,7 +129,7 @@ export class StoryTelling extends LitElement {
         <story-telling-pagination
           .pageIds=${this.#storyMetaData.pageIds}
           .currentPageIndex=${this.#currentPageIndex}
-          @change=${() => {
+          @change=${(e) => {
             this.#currentPageIndex = e.detail.currentPageIndex;
             if (e.detail) this.#handleMarkDown(this.markdown);
           }}

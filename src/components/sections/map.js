@@ -1,29 +1,29 @@
+// Import necessary modules from 'lit'
 import { html, LitElement } from "lit";
 import { changeMapLayer, renderHtmlString } from "../../helpers";
 
 /**
- * Markdown -
+ * StoryTellingMap - A LitElement component for rendering map sections.
  *
- * [id]:some-id
- * [sectionType]:map
- * [subType]:simple|container|full|sidecar|tour|slideshow
- * [center]:[0,0]
- * [config]:{}
- * [layers]:[{}]
- * [preventScroll]:true
- * [sync]:""
- * [zoom]:2
- * [controls]:{"zoom":{}}
- * [sidecarPosition]:left|right
- * [sidecarSteps]:[[-28.5682,-129.1632,2],[-51.5662,156.7488,4],[66.1982,-30.1932,1]]
- * [sidecarLayers]:[["regions","WIND"],["WIND"],["regions","NO2"]]
- * [tourVPosition]:top|middle|bottom
- * [tourHPosition]:left|center|right
- * [tourSteps]:[[-28.5682,-129.1632,2],[-51.5662,156.7488,4],[66.1982,-30.1932,1]]
- * [tourLayers]:[["regions","WIND"],["WIND"],["regions","NO2"]]
- *
+ * Properties:
+ * - [id]: Unique identifier for the map component.
+ * - [content]: HTML content for display alongside the map.
+ * - [subType]: Type of map display (e.g., 'simple', 'container', 'full', 'sidecar', 'tour', 'slideshow').
+ * - [center]: Geographic center of the map (eg., latitude, longitude).
+ * - [config]: General configuration object for the map. (eg., EOxMap Config - {})
+ * - [layers]: Array of layer configurations for the map. (eg., EOxMap Layer - [{}])
+ * - [preventScroll]: Boolean to prevent map scrolling. (eg., true, false)
+ * - [sync]: Synchronization identifier for coordinating multiple maps.
+ * - [zoom]: Zoom level of the map.
+ * - [controls]: Object defining map controls (e.g., {"zoom":{}}).
+ * - [sidecarPosition]: Position of the sidecar content (eg., 'left' or 'right').
+ * - [sidecarSteps]: Array of steps for the sidecar display. (eg., [[-28.5682,-129.1632,2],[-51.5662,156.7488,4],[66.1982,-30.1932,1]])
+ * - [sidecarLayers]: Array of layer configurations for each sidecar step. (eg., [["regions","WIND"],["WIND"],["regions","NO2"]])
+ * - [tourVPosition]: Vertical position of tour content (eg., 'top', 'middle', 'bottom').
+ * - [tourHPosition]: Horizontal position of tour content (eg., 'left', 'center', 'right').
+ * - [tourSteps]: Array of steps for the tour display. (eg., [[-28.5682,-129.1632,2],[-51.5662,156.7488,4],[66.1982,-30.1932,1]])
+ * - [tourLayers]: Array of layer configurations for each tour step. (eg., [["regions","WIND"],["WIND"],["regions","NO2"]])
  */
-
 export class StoryTellingMap extends LitElement {
   static properties = {
     id: { attribute: "id", type: String },
@@ -45,12 +45,12 @@ export class StoryTellingMap extends LitElement {
     tourLayers: { attribute: false, type: Array },
   };
 
-  #style = "";
   constructor() {
     super();
+    this.id = null;
+    this.content = null;
     this.sectionType = "map";
     this.subType = "simple";
-    this.id = null;
     this.center = [0, 0];
     this.config = null;
     this.layers = null;
@@ -59,10 +59,10 @@ export class StoryTellingMap extends LitElement {
     this.preventScroll = false;
     this.sidecarPosition = "left";
     this.sidecarSteps = null;
-    this.content = null;
     this.sidecarLayers = null;
     this.tourVPosition = "middle";
     this.tourHPosition = "left";
+    this.tourSteps = null;
     this.tourLayers = null;
   }
 
@@ -70,59 +70,67 @@ export class StoryTellingMap extends LitElement {
     return this;
   }
 
+  // Lifecycle method for initial component setup
   firstUpdated() {
+    this.#initializeMap();
+  }
+
+  // Private method to handle initial map setup
+  #initializeMap() {
     const steps = this.sidecarSteps || this.tourSteps;
     const layers = this.sidecarLayers || this.tourLayers;
 
     if (steps?.length) {
-      const firstStep = steps[0];
-      if (firstStep) {
-        this.center = [firstStep[1], firstStep[0]];
-        this.zoom = firstStep[2];
-      }
+      const [lng, lat, zoom] = steps[0];
+      this.center = [lat, lng];
+      this.zoom = zoom;
     }
 
     if (layers?.length) {
-      const currLayer = layers[0];
-      changeMapLayer(this.id, currLayer, this.sectionType);
+      changeMapLayer(this.id, layers[0], this.sectionType);
     }
   }
 
+  // Rendering the HTML template
   render() {
     return html`
       <style>
         ${this.#styling}
       </style>
       <div class="map-type-${this.subType}">
-        ${this.subType === "sidecar" || this.subType === "tour"
-          ? html`
-              <div
-                class="map-content-wrap ${this.subType} order-${this
-                  .sidecarPosition}"
-              >
-                ${renderHtmlString(this.content, {
-                  id: this.id,
-                  subType: this.subType,
-                  steps: this.sidecarSteps || this.tourSteps,
-                  layers: this.sidecarLayers || this.tourLayers,
-                  sectionType: this.sectionType
-                })}
-              </div>
-            `
-          : html``}
+        ${this.#renderMapContent()}
         <eox-map
           id="map-${this.id}"
           class="map ${this.subType}"
-          style="${this.#style || " "}"
+          style="${""}"
           .center="${this.center}"
           .layers="${this.layers}"
           .zoom="${this.zoom}"
           .preventScroll="${this.preventScroll}"
-          .controls="${this.config}"
-          .controls="${this.controls}"
+          ${this.config ? `.config=${this.config}` : ""}
+          ${this.controls ? `.config=${this.controls}` : ""}
         ></eox-map>
       </div>
     `;
+  }
+
+  // Private method to render map content conditionally
+  #renderMapContent() {
+    const mapContentClass = `map-content-wrap ${this.subType} order-${this.sidecarPosition}`;
+    const eventObj = {
+      id: this.id,
+      subType: this.subType,
+      steps: this.sidecarSteps || this.tourSteps,
+      layers: this.sidecarLayers || this.tourLayers,
+      sectionType: this.sectionType
+    }
+    return this.subType === "sidecar" || this.subType === "tour"
+      ? html`
+          <div class="${mapContentClass}">
+            ${renderHtmlString(this.content, eventObj)}
+          </div>
+        `
+      : html``;
   }
 
   #styling = `
@@ -202,4 +210,6 @@ export class StoryTellingMap extends LitElement {
     }
   `;
 }
+
+// Define the custom element
 customElements.define("story-telling-map", StoryTellingMap);

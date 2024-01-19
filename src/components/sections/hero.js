@@ -1,56 +1,55 @@
-import { html, LitElement } from "lit";
-/**
- * Markdown -
- *
- * [sectionType]:hero
- * [subType]:full|cropped?
- * [vPosition]:top|middle|bottom
- * [hPosition]:left|center|right
- * [img]:https://www.gstatic.com/prettyearth/assets/full/1804.jpg
- * [imgAlt]:https://www.gstatic.com/prettyearth/assets/full/1804.jpg
- * [title]:Text
- * [description]:Text
- * [subDescription]:Text
- */
+import { html, LitElement } from 'lit';
 
+/**
+ * StoryTellingHero - A LitElement component for rendering a hero section.
+ *
+ * Properties:
+ * - [subType]: Defines the subtype of the hero section (e.g., 'full', 'cropped').
+ * - [vPosition]: Vertical position of the content (e.g., 'top', 'middle', 'bottom').
+ * - [hPosition]: Horizontal position of the content (e.g., 'left', 'center', 'right').
+ * - [img]: URL of the background image.
+ * - [imgAlt]: Alternate text for the image.
+ * - [title]: Title text for the hero section.
+ * - [description]: Description text.
+ * - [subDescription]: Sub-description text.
+ */
 export class StoryTellingHero extends LitElement {
   static properties = {
-    subType: { attribute: "sub-type", type: String },
-    vPosition: { attribute: "v-position", type: String },
-    hPosition: { attribute: "h-position", type: String },
-    img: { attribute: "img", type: String },
-    imgAlt: { attribute: "img-alt", type: String },
-    title: { attribute: "title", type: String },
-    description: { attribute: "description", type: String },
-    subDescription: { attribute: "subDescription", type: String },
+    subType: { attribute: 'sub-type', type: String },
+    vPosition: { attribute: 'v-position', type: String },
+    hPosition: { attribute: 'h-position', type: String },
+    img: { attribute: 'img', type: String },
+    imgAlt: { attribute: 'img-alt', type: String },
+    title: { attribute: 'title', type: String },
+    description: { attribute: 'description', type: String },
+    subDescription: { attribute: 'subDescription', type: String },
   };
 
   constructor() {
     super();
-    this.subType = "full"
-    this.vPosition = "middle"
-    this.hPosition = "center"
-    this.img = "https://www.gstatic.com/prettyearth/assets/full/14617.jpg"
-    this.imgAlt = null
-    this.title = null
-    this.description = null
-    this.subDescription = null
+    this.subType = 'full';
+    this.vPosition = 'middle';
+    this.hPosition = 'center';
+    this.img = 'https://www.gstatic.com/prettyearth/assets/full/14617.jpg';
+    this.imgAlt = '';
+    this.title = '';
+    this.description = '';
+    this.subDescription = '';
   }
 
+  // Overriding LitElement's method to use light DOM
   createRenderRoot() {
     return this;
   }
+
+  // Rendering the HTML template
   render() {
     return html`
       <style>
         ${this.#styling}
       </style>
       <div class="hero hero-${this.subType}">
-        <img
-          class="hero-img"
-          src="https://www.gstatic.com/prettyearth/assets/full/14617.jpg"
-          alt="img-alt"
-        />
+        <img class="hero-img" src=${this.img} alt=${this.imgAlt} />
         <div class="hero-overlay"></div>
         <div class="hero-content hero-${this.hPosition} hero-${this.vPosition} container">
           <h1 class="title">${this.title}</h1>
@@ -61,6 +60,7 @@ export class StoryTellingHero extends LitElement {
     `;
   }
 
+  // Private field to store component-specific styling
   #styling = `
     .hero {
       position: relative;
@@ -128,4 +128,6 @@ export class StoryTellingHero extends LitElement {
     }
   `;
 }
-customElements.define("story-telling-hero", StoryTellingHero);
+
+// Define the custom element
+customElements.define('story-telling-hero', StoryTellingHero);

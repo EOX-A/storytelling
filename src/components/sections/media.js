@@ -1,23 +1,26 @@
+// Import necessary modules from 'lit'
 import { html, LitElement } from "lit";
-import { changeMapLayer, changeMediaLayer, renderHtmlString } from "../../helpers";
+import {
+  changeMapLayer,
+  changeMediaLayer,
+  renderHtmlString,
+} from "../../helpers";
 
 /**
- * Markdown -
+ * StoryTellingMedia - A LitElement component for rendering media sections.
  *
- * [id]:some-id
- * [sectionType]:media
- * [subType]:simple|container|full|sidecar|tour|slideshow
- * [mediaTypes]:["iframe|img|video"]
- * [height]:100%|auto|400px
- * [urls]:["https://dummy.com/media.type"]
- * [captions]:["Some text here"]
- * [content]:Some content
- * [sidecarPosition]:left|right
- * [tourVPosition]:top|middle|bottom
- * [tourHPosition]:left|center|right
- *
+ * Properties:
+ * - [id]: Unique identifier for the media component.
+ * - [content]: HTML content for display alongside the media.
+ * - [subType]: Type of media display (e.g., 'simple', 'container', 'full', 'sidecar', 'tour', 'slideshow').
+ * - [mediaTypes]: Types of media included (e.g., 'iframe', 'img', 'video').
+ * - [urls]: Array of URLs for the media content.
+ * - [captions]: Array of captions for each media item.
+ * - [sidecarPosition]: Position of the sidecar content ('left' or 'right').
+ * - [tourVPosition]: Vertical position of tour content ('top', 'middle', 'bottom').
+ * - [tourHPosition]: Horizontal position of tour content ('left', 'center', 'right').
+ * - [height]: Height of the media element.
  */
-
 export class StoryTellingMedia extends LitElement {
   static properties = {
     id: { attribute: "id", type: String },
@@ -29,16 +32,15 @@ export class StoryTellingMedia extends LitElement {
     sidecarPosition: { attribute: "sidecar-position", type: String },
     tourVPosition: { attribute: "tour-v-position", type: String },
     tourHPosition: { attribute: "tour-h-position", type: String },
-    height: {attribute: "height", type: String}
+    height: { attribute: "height", type: String },
   };
 
-  #style = "";
   constructor() {
     super();
+    this.id = null;
+    this.content = null;
     this.sectionType = "media";
     this.subType = "simple";
-    this.content = null;
-    this.id = null;
     this.mediaTypes = null;
     this.urls = null;
     this.captions = null;
@@ -53,8 +55,8 @@ export class StoryTellingMedia extends LitElement {
   }
 
   firstUpdated() {
-    if(this.urls) {
-      changeMediaLayer(this.id, this.sectionType, 0)
+    if (this.urls) {
+      changeMediaLayer(this.id, this.sectionType, 0);
     }
   }
 
@@ -64,49 +66,46 @@ export class StoryTellingMedia extends LitElement {
         ${this.#styling}
       </style>
       <div class="media-type-${this.subType}">
-
-      <div class="media ${this.subType}">
-      ${this.urls?.map((url, index) => {
-        switch (this.mediaTypes[index]) {
-          case 'img':
-            return html `<img
-              id="media-${this.id}" 
-              src="${url}"
-              alt="${this.captions[index]}"
-              height="${this.height}"
-            ></img>`
-          case 'iframe': 
-            return html`
-              <iframe 
-                id="media-${this.id}" 
-                src="${url}"
-                alt="${this.captions[index]}"
-                height="${this.height}"
-              ></iframe>
-            `
-          default:
-            break;
-        }
-      })}
-    </div>
-        ${
-          this.subType === "sidecar" || this.subType === "tour"
-            ? html`
-                <div
-                  class="media-content-wrap ${this.subType} order-${this
-                    .sidecarPosition}"
-                >
-                  ${renderHtmlString(this.content, {
-                    id: this.id,
-                    subType: this.subType,
-                    sectionType: this.sectionType
-                  })}
-                </div>
-              `
-            : html``
-        }
+        <div class="media ${this.subType}">
+          ${this.urls.map((url, index) => this.#renderMediaItem(url, index))}
+        </div>
+        ${this.#renderSidecarOrTourContent()}
       </div>
     `;
+  }
+
+  #renderMediaItem(url, index) {
+    switch (this.mediaTypes[index]) {
+      case "img":
+        return html`<img id="media-${this.id}" src="${url}" alt="${this.captions[index]}" height="${this.height}"></img>`;
+      case "iframe":
+        return html`<iframe
+          id="media-${this.id}"
+          src="${url}"
+          height="${this.height}"
+        ></iframe>`;
+      default:
+        return null;
+    }
+  }
+
+  #renderSidecarOrTourContent() {
+    const eventObj = {
+      id: this.id,
+      subType: this.subType,
+      sectionType: this.sectionType,
+    };
+
+    return this.subType === "sidecar" || this.subType === "tour"
+      ? html`
+          <div
+            class="media-content-wrap ${this.subType} order-${this
+              .sidecarPosition}"
+          >
+            ${renderHtmlString(this.content, eventObj)}
+          </div>
+        `
+      : html``;
   }
 
   #styling = `
@@ -197,4 +196,6 @@ export class StoryTellingMedia extends LitElement {
     }
   `;
 }
+
+// Define the custom element
 customElements.define("story-telling-media", StoryTellingMedia);
