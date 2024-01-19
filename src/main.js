@@ -5,17 +5,19 @@ import "@eox/map/dist/eox-map-advanced-layers-and-sources.js";
 import scrollama from "scrollama";
 import { SAMPLE_COMPONENTS } from "./enums";
 import {
-  getHandlerMarkdown,
+  getSection,
   highlightNavigation,
   isBooleanString,
   loadMarkdown,
   renderHtmlString,
 } from "./helpers";
+import { when } from "lit/directives/when.js";
 import { PROPERTIES_KEYS } from "./custom-elements";
 import renderSection from "./components/sections/render-section";
-import "./components/navigation"
-import "./components/pagination"
-import { when } from "lit/directives/when.js";
+import "./components/navigation";
+import "./components/pagination";
+import "./components/custom-sections";
+import "./components/markdown-editor";
 
 const scroller = scrollama();
 
@@ -36,7 +38,6 @@ export class Storytelling extends LitElement {
   #RenderEditor = null;
   #storyMetaData = {};
   #mode = "editor";
-  #addSection = null;
   #currentPageIndex = 0;
 
   constructor() {
@@ -92,11 +93,11 @@ export class Storytelling extends LitElement {
       });
   }
 
-  #handleMarkDown(evt) {
-    this.markdown = evt.target.value;
+  #handleMarkDown(markdown) {
+    this.markdown = markdown;
     this.parseHTML();
     setTimeout(() => highlightNavigation(), 400);
-    
+
     this.requestUpdate();
     this.dispatchEvent(
       new CustomEvent(`change`, {
@@ -162,12 +163,8 @@ export class Storytelling extends LitElement {
     }
   }
 
-  getSection(markdown) {
-    return markdown.split(/(?:^|\n)---\n/);
-  }
-
   processMarkdown(markdown) {
-    const sections = this.getSection(markdown);
+    const sections = getSection(markdown);
     let isAfterHorizontalLine = false;
     let html = "";
     sections.forEach((section, index) => {
@@ -183,52 +180,15 @@ export class Storytelling extends LitElement {
     return html;
   }
 
-  addSection(e, index, position) {
-    this.#addSection = Number(index) + (position === "top" ? 0 : 1);
-    // this.requestUpdate();
-  }
-
-  addComponent(index) {
-    let sections = this.getSection(this.markdown || "");
-    sections.splice(this.#addSection, 0, SAMPLE_COMPONENTS[index].markdown);
-    const markdown = sections.join("\n---\n");
-    this.#addSection = null;
-    this.resumeScrolling();
-    this.#handleMarkDown(getHandlerMarkdown(markdown));
-  }
-
-  handelPageChange = (newPageIndex) => {
-    if (
-      newPageIndex >= 0 &&
-      newPageIndex < this.#storyMetaData.pageIds.length
-    ) {
-      this.#currentPageIndex = newPageIndex;
-      this.#handleMarkDown(getHandlerMarkdown(this.markdown));
-    }
-  };
-
   async firstUpdated() {
     window.addEventListener("resize", scroller.resize);
     this.#RenderEditor = document.querySelector(".preview-wrapper");
     if (this.url) {
       const markdown = await loadMarkdown(this.url);
-      this.#handleMarkDown(getHandlerMarkdown(markdown));
-    } else this.#handleMarkDown(getHandlerMarkdown(this.markdown));
+      this.#handleMarkDown(markdown);
+    } else this.#handleMarkDown(this.markdown);
 
     document.addEventListener("scroll", highlightNavigation);
-  }
-
-  updated() {
-    const addList = document.querySelectorAll(".add-wrap span");
-    if (addList?.length) {
-      addList.forEach((add) => {
-        const index = add.getAttribute("data-key");
-        const position = add.getAttribute("data-position") || "top";
-        add.addEventListener("click", (e) =>
-          this.addSection(e, index, position)
-        );
-      });
-    }
   }
 
   createRenderRoot() {
@@ -243,67 +203,53 @@ export class Storytelling extends LitElement {
       ${when(
         this.#storyMetaData.navigations && this.#currentPageIndex >= 0,
         () => html`
-          <story-telling-navigation 
+          <story-telling-navigation
             .navigations=${this.#storyMetaData.navigations}
             .currentPageIndex=${this.#currentPageIndex}
           ></story-telling-navigation>
         `
       )}
-      <div class="main ${this.editor ? "" : `no-editor`} ${this.#storyMetaData.navigations ? "extra-nav-padding": ""}">
+      <div
+        class="main ${this.#storyMetaData.navigations
+          ? "extra-nav-padding"
+          : ""}"
+      >
         <div class="preview-wrapper row">
           ${this.#html
             ? html`<div>${renderHtmlString(this.#html)}</div>`
             : html`<div class="empty-preview">No Preview</div>`}
         </div>
-        ${this.editor
-          ? html`<div class="row editor-wrapper">
-              <textarea
-                placeholder="Add your markdown"
-                @input=${this.#handleMarkDown}
-                .value=${this.markdown}
-              ></textarea>
-            </div>`
-          : nothing}
       </div>
+      ${when(
+        this.editor,
+        () => html`
+          <markdown-editor
+            .markdown=${this.markdown}
+            @change=${(e) => this.#handleMarkDown(e.detail.markdown)}
+          ></markdown-editor>
+        `
+      )}
       ${when(
         this.#storyMetaData.pageIds && this.#currentPageIndex >= 0,
         () => html`
           <story-telling-pagination
             .pageIds=${this.#storyMetaData.pageIds}
             .currentPageIndex=${this.#currentPageIndex}
-            .handelPageChange=${this.handelPageChange}
+            @change=${(e) => {
+              this.#currentPageIndex = e.detail.currentPageIndex;
+              this.#handleMarkDown(this.markdown);
+            }}
           ></story-telling-pagination>
         `
       )}
-      ${this.#addSection && this.editor
-        ? html`
-            <div class="modal">
-              <div class="modal-section">
-                <h3>Sample Components</h3>
-                <div class="grid-container">
-                  ${SAMPLE_COMPONENTS.map(
-                    (component, index) => html`<div
-                      class="grid-item"
-                      @click=${() => this.addComponent(index)}
-                    >
-                      <div class="component-icon">Icon ${index + 1}</div>
-                      <p>${component.name}</p>
-                    </div>`
-                  )}
-                </div>
-              </div>
-              <p
-                style="color: white;font-weight: 600"
-                @click=${() => {
-                  this.#addSection = null;
-                  // this.requestUpdate();
-                }}
-              >
-                Close
-              </p>
-            </div>
-          `
-        : nothing}
+      ${when(
+        this.editor,
+        () => html`
+          <story-telling-custom-sections
+            @change=${(e) => this.#handleMarkDown(e.detail.markdown)}
+          ></story-telling-custom-sections>
+        `
+      )}
     `;
   }
 
@@ -316,29 +262,13 @@ export class Storytelling extends LitElement {
         display: flex;
       }
       .row {
-        width: 50%;
+        width: 100%;
       }
       .page-hidden {
         display: none;
       }
       .extra-nav-padding {
         padding-top: 60px;
-      }
-      .no-editor .row {
-        width: 100%;
-      }
-      .preview-wrapper {
-        overflow-y: scroll;
-      }
-      .no-editor .preview-wrapper {
-        overflow-y: unset;
-      }
-      .editor-wrapper, textarea {
-        background: #e7e7e7;
-      }
-      .editor-wrapper {
-        padding: 20px;
-        position: relative;
       }
       textarea {
         width: 100%;
@@ -397,6 +327,7 @@ export class Storytelling extends LitElement {
         align-items: center;
         justify-content: center;
         flex-direction: column;
+        z-index: 99999;
       }
       .modal-section {
         width: 60%;

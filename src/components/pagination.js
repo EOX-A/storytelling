@@ -4,14 +4,25 @@ export class StorytellingPagination extends LitElement {
   static properties = {
     pageIds: { attribute: false, type: Array },
     currentPageIndex: { attribute: false, type: Number },
-    handelPageChange: { attribute: false, type: Function },
   };
   constructor() {
     super();
     this.pageIds = [];
     this.currentPageIndex = 0;
-    this.handelPageChange = null;
   }
+
+  handelPageChange = (newPageIndex) => {
+    if (newPageIndex >= 0 && newPageIndex < this.pageIds.length) {
+      this.currentPageIndex = newPageIndex;
+      this.dispatchEvent(
+        new CustomEvent("change", {
+          detail: { currentPageIndex: newPageIndex },
+          bubbles: true,
+          composed: true,
+        })
+      );
+    }
+  };
 
   createRenderRoot() {
     return this;

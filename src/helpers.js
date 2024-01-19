@@ -198,12 +198,8 @@ function parsePropertyValue(propType, propValue) {
   }
 }
 
-function getHandlerMarkdown(markdown) {
-  return {
-    target: {
-      value: markdown,
-    },
-  }
+function getSection(markdown) {
+  return markdown.split(/(?:^|\n)---\n/);
 }
 
 export {
@@ -213,5 +209,5 @@ export {
   parsePropertyValue,
   isBooleanString,
   highlightNavigation,
-  getHandlerMarkdown
+  getSection
 };
