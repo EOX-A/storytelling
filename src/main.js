@@ -1,9 +1,7 @@
 import DOMPurify from "isomorphic-dompurify";
-import { html, LitElement, nothing } from "lit";
+import { html, LitElement } from "lit";
 import { marked } from "marked";
 import "@eox/map/dist/eox-map-advanced-layers-and-sources.js";
-import scrollama from "scrollama";
-import { SAMPLE_COMPONENTS } from "./enums";
 import {
   getSection,
   highlightNavigation,
@@ -19,8 +17,6 @@ import "./components/pagination";
 import "./components/custom-sections";
 import "./components/markdown-editor";
 
-const scroller = scrollama();
-
 marked.use({
   breaks: true,
   gfm: true,
@@ -35,9 +31,7 @@ export class Storytelling extends LitElement {
 
   #html = null;
   #sectionMetaData = [];
-  #RenderEditor = null;
   #storyMetaData = {};
-  #mode = "editor";
   #currentPageIndex = 0;
 
   constructor() {
@@ -45,16 +39,6 @@ export class Storytelling extends LitElement {
     this.markdown = null;
     this.editor = false;
     this.url = null;
-  }
-
-  pauseScrolling() {
-    this.#RenderEditor.style.overflowY = "hidden";
-    document.body.style.overflowY = "hidden";
-  }
-
-  resumeScrolling() {
-    this.#RenderEditor.style.overflowY = "scroll";
-    document.body.style.overflowY = "";
   }
 
   #purifyDOM(parsedHtml) {
@@ -72,25 +56,6 @@ export class Storytelling extends LitElement {
     this.#storyMetaData = {};
     const parsedHtml = this.processMarkdown(this.markdown || "");
     this.#html = this.#purifyDOM(parsedHtml);
-
-    if (this.markdown && this.#html?.includes("wrap-main")) {
-      setTimeout(() => {
-        this.initializeScroller();
-      }, 500);
-    }
-  }
-
-  initializeScroller() {
-    scroller.destroy();
-    scroller
-      .setup({
-        step: ".wrap-main",
-        container: this.#RenderEditor,
-      })
-      .onStepEnter(() => {})
-      .onStepExit((response) => {
-        response.element.className = "wrap-main";
-      });
   }
 
   #handleMarkDown(markdown) {
@@ -119,17 +84,13 @@ export class Storytelling extends LitElement {
         (value.startsWith("[") && value.endsWith("]")) ||
         (value.startsWith("{") && value.endsWith("}"))
       ) {
-        // Attempt to parse as an array
         try {
           value = JSON.parse(value.replace(/'/g, '"'));
         } catch (e) {
           console.error("Error parsing array: ", e);
         }
-      } else if (isBooleanString(value)) {
-        value = Boolean(value.toLowerCase());
-      } else if (!isNaN(value)) {
-        value = Number(value);
-      }
+      } else if (isBooleanString(value)) value = Boolean(value.toLowerCase());
+      else if (!isNaN(value)) value = Number(value);
 
       metadata[metadataMatch[1]] = value;
     }
@@ -149,16 +110,6 @@ export class Storytelling extends LitElement {
       );
     } else {
       this.#storyMetaData = metadata;
-
-      if (metadata.type === "map-bg") {
-        return `<div style='position: fixed; top: 0; z-index: -1; width: 50%; height: 100%;'><eox-map id='${
-          metadata.id
-        }' style='${
-          metadata.style
-        }' center='[${metadata.center.toString()}]' layers='${JSON.stringify(
-          metadata.layers
-        )}' zoom=${Number(metadata.zoom)}></eox-map></div>`;
-      }
       return "";
     }
   }
@@ -181,8 +132,6 @@ export class Storytelling extends LitElement {
   }
 
   async firstUpdated() {
-    window.addEventListener("resize", scroller.resize);
-    this.#RenderEditor = document.querySelector(".preview-wrapper");
     if (this.url) {
       const markdown = await loadMarkdown(this.url);
       this.#handleMarkDown(markdown);
@@ -210,9 +159,7 @@ export class Storytelling extends LitElement {
         `
       )}
       <div
-        class="main ${this.#storyMetaData.navigations
-          ? "extra-nav-padding"
-          : ""}"
+        class="main ${this.#storyMetaData.navigations ? "extra-padding" : ""}"
       >
         <div class="preview-wrapper row">
           ${this.#html
@@ -225,7 +172,9 @@ export class Storytelling extends LitElement {
         () => html`
           <markdown-editor
             .markdown=${this.markdown}
-            @change=${(e) => this.#handleMarkDown(e.detail.markdown)}
+            .isNavigation=${Boolean(this.#storyMetaData.navigations)}
+            @change=${(e) =>
+              e.detail && this.#handleMarkDown(e.detail.markdown)}
           ></markdown-editor>
         `
       )}
@@ -237,7 +186,7 @@ export class Storytelling extends LitElement {
             .currentPageIndex=${this.#currentPageIndex}
             @change=${(e) => {
               this.#currentPageIndex = e.detail.currentPageIndex;
-              this.#handleMarkDown(this.markdown);
+              if (e.detail) this.#handleMarkDown(this.markdown);
             }}
           ></story-telling-pagination>
         `
@@ -246,7 +195,9 @@ export class Storytelling extends LitElement {
         this.editor,
         () => html`
           <story-telling-custom-sections
-            @change=${(e) => this.#handleMarkDown(e.detail.markdown)}
+            .markdown=${this.markdown}
+            @change=${(e) =>
+              e.detail && this.#handleMarkDown(e.detail.markdown)}
           ></story-telling-custom-sections>
         `
       )}
@@ -267,7 +218,7 @@ export class Storytelling extends LitElement {
       .page-hidden {
         display: none;
       }
-      .extra-nav-padding {
+      .extra-padding {
         padding-top: 60px;
       }
       textarea {
@@ -304,7 +255,7 @@ export class Storytelling extends LitElement {
       }
       .wrap-main .add-wrap span {
         background: white;
-        padding: 0px 8px;
+        padding: 0px 8.5px;
         border-radius: 100%;
         font-weight: 800;
         box-shadow: 1px 1px 10px #80808094;
@@ -315,51 +266,6 @@ export class Storytelling extends LitElement {
       }
       .bg {
         background: #cecef6;
-      }
-      .modal {
-        background: #000000a1;
-        width: 100%;
-        height: 100%;
-        position: fixed;
-        top:0;
-        left:0;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        flex-direction: column;
-        z-index: 99999;
-      }
-      .modal-section {
-        width: 60%;
-        padding: 12px 20px;
-        background: white;
-        border-radius: 10px;
-      }
-      .grid-container {
-        display: grid;
-        grid-template-columns: auto auto auto;
-        gap: 10px;
-      }
-      .grid-item {
-        text-align: center;
-        border: 4px gray dotted;
-        border-radius: 6px;
-        cursor: pointer;
-      }
-      .component-icon {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        height: 100px;
-        font-size: 36px;
-        font-weight: 600;
-      }
-      .modal-section p {
-        border-top: 3px dotted gray;
-        padding-top: 14px;
-      }
-      .modal-section .grid-item:hover {
-        background: #8080803b;
       }
   `;
 }

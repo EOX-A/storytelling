@@ -1,14 +1,15 @@
-import { LitElement, html, css } from "lit";
+import { LitElement, html } from "lit";
 import * as monaco from "monaco-editor/esm/vs/editor/editor.main";
-import github from "monaco-themes/themes/GitHub Light.json";
 
 class MarkdownEditor extends LitElement {
   static properties = {
     markdown: { attribute: "markdown", type: String },
+    isNavigation: { attribute: "markdown", type: Boolean },
   };
   constructor() {
     super();
     this.markdown = "";
+    this.isNavigation = false;
   }
 
   firstUpdated() {
@@ -67,9 +68,6 @@ class MarkdownEditor extends LitElement {
         })
       );
     });
-
-    monaco.editor.defineTheme("github", github);
-    monaco.editor.setTheme("github");
   }
 
   getCurrentValue() {
@@ -93,7 +91,7 @@ class MarkdownEditor extends LitElement {
       <style>
         ${this.#styling}
       </style>
-      <div class="editor-wrapper">
+      <div class="editor-wrapper ${this.isNavigation ? "partial-height" : ""}">
         <div id="editor"></div>
       </div>
     `;
@@ -105,14 +103,18 @@ class MarkdownEditor extends LitElement {
       padding-right: 22px;
       z-index: 99;
       width: 40%;
-      height: 88%;
+      height: calc(100vh - 40px);
       position: fixed;
-      top: 80px;
+      top: 20px;
       right: 20px;
       border-radius: 10px;
       background: #f2f2f2;
       cursor: move;
       box-shadow: 0px 0px 3px 2px #80808026;
+    }
+    .editor-wrapper.partial-height {
+      height: calc(100vh - 100px);
+      top: 80px
     }
     #editor {
       width: 100%;

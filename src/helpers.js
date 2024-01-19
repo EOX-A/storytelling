@@ -146,12 +146,12 @@ function renderHtmlString(htmlString, eventObj) {
 
           if (layers) {
             const currLayer = layers[index];
-            changeMapLayer(sectionId, currLayer);
+            changeMapLayer(sectionId, currLayer, sectionType);
           }
 
           nodeEle.map.getView().setCenter(fromLonLat([lon, lat]));
           nodeEle.map.getView().setZoom(zoom);
-        } else {
+        } else { 
           changeMediaLayer(sectionId, sectionType, index)
         }
       }

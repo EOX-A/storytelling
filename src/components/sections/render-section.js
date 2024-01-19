@@ -54,9 +54,9 @@ export default function (
   editor
 ) {
   const position = isLastSection ? "bottom" : "top";
-  const topAddSection = addSectionHTML(sectionIndex, editor, position);
+  const topAddSection = addSectionHTML(sectionIndex, editor, "top");
   const bottomAddSection = isLastSection
-    ? addSectionHTML(sectionIndex, editor, position)
+    ? addSectionHTML(sectionIndex, editor, "bottom")
     : "";
 
   let sectionHTML = ``;

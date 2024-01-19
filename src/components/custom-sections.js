@@ -4,9 +4,13 @@ import { when } from "lit/directives/when.js";
 import { getSection } from "../helpers";
 
 export class StorytellingCustomSection extends LitElement {
+  static properties = {
+    markdown: { attribute: false, type: String },
+  };
   #addSection = null;
   constructor() {
     super();
+    this.markdown = null
   }
 
   addComponent(index) {
@@ -86,6 +90,52 @@ export class StorytellingCustomSection extends LitElement {
     `;
   }
 
-  #styling = ``;
+  #styling = `
+    .modal {
+      background: #000000a1;
+      width: 100%;
+      height: 100%;
+      position: fixed;
+      top:0;
+      left:0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      z-index: 99999;
+    }
+    .modal-section {
+      width: 60%;
+      padding: 12px 20px;
+      background: white;
+      border-radius: 10px;
+    }
+    .grid-container {
+      display: grid;
+      grid-template-columns: auto auto auto;
+      gap: 10px;
+    }
+    .grid-item {
+      text-align: center;
+      border: 4px gray dotted;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    .component-icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100px;
+      font-size: 36px;
+      font-weight: 600;
+    }
+    .modal-section p {
+      border-top: 3px dotted gray;
+      padding-top: 14px;
+    }
+    .modal-section .grid-item:hover {
+      background: #8080803b;
+    }
+  `;
 }
 customElements.define("story-telling-custom-sections", StorytellingCustomSection);

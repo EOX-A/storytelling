@@ -188,7 +188,7 @@ The current **EPA threshold is 12 micrograms per cubic meter**, 20% higher than 
 [subType]:container
 [mediaTypes]:["iframe"]
 [height]:800px
-[urls]:["https://spacetime.blueskyhq.io/ghg-emissions-fires?dataSetType=vector&dataSetSubtype=point&baseMap=light&view=normal&admin-levels=2&duration=6m&pin=-&timeBucket=1m&visualChoice=heatmap&data=fires&shape-ids=dd0cd186-f7f7-4ced-b1ea-9da6100148fb&places=World&palette=default&scale=quantile&temporal=2024-01-16T00_00_00.000Z&embed=1&disable=search_timelapse_time-bucket&freezoBound=0"]
+[urls]:["https://spacetime.blueskyhq.io/ghg-emissions-fires?admin-levels=2&baseMap=light&data=fires&dataSetSubtype=point&dataSetType=vector&duration=6m&palette=default&pin=-&places=World&scale=quantile&shape-ids=dd0cd186-f7f7-4ced-b1ea-9da6100148fb&temporal=2023-05-15T00_00_00.000Z&timeBucket=1d&visualChoice=heatmap&embed=1&disable=zoom_search_timelapse_time-bucket&freezoBound=0&embedBound=-145.483897,-60.256167,154.878057,81.23915"]
 [captions]:["Loremipsum"]
 
 ---
@@ -196,7 +196,7 @@ The current **EPA threshold is 12 micrograms per cubic meter**, 20% higher than 
 [subType]:simple
 [mediaTypes]:["iframe"]
 [height]:800px
-[urls]:["https://spacetime.blueskyhq.io/ghg-emissions-fires?dataSetType=vector&dataSetSubtype=point&baseMap=light&view=normal&admin-levels=2&duration=6m&pin=-&timeBucket=1m&visualChoice=heatmap&data=fires&shape-ids=dd0cd186-f7f7-4ced-b1ea-9da6100148fb&places=World&palette=default&scale=quantile&temporal=2024-01-16T00_00_00.000Z&embed=1&disable=search_timelapse_time-bucket&freezoBound=0"]
+[urls]:["https://spacetime.blueskyhq.io/ghg-emissions-fires?admin-levels=2&baseMap=light&data=fires&dataSetSubtype=point&dataSetType=vector&duration=6m&palette=default&pin=-&places=World&scale=quantile&shape-ids=dd0cd186-f7f7-4ced-b1ea-9da6100148fb&temporal=2023-05-15T00_00_00.000Z&timeBucket=1d&visualChoice=heatmap&embed=1&disable=zoom_search_timelapse_time-bucket&freezoBound=0&embedBound=-145.483897,-60.256167,154.878057,81.23915"]
 [captions]:["Loremipsum"]
 
 
@@ -204,9 +204,9 @@ The current **EPA threshold is 12 micrograms per cubic meter**, 20% higher than 
 [id]:media-sidecar
 [sectionType]:media
 [subType]:sidecar
-[mediaTypes]:["img","img","img"]
+[mediaTypes]:["img","iframe","img"]
 [sidecarPosition]:left
-[urls]:["https://www.gstatic.com/prettyearth/assets/full/14617.jpg","https://www.gstatic.com/prettyearth/assets/full/12516.jpg","https://www.gstatic.com/prettyearth/assets/full/5046.jpg"]
+[urls]:["https://www.gstatic.com/prettyearth/assets/full/14617.jpg","https://spacetime.blueskyhq.io/ghg-emissions-fires?admin-levels=2&baseMap=light&data=fires&dataSetSubtype=point&dataSetType=vector&duration=6m&palette=default&pin=-&places=World&scale=quantile&shape-ids=dd0cd186-f7f7-4ced-b1ea-9da6100148fb&temporal=2023-05-15T00_00_00.000Z&timeBucket=1d&visualChoice=heatmap&embed=1&disable=zoom_search_timelapse_time-bucket&freezoBound=0&embedBound=-145.483897,-60.256167,154.878057,81.23915","https://www.gstatic.com/prettyearth/assets/full/5046.jpg"]
 [captions]:["Loremipsum","Loremipsum","Loremipsum"]
 
 <div class="media-content">
