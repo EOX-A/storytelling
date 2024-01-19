@@ -15,7 +15,7 @@ import renderSection from "./components/sections/render-section";
 import "./components/navigation";
 import "./components/pagination";
 import "./components/custom-sections";
-import "./components/markdown-editor";
+import "./components/editor";
 
 marked.use({
   breaks: true,
@@ -150,6 +150,17 @@ export class Storytelling extends LitElement {
         ${this.#styling}
       </style>
       ${when(
+        this.editor,
+        () => html`
+          <story-telling-editor
+            .markdown=${this.markdown}
+            .isNavigation=${Boolean(this.#storyMetaData.navigations)}
+            @change=${(e) =>
+              e.detail && this.#handleMarkDown(e.detail.markdown)}
+          ></story-telling-editor>
+        `
+      )}
+      ${when(
         this.#storyMetaData.navigations && this.#currentPageIndex >= 0,
         () => html`
           <story-telling-navigation
@@ -167,17 +178,6 @@ export class Storytelling extends LitElement {
             : html`<div class="empty-preview">No Preview</div>`}
         </div>
       </div>
-      ${when(
-        this.editor,
-        () => html`
-          <markdown-editor
-            .markdown=${this.markdown}
-            .isNavigation=${Boolean(this.#storyMetaData.navigations)}
-            @change=${(e) =>
-              e.detail && this.#handleMarkDown(e.detail.markdown)}
-          ></markdown-editor>
-        `
-      )}
       ${when(
         this.#storyMetaData.pageIds && this.#currentPageIndex >= 0,
         () => html`
