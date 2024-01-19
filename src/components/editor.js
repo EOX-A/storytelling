@@ -25,8 +25,6 @@ class StoryTellingEditor extends LitElement {
   }
 
   firstUpdated() {
-    super.firstUpdated();
-
     const editorContainer = document.querySelector(".editor-wrapper");
     const resizeHandle = document.querySelector(".resize-handle");
 

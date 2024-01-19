@@ -198,7 +198,7 @@ function parsePropertyValue(propType, propValue) {
   }
 }
 
-function getSection(markdown) {
+function getSectionsAsMarkdownArray(markdown) {
   return markdown.split(/(?:^|\n)---\n/);
 }
 
@@ -209,5 +209,5 @@ export {
   parsePropertyValue,
   isBooleanString,
   highlightNavigation,
-  getSection
+  getSectionsAsMarkdownArray
 };

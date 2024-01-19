@@ -9,7 +9,7 @@ export default {
 
 export const SimplePreview = {
   args: {
-    editor: false,
+    editorMode: false,
     markdown: simplePreviewMarkdown
   },
   render: (args) => StoryTelling(args),
@@ -17,7 +17,7 @@ export const SimplePreview = {
 
 export const PaginationPreview = {
   args: {
-    editor: false,
+    editorMode: false,
     markdown: paginationPreviewMarkdown
   },
   render: (args) => StoryTelling(args),
@@ -25,7 +25,7 @@ export const PaginationPreview = {
 
 export const Editor = {
   args: {
-    editor: true,
+    editorMode: true,
     markdown: simplePreviewMarkdown,
   },
   render: (args) => StoryTelling(args),
@@ -33,7 +33,7 @@ export const Editor = {
 
 export const BlankPreview = {
   args: {
-    editor: true,
+    editorMode: true,
     markdown: "",
   },
   render: (args) => StoryTelling(args),
@@ -41,8 +41,8 @@ export const BlankPreview = {
 
 export const MarkdownAsURL = {
   args: {
-    editor: true,
-    url: `https://raw.githubusercontent.com/EOX-A/storytelling/cf7d5123ae8b056f254b1ef07ebceb95fd356dc8/public/simple-preview.md`
+    editorMode: true,
+    url: "https://raw.githubusercontent.com/EOX-A/storytelling/536f06b6567c1f83ad03f5c8bcff21da727a3f58/public/simple-preview.md"
   },
   render: (args) => StoryTelling(args),
 };

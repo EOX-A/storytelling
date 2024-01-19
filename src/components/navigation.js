@@ -1,5 +1,6 @@
 import { html, LitElement } from "lit";
 import { when } from "lit/directives/when.js";
+import { highlightNavigation } from "../helpers";
 
 export class StorytellingNavigation extends LitElement {
   static properties = {
@@ -14,6 +15,10 @@ export class StorytellingNavigation extends LitElement {
 
   createRenderRoot() {
     return this;
+  }
+
+  firstUpdated() {
+    document.addEventListener("scroll", highlightNavigation);
   }
 
   render() {

@@ -1,7 +1,7 @@
 import { html, LitElement } from "lit";
 import { SAMPLE_COMPONENTS } from "../enums";
 import { when } from "lit/directives/when.js";
-import { getSection } from "../helpers";
+import { getSectionsAsMarkdownArray } from "../helpers";
 
 export class StorytellingCustomSection extends LitElement {
   static properties = {
@@ -14,7 +14,7 @@ export class StorytellingCustomSection extends LitElement {
   }
 
   addComponent(index) {
-    let sections = getSection(this.markdown || "");
+    let sections = getSectionsAsMarkdownArray(this.markdown || "");
     sections.splice(this.#addSection, 0, SAMPLE_COMPONENTS[index].markdown);
     const markdown = sections.join("\n---\n");
     this.#addSection = null;

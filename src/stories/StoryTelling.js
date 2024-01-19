@@ -5,10 +5,10 @@ import picoCSS from "../picocss";
 /**
  * Primary UI component for user interaction
  */
-export const StoryTelling = ({ markdown, url, editor }) => {
+export const StoryTelling = ({ markdown, url, editorMode }) => {
   return html`
     <story-telling
-      .editor=${editor || false}
+      .editorMode=${editorMode || false}
       .url=${url || null}
       .markdown=${markdown}
     ></story-telling>
