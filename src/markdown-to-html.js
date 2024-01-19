@@ -4,45 +4,73 @@ import { PROPERTIES_KEYS } from "./custom-elements";
 import { getSectionsAsMarkdownArray, isBooleanString } from "./helpers";
 import { marked } from "marked";
 
-marked.use({
-  breaks: true,
-  gfm: true,
-});
+marked.use({ breaks: true, gfm: true });
 
+/**
+ * Extract metadata from a given section using regex.
+ * Handles JSON parsing, boolean, and number conversion.
+ */
 function getMetaData(section) {
   const metadataRegex = /\[([^\]]+)\]:\s*(.+)/g;
-  let metadataMatch;
   let metadata = {};
+  let metadataMatch;
 
   while ((metadataMatch = metadataRegex.exec(section)) !== null) {
     let value = metadataMatch[2].trim();
-    if (
-      (value.startsWith("[") && value.endsWith("]")) ||
-      (value.startsWith("{") && value.endsWith("}"))
-    ) {
-      try {
-        value = JSON.parse(value.replace(/'/g, '"'));
-      } catch (e) {
-        console.error("Error parsing array: ", e);
-      }
-    } else if (isBooleanString(value)) value = Boolean(value.toLowerCase());
-    else if (!isNaN(value)) value = Number(value);
-
+    value = parseMetadataValue(value);
     metadata[metadataMatch[1]] = value;
   }
 
   return metadata;
 }
 
-function getBlockData(section, last, index, currPageId, editorMode) {
+/**
+ * Parses the metadata value to handle different data types.
+ */
+function parseMetadataValue(value) {
+  if (isJsonLike(value)) {
+    return parseJsonLikeValue(value);
+  } else if (isBooleanString(value)) {
+    return value.toLowerCase() === "true";
+  } else if (!isNaN(value)) {
+    return Number(value);
+  }
+  return value;
+}
+
+/**
+ * Checks if the value is JSON-like (array or object).
+ */
+function isJsonLike(value) {
+  return (
+    (value.startsWith("[") && value.endsWith("]")) ||
+    (value.startsWith("{") && value.endsWith("}"))
+  );
+}
+
+/**
+ * Tries to parse a JSON-like string.
+ */
+function parseJsonLikeValue(value) {
+  try {
+    return JSON.parse(value.replace(/'/g, '"'));
+  } catch (e) {
+    console.error("Error parsing array: ", e);
+    return value;
+  }
+}
+
+/**
+ * Processes a markdown section to HTML and extracts metadata.
+ */
+function getBlockData(section, isLastSection, index, currPageId, editorMode) {
   const meta = getMetaData(section);
   const renderedContent = marked(section);
-
   const html = parseSectionHtml(
     meta,
     renderedContent,
     index,
-    last,
+    isLastSection,
     currPageId,
     editorMode
   );
@@ -50,36 +78,39 @@ function getBlockData(section, last, index, currPageId, editorMode) {
   return { meta, html };
 }
 
+/**
+ * Converts markdown to HTML with extracted metadata.
+ */
 function processMarkdownToHtml(markdown, editorMode, currentPageIndex) {
-  const sectionsArr = getSectionsAsMarkdownArray(markdown);
+  const sections = getSectionsAsMarkdownArray(markdown);
   let htmlStr = "";
   let sectionMetaData = [];
 
-  const storyMetaData = getMetaData(sectionsArr[0]);
+  const storyMetaData = getMetaData(sections[0]);
   const currPageId = storyMetaData.pageIds?.[currentPageIndex];
 
-  sectionsArr.forEach((section, index) => {
-    if (index) {
+  sections.forEach((section, index) => {
+    if (index > 0) {
+      const isLastSection = index === sections.length - 1;
       const blockData = getBlockData(
         section,
-        Boolean(sectionsArr.length === index + 1),
+        isLastSection,
         index,
         currPageId,
         editorMode
       );
 
       htmlStr += blockData.html;
-      sectionMetaData = [...sectionMetaData, blockData.meta];
+      sectionMetaData.push(blockData.meta);
     }
   });
 
-  return {
-    htmlStr,
-    storyMetaData,
-    sectionMetaData,
-  };
+  return { htmlStr, storyMetaData, sectionMetaData };
 }
 
+/**
+ * Sanitizes HTML string using DOMPurify to prevent XSS attacks.
+ */
 function purifyDOM(htmlStr) {
   return DOMPurify.sanitize(htmlStr, {
     CUSTOM_ELEMENT_HANDLING: {
@@ -90,6 +121,10 @@ function purifyDOM(htmlStr) {
   });
 }
 
+/**
+ * Main function to convert markdown to HTML with metadata.
+ * It sanitizes the generated HTML for security.
+ */
 export default function markdownToHtml(editorMode, markdown, currentPageIndex) {
   const { htmlStr, storyMetaData, sectionMetaData } = processMarkdownToHtml(
     markdown || "",
@@ -97,9 +132,5 @@ export default function markdownToHtml(editorMode, markdown, currentPageIndex) {
     currentPageIndex
   );
   const processedHtml = purifyDOM(htmlStr);
-  return {
-    storyMetaData,
-    processedHtml,
-    sectionMetaData,
-  };
+  return { storyMetaData, processedHtml, sectionMetaData };
 }
