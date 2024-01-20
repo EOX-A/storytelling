@@ -9,6 +9,7 @@ class StoryTellingEditor extends LitElement {
     isNavigation: { attribute: "markdown", type: Boolean },
   };
 
+  #editorUpdate = false;
   constructor() {
     super();
     // Initialize properties
@@ -38,9 +39,11 @@ class StoryTellingEditor extends LitElement {
     const resizeHandle = document.querySelector(".resize-handle");
 
     this.editor = initEditor(editorContainer, resizeHandle, this);
+    this.#editorUpdate = true;
 
     // Event listener for editor content change
     this.editor.onDidChangeModelContent(() => {
+      this.#editorUpdate = true;
       this.dispatchEvent(
         new CustomEvent("change", {
           detail: { markdown: this.getCurrentValue() },
@@ -68,6 +71,17 @@ class StoryTellingEditor extends LitElement {
   // Override createRenderRoot to use LitElement as the render root
   createRenderRoot() {
     return this;
+  }
+
+  updated(changedProperties) {
+    if (changedProperties.has("markdown") && !this.#editorUpdate)
+      this.updateEditorContent(this.markdown);
+
+    this.#editorUpdate = false;
+  }
+
+  updateEditorContent(markdown) {
+    if (this.editor && markdown) this.editor.setValue(markdown);
   }
 
   // Override render method to define the HTML structure

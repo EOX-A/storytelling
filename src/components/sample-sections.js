@@ -10,12 +10,16 @@ export class StorytellingSampleSection extends LitElement {
   #addSection = null;
   constructor() {
     super();
-    this.markdown = null
+    this.markdown = null;
   }
 
-  addComponent(index) {
+  addComponent(index, typeIndex) {
     let sections = getSectionsAsMarkdownArray(this.markdown || "");
-    sections.splice(this.#addSection, 0, SAMPLE_COMPONENTS[index].markdown);
+    sections.splice(
+      this.#addSection,
+      0,
+      SAMPLE_COMPONENTS[typeIndex].components[index].markdown
+    );
     const markdown = sections.join("\n---\n");
     this.#addSection = null;
     this.dispatchEvent(
@@ -25,7 +29,7 @@ export class StorytellingSampleSection extends LitElement {
         composed: true,
       })
     );
-    this.requestUpdate()
+    this.requestUpdate();
   }
 
   addSection(e, index, position) {
@@ -36,16 +40,16 @@ export class StorytellingSampleSection extends LitElement {
   updated() {
     setTimeout(() => {
       const addList = document.querySelectorAll(".add-wrap span");
-    if (addList?.length) {
-      addList.forEach((add) => {
-        const index = add.getAttribute("data-key");
-        const position = add.getAttribute("data-position") || "top";
-        add.addEventListener("click", (e) =>
-          this.addSection(e, index, position)
-        );
-      });
-    }
-    }, 200)
+      if (addList?.length) {
+        addList.forEach((add) => {
+          const index = add.getAttribute("data-key");
+          const position = add.getAttribute("data-position") || "top";
+          add.addEventListener("click", (e) =>
+            this.addSection(e, index, position)
+          );
+        });
+      }
+    }, 200);
   }
 
   createRenderRoot() {
@@ -62,16 +66,36 @@ export class StorytellingSampleSection extends LitElement {
         () => html`
           <div class="modal">
             <div class="modal-section">
-              <h3>Sample Components</h3>
-              <div class="grid-container">
+              <div class="modal-overflow-y">
                 ${SAMPLE_COMPONENTS.map(
-                  (component, index) => html`<div
-                    class="grid-item"
-                    @click=${() => this.addComponent(index)}
-                  >
-                    <div class="component-icon">Icon ${index + 1}</div>
-                    <p>${component.name}</p>
-                  </div>`
+                  (type, typeIndex) => html`
+                    <div class="section-type-wrap">
+                      <div class="header">
+                        <h4>${type.name}</h4>
+                        <p>${type.components.length}</p>
+                      </div>
+                      <hr></hr>
+                      <div class="grid-container">
+                        ${type.components.map(
+                          (component, index) => html`
+                            <div
+                              class="grid-item"
+                              @click=${() => this.addComponent(index, typeIndex)}
+                              id="${type.name}-${index}"
+                            >
+                              <icon></icon>
+                              <p>${component.name}</p>
+                            </div>
+                            <style>
+                              .modal-section #${type.name}-${index} icon::before {
+                                content: url("${component.icon}");
+                              }
+                            </style>
+                          `
+                        )}
+                      </div>
+                    </div>
+                  `
                 )}
               </div>
             </div>
@@ -106,36 +130,112 @@ export class StorytellingSampleSection extends LitElement {
     }
     .modal-section {
       width: 60%;
-      padding: 12px 20px;
+      max-width: 900px;
+      padding: 18px 30px;
       background: white;
       border-radius: 10px;
     }
+    .modal-section .modal-overflow-y {
+      overflow-y: auto;
+      height: 70vh;
+    }
+    .modal-section .section-type-wrap {
+      padding: 8px 0px;
+    }
+    .modal-section .section-type-wrap .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .modal .section-type-wrap .header p {
+      background: #2273EC;
+      border-radius: 20px;
+      padding: 0px 15px;
+      color: white;
+      height: 1.1rem;
+      display: flex;
+      align-items: center;
+    }
+    .modal-section icon {
+      font-size: 0px;
+    }
+    .modal-section icon::before {
+      width: 100%;
+      color: black;
+      display: inline-block;
+      border: 6px solid transparent;
+      border-radius: 4px;
+    }
+    .modal-section hr {
+      border-top: 2.5px solid #e5eaf0;
+    }
+    .modal-section h4 {
+      font-size: 1rem;
+      font-weight: 600;
+      margin: 0;
+    }
+    .modal-section p {
+      padding: 0px;
+      margin: 0px;
+      font-size: 0.8rem;
+      color: #555555;
+      font-weight: 500;
+    }
     .grid-container {
       display: grid;
-      grid-template-columns: auto auto auto;
-      gap: 10px;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px 20px;
     }
     .grid-item {
       text-align: center;
-      border: 4px gray dotted;
-      border-radius: 6px;
       cursor: pointer;
     }
-    .component-icon {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      height: 100px;
-      font-size: 36px;
-      font-weight: 600;
+    .modal-section .grid-item:hover > icon::before {
+      border-color: #dbdbdb;
     }
-    .modal-section p {
-      border-top: 3px dotted gray;
-      padding-top: 14px;
-    }
-    .modal-section .grid-item:hover {
-      background: #8080803b;
+    .modal-section .grid-item:hover > p {
+      color: black;
+      font-weight: 900;
     }
   `;
 }
-customElements.define("story-telling-custom-sections", StorytellingSampleSection);
+customElements.define(
+  "story-telling-custom-sections",
+  StorytellingSampleSection
+);
+
+// return html`
+//       <style>
+//         ${this.#styling}
+//       </style>
+//       ${when(
+//         this.#addSection,
+//         () => html`
+//           <div class="modal">
+//             <div class="modal-section">
+//               <h3>Sample Components</h3>
+//               <div class="grid-container">
+//                 ${SAMPLE_COMPONENTS.map(
+//                   (component, index) => html`<div
+//                     class="grid-item"
+//                     @click=${() => this.addComponent(index)}
+//                   >
+//                     <div class="component-icon">Icon ${index + 1}</div>
+//                     <p>${component.name}</p>
+//                   </div>`
+//                 )}
+//               </div>
+//             </div>
+//             <p
+//               style="color: white;font-weight: 600"
+//               @click=${() => {
+//                 this.#addSection = null;
+//                 this.requestUpdate();
+//               }}
+//             >
+//               Close
+//             </p>
+//           </div>
+//         `
+//       )}
+//     `;

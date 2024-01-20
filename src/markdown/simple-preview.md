@@ -1,5 +1,5 @@
 [type]: simple
-[navigations]:[{"hero-section":"Hero","basic-section":"Basic","sidecar":"Sidecar Steps", "sidecar-layers":"Sidecar Layer"}]
+[navigations]:[{"hero-section":"Hero","basic-section":"Basic","sidecar":"SidecarSteps","sidecar-layers":"SidecarLayer"}]
 
 ---
 [id]:hero-section
