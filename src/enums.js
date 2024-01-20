@@ -89,6 +89,74 @@ Some text here just sample
     `,
       },
     ]
+  },
+  {
+    name: "Media",
+    components: [
+      {
+        name: "Simple",
+        icon: "data:image/svg+xml,%3Csvg viewBox='0 0 138 112' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='138' height='112' rx='4' fill='%23F2F2F2'/%3E%3Crect x='27' y='22' width='84' height='67' rx='4' fill='%23D8D8D8'/%3E%3Cpath d='M69.5 39L73.2045 50.4012H85.1924L75.494 57.4476L79.1985 68.8488L69.5 61.8024L59.8015 68.8488L63.506 57.4476L53.8076 50.4012H65.7955L69.5 39Z' fill='%235E5E5E'/%3E%3C/svg%3E%0A",
+        markdown: `
+[sectionType]:basic
+### Component 1 here
+Some text here just sample
+    `,
+      },
+      {
+        name: "Tour",
+        icon: "data:image/svg+xml,%3Csvg viewBox='0 0 138 112' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='138' height='112' rx='4' fill='%23F2F2F2'/%3E%3Crect x='27' y='22' width='84' height='67' rx='4' fill='%23D8D8D8'/%3E%3Crect x='34' y='67' width='26' height='16' rx='2' fill='%23F2F2F2'/%3E%3Cpath d='M83.5 32L87.2045 43.4012H99.1924L89.494 50.4476L93.1985 61.8488L83.5 54.8024L73.8015 61.8488L77.506 50.4476L67.8076 43.4012H79.7955L83.5 32Z' fill='%235E5E5E'/%3E%3C/svg%3E%0A",
+        markdown: `
+[sectionType]:basic
+### Component 1 here
+Some text here just sample
+    `,
+      },
+      {
+        name: "Sidecar",
+        icon: "data:image/svg+xml,%3Csvg viewBox='0 0 138 112' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='138' height='112' rx='4' fill='%23F2F2F2'/%3E%3Crect x='56.2718' y='22' width='54.7282' height='67' rx='4' fill='%23D8D8D8'/%3E%3Cpath d='M84.5 39L88.2045 50.4012H100.192L90.494 57.4476L94.1985 68.8488L84.5 61.8024L74.8015 68.8488L78.506 57.4476L68.8076 50.4012H80.7955L84.5 39Z' fill='%235E5E5E'/%3E%3Crect x='27' y='22' width='27' height='67' rx='4' fill='%235E5E5E'/%3E%3C/svg%3E%0A",
+        markdown: `
+[sectionType]:basic
+### Component 1 here
+Some text here just sample
+    `,
+      },
+      {
+        name: "Container",
+        icon: "data:image/svg+xml,%3Csvg viewBox='0 0 138 112' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='138' height='112' rx='4' fill='%23F2F2F2'/%3E%3Crect x='11' y='22' width='116' height='67' rx='4' fill='%23D8D8D8'/%3E%3Cpath d='M68.5 39L72.2045 50.4012H84.1924L74.494 57.4476L78.1985 68.8488L68.5 61.8024L58.8015 68.8488L62.506 57.4476L52.8076 50.4012H64.7955L68.5 39Z' fill='%235E5E5E'/%3E%3C/svg%3E%0A",
+        markdown: `
+[sectionType]:basic
+### Component 1 here
+Some text here just sample
+    `,
+      },
+      {
+        name: "Full",
+        icon: "data:image/svg+xml,%3Csvg viewBox='0 0 138 112' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='138' height='112' rx='4' fill='%23F2F2F2'/%3E%3Crect x='11' y='11' width='116' height='90' rx='4' fill='%23D8D8D8'/%3E%3Cpath d='M69.5 40L73.2045 51.4012H85.1924L75.494 58.4476L79.1985 69.8488L69.5 62.8024L59.8015 69.8488L63.506 58.4476L53.8076 51.4012H65.7955L69.5 40Z' fill='%235E5E5E'/%3E%3C/svg%3E%0A",
+        markdown: `
+[sectionType]:basic
+### Component 1 here
+Some text here just sample
+    `,
+      },
+      {
+        name: "Hero",
+        icon: "data:image/svg+xml,%3Csvg viewBox='0 0 138 112' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='138' height='112' rx='4' fill='%23F2F2F2'/%3E%3Crect x='11' y='11' width='116' height='90' rx='4' fill='%23D8D8D8'/%3E%3Crect x='35' y='49' width='69' height='7' rx='3.5' fill='%235E5E5E'/%3E%3Crect x='51' y='59' width='37' height='4' rx='2' fill='%23BEBEBE'/%3E%3C/svg%3E%0A",
+        markdown: `
+[sectionType]:basic
+### Component 1 here
+Some text here just sample
+    `,
+      },
+      {
+        name: "Iframe",
+        icon: "data:image/svg+xml,%3Csvg viewBox='0 0 138 112' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='138' height='112' rx='4' fill='%23F2F2F2'/%3E%3Crect x='27' y='22' width='84' height='67' rx='4' fill='%235E5E5E'/%3E%3Crect x='31' y='26' width='76' height='59' rx='4' fill='%23D8D8D8'/%3E%3Crect x='35' y='43' width='35' height='4.06977' rx='2.03488' fill='%235E5E5E'/%3E%3Crect x='35' y='50' width='39' height='4' rx='2' fill='%235E5E5E'/%3E%3Crect x='35' y='57' width='31' height='4' rx='2' fill='%235E5E5E'/%3E%3Crect x='35' y='64' width='24' height='4' rx='2' fill='%235E5E5E'/%3E%3C/svg%3E%0A",
+        markdown: `
+[sectionType]:basic
+### Component 1 here
+Some text here just sample
+    `,
+      },
+    ]
   }
 ];
 
