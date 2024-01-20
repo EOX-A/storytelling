@@ -1,6 +1,6 @@
 // Import necessary modules from 'lit'
 import { html, LitElement } from "lit";
-import { changeMapLayer, renderHtmlString } from "../../helpers";
+import { changeMapLayer, renderHtmlString } from "../../helpers/render-html";
 
 /**
  * StoryTellingMap - A LitElement component for rendering map sections.

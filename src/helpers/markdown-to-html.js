@@ -1,10 +1,118 @@
 import DOMPurify from "isomorphic-dompurify";
-import parseSectionHtml from "./components/sections/render-section";
 import { PROPERTIES_KEYS } from "./custom-elements";
-import { getSectionsAsMarkdownArray, isBooleanString } from "./helpers";
+import { getSectionsAsMarkdownArray } from "./misc";
 import { marked } from "marked";
+import { CUSTOM_ELEMENTS } from "./custom-elements";
 
 marked.use({ breaks: true, gfm: true });
+
+/**
+ * Checks if a string represents a boolean value.
+ */
+function isBooleanString(str) {
+  // Convert the string to lowercase for case-insensitive comparison
+  str = str.toLowerCase();
+
+  // Check if it's "true" or "false"
+  return str === "true" || str === "false";
+}
+
+/**
+ * Adds HTML for an "Add Section" button.
+ */
+function addBtnToSectionHTML(index, editor, position) {
+  if (editor)
+    return `<div class="add-wrap ${position}"><span data-key="${index}" data-position="${position}">+</span></div>`;
+  else return "";
+};
+
+/**
+ * Converts a value based on its type.
+ */
+const valueAsPerType = (propType, value) => {
+  switch (propType) {
+    case "Number":
+      return Number(value);
+    case "Array":
+    case "Object":
+      return JSON.stringify(value);
+    default:
+      return value;
+  }
+};
+
+/**
+ * Removes spaces and comments from HTML.
+ */
+function noSpaceOrComments(html) {
+  return html
+    .replace(/<!--[\s\S]*?-->/gm, "") // Remove comments
+    .replace(/^(\s+)?|(\s+)?$/gm, "") // Remove leading and trailing whitespace
+    .replace(/\r|\n/g, ""); // Remove trailing newlines
+};
+
+/**
+ * Generates HTML for a section based on metadata and rendered content.
+ */
+function getSectionHTML(metadata, renderedContent) {
+  const element = `story-telling-${metadata.sectionType || "basic"}`;
+  let html = `<${element}`;
+  const properties = Object.keys(CUSTOM_ELEMENTS[element].properties);
+
+  properties.forEach((prop) => {
+    const propType = CUSTOM_ELEMENTS[element].properties[prop];
+    if (metadata[prop]) {
+      html += ` ${prop}='${valueAsPerType(propType, metadata[prop])}'`;
+    }
+  });
+
+  if (renderedContent) {
+    html += ` content='${noSpaceOrComments(renderedContent).replaceAll(
+      "'",
+      '"'
+    )}'`;
+  }
+
+  return `${html}></${element}>`;
+};
+
+/**
+ * Generates the main HTML for a section.
+ */
+function parseSectionHtml(
+  metadata,
+  renderedContent,
+  sectionIndex,
+  isLastSection,
+  currPageId,
+  editor
+) {
+  const position = isLastSection ? "bottom" : "top";
+  const topAddSection = addBtnToSectionHTML(sectionIndex, editor, "top");
+  const bottomAddSection = isLastSection
+    ? addBtnToSectionHTML(sectionIndex, editor, "bottom")
+    : "";
+
+  let sectionHTML = "";
+
+  switch (metadata.sectionType) {
+    case "basic":
+    case "map":
+    case "media":
+    case undefined:
+      sectionHTML = getSectionHTML(metadata, renderedContent);
+      break;
+    default:
+      sectionHTML = getSectionHTML(metadata);
+      break;
+  }
+
+  return `<div class="wrap-main ${
+    metadata.pageId !== currPageId ? "page-hidden" : ""
+  }" id="${
+    metadata.id
+  }" ${position}">${topAddSection}<main>${sectionHTML}</main>${bottomAddSection}</div>`;
+}
 
 /**
  * Extract metadata from a given section using regex.

@@ -1,98 +1,45 @@
 import { LitElement, html } from "lit";
-import * as monaco from "monaco-editor/esm/vs/editor/editor.main";
+import initEditor from "../helpers/editor";
 
+// Define LitElement for the editor
 class StoryTellingEditor extends LitElement {
+  // Define static properties for LitElement
   static properties = {
     markdown: { attribute: "markdown", type: String },
     isNavigation: { attribute: "markdown", type: Boolean },
   };
+
   constructor() {
     super();
+    // Initialize properties
     this.markdown = "";
     this.isNavigation = false;
     this.dragging = false;
     this.resizing = false;
+    // Bind methods to the instance
     this.disableTextSelection = this.disableTextSelection.bind(this);
     this.enableTextSelection = this.enableTextSelection.bind(this);
   }
 
+  // Method to disable text selection
   disableTextSelection() {
     document.body.style.userSelect = "none";
   }
 
+  // Method to enable text selection
   enableTextSelection() {
     document.body.style.userSelect = "";
   }
 
+  // Lifecycle method called after the first update
   firstUpdated() {
+    // Get editor container and resize handle elements
     const editorContainer = document.querySelector(".editor-wrapper");
     const resizeHandle = document.querySelector(".resize-handle");
 
-    editorContainer.addEventListener("mousedown", (e) => {
-      if (e.target === editorContainer) {
-        this.disableTextSelection();
-        this.dragging = true;
-        this.lastX = e.clientX;
-        this.lastY = e.clientY;
-      }
-    });
+    this.editor = initEditor(editorContainer, resizeHandle, this);
 
-    window.addEventListener("mousemove", (e) => {
-      if (this.dragging) {
-        let dx = e.clientX - this.lastX;
-        let dy = e.clientY - this.lastY;
-        let { top, left } = editorContainer.getBoundingClientRect();
-
-        editorContainer.style.top = `${top + dy}px`;
-        editorContainer.style.left = `${left + dx}px`;
-
-        this.lastX = e.clientX;
-        this.lastY = e.clientY;
-      }
-
-      if (this.dragging || this.resizing) {
-        let dx = this.lastX - e.clientX;
-        let dy = e.clientY - this.lastY;
-        let { width, height, left } = editorContainer.getBoundingClientRect();
-
-        editorContainer.style.width = `${width + dx}px`;
-        editorContainer.style.height = `${height + dy}px`;
-        editorContainer.style.left = `${left - dx}px`;
-
-        this.lastX = e.clientX;
-        this.lastY = e.clientY;
-      }
-    });
-
-    window.addEventListener("mouseup", () => {
-      this.enableTextSelection();
-      this.dragging = false;
-      this.resizing = false;
-    });
-
-    // Resize functionality
-    resizeHandle.addEventListener("mousedown", (e) => {
-      e.stopPropagation();
-      this.disableTextSelection();
-      this.resizing = true;
-      this.lastX = e.clientX;
-      this.lastY = e.clientY;
-    });
-
-    this.editor = monaco.editor.create(document.getElementById("editor"), {
-      language: "markdown",
-      theme: "vs",
-      automaticLayout: true,
-      lineNumbersMinChars: 4,
-      mouseWheelZoom: true,
-      fontSize: null,
-      minimap: { enabled: false },
-      wordWrap: false,
-      wrappingIndent: null,
-      value: this.markdown,
-      fontSize: "16px",
-    });
-
+    // Event listener for editor content change
     this.editor.onDidChangeModelContent(() => {
       this.dispatchEvent(
         new CustomEvent("change", {
@@ -104,11 +51,13 @@ class StoryTellingEditor extends LitElement {
     });
   }
 
+  // Method to get the current value of the editor
   getCurrentValue() {
     if (this.editor) return this.editor.getValue();
     else return "";
   }
 
+  // Lifecycle method called when the element is removed from the DOM
   disconnectedCallback() {
     super.disconnectedCallback();
     if (this.editor) {
@@ -116,10 +65,12 @@ class StoryTellingEditor extends LitElement {
     }
   }
 
+  // Override createRenderRoot to use LitElement as the render root
   createRenderRoot() {
     return this;
   }
 
+  // Override render method to define the HTML structure
   render() {
     return html`
       <style>
@@ -132,6 +83,7 @@ class StoryTellingEditor extends LitElement {
     `;
   }
 
+  // Private styling CSS
   #styling = `
     .editor-wrapper {
       padding: 20px;
@@ -169,4 +121,5 @@ class StoryTellingEditor extends LitElement {
   `;
 }
 
+// Define custom element "story-telling-editor"
 customElements.define("story-telling-editor", StoryTellingEditor);

@@ -1,10 +1,6 @@
 // Import necessary modules from 'lit'
 import { html, LitElement } from "lit";
-import {
-  changeMapLayer,
-  changeMediaLayer,
-  renderHtmlString,
-} from "../../helpers";
+import { changeMediaLayer, renderHtmlString } from "../../helpers/render-html";
 
 /**
  * StoryTellingMedia - A LitElement component for rendering media sections.

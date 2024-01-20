@@ -1,9 +1,9 @@
 import { html, LitElement } from "lit";
 import { SAMPLE_COMPONENTS } from "../enums";
 import { when } from "lit/directives/when.js";
-import { getSectionsAsMarkdownArray } from "../helpers";
+import { getSectionsAsMarkdownArray } from "../helpers/misc";
 
-export class StorytellingCustomSection extends LitElement {
+export class StorytellingSampleSection extends LitElement {
   static properties = {
     markdown: { attribute: false, type: String },
   };
@@ -138,4 +138,4 @@ export class StorytellingCustomSection extends LitElement {
     }
   `;
 }
-customElements.define("story-telling-custom-sections", StorytellingCustomSection);
+customElements.define("story-telling-custom-sections", StorytellingSampleSection);

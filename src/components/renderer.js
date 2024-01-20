@@ -1,21 +1,24 @@
 import { html, LitElement } from "lit";
-import { renderHtmlString } from "../helpers";
+import { renderHtmlString } from "../helpers/render-html";
 
+// Define LitElement for rendering storytelling content
 export class StorytellingRenderer extends LitElement {
   static properties = {
     isNavigationAvailable: { attribute: false, type: Boolean },
     htmlStr: { attribute: "html", type: String },
   };
+
   constructor() {
     super();
     this.isNavigationAvailable = false;
     this.htmlStr = null;
   }
-
+  
   createRenderRoot() {
     return this;
   }
 
+  // Override render method to define the HTML structure
   render() {
     return html`
       <style>
@@ -31,6 +34,7 @@ export class StorytellingRenderer extends LitElement {
     `;
   }
 
+  // Private styling CSS
   #styling = `
     .main {
       width: 100%;
@@ -82,4 +86,6 @@ export class StorytellingRenderer extends LitElement {
     }
   `;
 }
+
+// Define custom element "story-telling-renderer"
 customElements.define("story-telling-renderer", StorytellingRenderer);

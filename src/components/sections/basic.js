@@ -1,6 +1,6 @@
 // Import necessary modules from 'lit'
 import { html, LitElement } from "lit";
-import { renderHtmlString } from "../../helpers";
+import { renderHtmlString } from "../../helpers/render-html";
 
 /**
  * StoryTellingBasic - A LitElement component for rendering basic content sections.

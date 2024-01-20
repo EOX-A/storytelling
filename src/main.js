@@ -1,11 +1,11 @@
 import { html, LitElement } from "lit";
 import "@eox/map/dist/eox-map-advanced-layers-and-sources.js";
-import { loadMarkdown, highlightNavigation } from "./helpers";
+import { loadMarkdown, highlightNavigation } from "./helpers/misc";
 import { when } from "lit/directives/when.js";
-import markdownToHtml from "./markdown-to-html";
+import markdownToHtml from "./helpers/markdown-to-html";
 import "./components/navigation";
 import "./components/pagination";
-import "./components/custom-sections";
+import "./components/sample-sections";
 import "./components/editor";
 import "./components/renderer";
 
