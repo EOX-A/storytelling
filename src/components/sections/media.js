@@ -73,7 +73,7 @@ export class StoryTellingMedia extends LitElement {
   #renderMediaItem(url, index) {
     switch (this.mediaTypes[index]) {
       case "img":
-        return html`<img id="media-${this.id}" src="${url}" alt="${this.captions[index]}" height="${this.height}"></img>`;
+        return html`<img id="media-${this.id}" src="${url}" alt="${this.captions?.[index] || ''}" height="${this.height}"></img>`;
       case "iframe":
         return html`<iframe
           id="media-${this.id}"
@@ -170,6 +170,9 @@ export class StoryTellingMedia extends LitElement {
       width: 100%;
       height: 100vh;
       padding: 0rem 0rem;
+    }
+    .media.full img {
+      height: 100vh;
     }
     .media.sidecar {
       width: 100%;

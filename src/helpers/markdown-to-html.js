@@ -24,7 +24,7 @@ function addBtnToSectionHTML(index, editor, position) {
   if (editor)
     return `<div class="add-wrap ${position}"><span data-key="${index}" data-position="${position}">+</span></div>`;
   else return "";
-};
+}
 
 /**
  * Converts a value based on its type.
@@ -49,7 +49,7 @@ function noSpaceOrComments(html) {
     .replace(/<!--[\s\S]*?-->/gm, "") // Remove comments
     .replace(/^(\s+)?|(\s+)?$/gm, "") // Remove leading and trailing whitespace
     .replace(/\r|\n/g, ""); // Remove trailing newlines
-};
+}
 
 /**
  * Generates HTML for a section based on metadata and rendered content.
@@ -74,7 +74,7 @@ function getSectionHTML(metadata, renderedContent) {
   }
 
   return `${html}></${element}>`;
-};
+}
 
 /**
  * Generates the main HTML for a section.
@@ -114,6 +114,13 @@ function parseSectionHtml(
   }" ${position}">${topAddSection}<main>${sectionHTML}</main>${bottomAddSection}</div>`;
 }
 
+function generateRandomAlphaNumeric() {
+  return (
+    String.fromCharCode(65 + Math.floor(Math.random() * 26)) +
+    Math.random().toString(36).substring(2, 14)
+  ).toLowerCase();
+}
+
 /**
  * Extract metadata from a given section using regex.
  * Handles JSON parsing, boolean, and number conversion.
@@ -128,6 +135,8 @@ function getMetaData(section) {
     value = parseMetadataValue(value);
     metadata[metadataMatch[1]] = value;
   }
+
+  if (!metadata.id) metadata.id = generateRandomAlphaNumeric();
 
   return metadata;
 }

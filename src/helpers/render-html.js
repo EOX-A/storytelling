@@ -59,6 +59,8 @@ export function renderHtmlString(htmlString, eventObj) {
     const contentParent = document.querySelector(
       `#${sectionId} .${sectionType}-type-${subType}`
     );
+    if(!contentParent) return;
+    
     contentParent.removeEventListener("wheel", handleScroll);
     setTimeout(
       () => contentParent.addEventListener("wheel", handleScroll),

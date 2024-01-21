@@ -1,5 +1,5 @@
 import { html, LitElement } from "lit";
-import { SAMPLE_COMPONENTS } from "../enums";
+import SAMPLE_COMPONENTS from "../samples";
 import { when } from "lit/directives/when.js";
 import { getSectionsAsMarkdownArray } from "../helpers/misc";
 
@@ -203,39 +203,3 @@ customElements.define(
   "story-telling-custom-sections",
   StorytellingSampleSection
 );
-
-// return html`
-//       <style>
-//         ${this.#styling}
-//       </style>
-//       ${when(
-//         this.#addSection,
-//         () => html`
-//           <div class="modal">
-//             <div class="modal-section">
-//               <h3>Sample Components</h3>
-//               <div class="grid-container">
-//                 ${SAMPLE_COMPONENTS.map(
-//                   (component, index) => html`<div
-//                     class="grid-item"
-//                     @click=${() => this.addComponent(index)}
-//                   >
-//                     <div class="component-icon">Icon ${index + 1}</div>
-//                     <p>${component.name}</p>
-//                   </div>`
-//                 )}
-//               </div>
-//             </div>
-//             <p
-//               style="color: white;font-weight: 600"
-//               @click=${() => {
-//                 this.#addSection = null;
-//                 this.requestUpdate();
-//               }}
-//             >
-//               Close
-//             </p>
-//           </div>
-//         `
-//       )}
-//     `;
