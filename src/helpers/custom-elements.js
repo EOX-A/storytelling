@@ -1,5 +1,5 @@
 // Import necessary elements and components
-import { EOxMap } from "../../../EOxElements/elements/map/main";
+import { EOxMap } from "@eox/map/dist/eox-map.umd.cjs";
 import { EOxLayerControl } from "@eox/layercontrol/dist/eox-layercontrol.umd.cjs";
 import { StoryTellingHero } from "../components/sections/hero";
 import { StoryTellingBasic } from "../components/sections/basic";
