@@ -2,7 +2,7 @@ import { html, LitElement } from "lit";
 import SAMPLE_COMPONENTS from "../samples";
 import { when } from "lit/directives/when.js";
 import { getSectionsAsMarkdownArray } from "../helpers/misc";
-
+console.log(SAMPLE_COMPONENTS[2].components[0].markdown)
 export class StorytellingSampleSection extends LitElement {
   static properties = {
     markdown: { attribute: false, type: String },
