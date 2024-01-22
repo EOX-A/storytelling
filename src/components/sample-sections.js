@@ -31,7 +31,7 @@ export class StorytellingSampleSection extends LitElement {
     this.requestUpdate();
   }
 
-  addSection(e, index, position) {
+  addSection(index, position) {
     this.#addSection = Number(index) + (position === "top" ? 0 : 1);
     this.requestUpdate();
   }
@@ -43,8 +43,8 @@ export class StorytellingSampleSection extends LitElement {
         addList.forEach((add) => {
           const index = add.getAttribute("data-key");
           const position = add.getAttribute("data-position") || "top";
-          add.addEventListener("click", (e) =>
-            this.addSection(e, index, position)
+          add.addEventListener("click", () =>
+            this.addSection(index, position)
           );
         });
       }

@@ -13,7 +13,14 @@ export class StorytellingRenderer extends LitElement {
     this.isNavigationAvailable = false;
     this.htmlStr = null;
   }
-  
+
+  #addFirstSection() {
+    const StoryTellingCustomSectionsEle = document.querySelector(
+      "story-telling-custom-sections"
+    );
+    StoryTellingCustomSectionsEle.addSection(1, top);
+  }
+
   createRenderRoot() {
     return this;
   }
@@ -28,7 +35,12 @@ export class StorytellingRenderer extends LitElement {
         <div class="preview-wrapper row">
           ${this.htmlStr
             ? html`<div>${renderHtmlString(this.htmlStr)}</div>`
-            : html`<div class="empty-preview">No Preview</div>`}
+            : html`<div class="empty-preview">
+                <h6>No Preview</h6>
+                <div @click=${this.#addFirstSection} class="add-first-section">
+                  +
+                </div>
+              </div>`}
         </div>
       </div>
     `;
@@ -57,6 +69,7 @@ export class StorytellingRenderer extends LitElement {
       align-items: center;
       justify-content: center;
       height: 100%;
+      flex-direction: column;
     }
     .wrap-main .add-wrap {
       position: absolute;
@@ -73,7 +86,7 @@ export class StorytellingRenderer extends LitElement {
       top: unset;
       bottom: -10px;
     }
-    .wrap-main .add-wrap span {
+    .wrap-main .add-wrap span, .add-first-section {
       background: white;
       padding: 0px 8.5px;
       border-radius: 100%;
