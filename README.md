@@ -1,3 +1,9 @@
+## Parser and render flow- 
+
+![image](https://github.com/EOX-A/storytelling/assets/10809211/c0d1dd4c-e684-4b29-954d-0198c2fa09ef)
+
+
+
 # Properties to render different sections
 
 
