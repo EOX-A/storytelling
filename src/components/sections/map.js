@@ -148,20 +148,8 @@ export class StoryTellingMap extends LitElement {
       display: none;
       padding: 2rem;
     }
-    .map-content {
-      min-height: 100vh;
-    }
     .order-right {
       order: 2;
-    }
-    .map-content-wrap.tour .map-content {
-      background: white;
-      padding: 1rem;
-      border-radius: 10px;
-      min-height: 30vh;
-      max-height: 30vh;
-      overflow-y: hidden;
-      margin-bottom: calc(100vh);
     }
     .map-content-wrap.sidecar, .map-content-wrap.tour {
       display: block;

@@ -119,20 +119,8 @@ export class StoryTellingMedia extends LitElement {
       display: none;
       padding: 2rem;
     }
-    .media-content {
-      min-height: 100vh;
-    }
     .order-right {
       order: 2;
-    }
-    .media-content-wrap.tour .media-content {
-      background: white;
-      padding: 1rem;
-      border-radius: 10px;
-      min-height: 30vh;
-      max-height: 30vh;
-      overflow-y: hidden;
-      margin-bottom: calc(100vh);
     }
     .media-content-wrap.sidecar, .media-content-wrap.tour {
       display: block;
