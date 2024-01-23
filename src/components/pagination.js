@@ -4,21 +4,21 @@ import { html, LitElement } from "lit";
 export class StorytellingPagination extends LitElement {
   // Define static properties for LitElement
   static properties = {
-    pageIds: { attribute: false, type: Array },
+    numOfSections: { attribute: false, type: Number },
     currentPageIndex: { attribute: false, type: Number },
   };
 
   constructor() {
     super();
     // Initialize properties
-    this.pageIds = [];
+    this.numOfSections = null;
     this.currentPageIndex = 0;
   }
 
   // Handler for page change event
   handelPageChange = (newPageIndex) => {
     // Check if the new page index is within bounds
-    if (newPageIndex >= 0 && newPageIndex < this.pageIds.length) {
+    if (newPageIndex >= 0 && newPageIndex < this.numOfSections) {
       // Update current page index
       this.currentPageIndex = newPageIndex;
 
@@ -44,7 +44,7 @@ export class StorytellingPagination extends LitElement {
     const leftArrowStateClass =
       this.currentPageIndex === 0 ? "disabled" : "enabled";
     const rightArrowStateClass =
-      this.currentPageIndex >= this.pageIds.length - 1 ? "disabled" : "enabled";
+      this.currentPageIndex >= this.numOfSections - 1 ? "disabled" : "enabled";
 
     return html`
       <style>

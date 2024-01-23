@@ -8,7 +8,7 @@ import { changeMapLayer, renderHtmlString } from "../../helpers/render-html";
  * Properties:
  * - [id]: Unique identifier for the map component.
  * - [content]: HTML content for display alongside the map.
- * - [subType]: Type of map display (e.g., 'simple', 'container', 'full', 'sidecar', 'tour', 'slideshow').
+ * - [subType]: Type of map display (e.g., 'scrollytelling', 'container', 'full', 'sidecar', 'tour', 'slideshow').
  * - [center]: Geographic center of the map (eg., latitude, longitude).
  * - [config]: General configuration object for the map. (eg., EOxMap Config - {})
  * - [layers]: Array of layer configurations for the map. (eg., EOxMap Layer - [{}])
@@ -50,7 +50,7 @@ export class StoryTellingMap extends LitElement {
     this.id = null;
     this.content = null;
     this.sectionType = "map";
-    this.subType = "simple";
+    this.subType = "scrollytelling";
     this.center = [0, 0];
     this.config = null;
     this.layers = null;
@@ -178,7 +178,7 @@ export class StoryTellingMap extends LitElement {
       margin: 0rem auto;
       padding: 1rem 0rem;
     }
-    .map.simple {
+    .map.scrollytelling {
       width: 41rem;height: 500px;
     }
     .map.full {

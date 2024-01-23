@@ -1,4 +1,4 @@
-[type]: simple
+[type]: scrollytelling
 [navigations]:[{"hero-section":"Hero","basic-section":"Basic","sidecar":"SidecarSteps","sidecar-layers":"SidecarLayer"}]
 
 ---
@@ -155,7 +155,7 @@ The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for t
 
 ---
 [sectionType]:map
-[subType]:simple
+[subType]:scrollytelling
 [center]:[15,48]
 [layers]:[{"type":"Tile","source":{"type":"OSM"}}]
 [zoom]:7
@@ -179,7 +179,7 @@ The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for t
 
 ---
 [sectionType]:media
-[subType]:simple
+[subType]:scrollytelling
 [mediaTypes]:["img"]
 [urls]:["https://www.gstatic.com/prettyearth/assets/full/14617.jpg"]
 [captions]:["Lore ipsum"]
@@ -195,7 +195,7 @@ The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for t
 
 ---
 [sectionType]:media
-[subType]:simple
+[subType]:scrollytelling
 [mediaTypes]:["iframe"]
 [height]:800px
 [urls]:["https://spacetime.blueskyhq.io/ghg-emissions-fires?admin-levels=2&baseMap=light&data=fires&dataSetSubtype=point&dataSetType=vector&duration=6m&palette=default&pin=-&places=World&scale=quantile&shape-ids=dd0cd186-f7f7-4ced-b1ea-9da6100148fb&temporal=2023-05-15T00_00_00.000Z&timeBucket=1d&visualChoice=heatmap&embed=1&disable=zoom_search_timelapse_time-bucket&freezoBound=0&embedBound=-145.483897,-60.256167,154.878057,81.23915"]

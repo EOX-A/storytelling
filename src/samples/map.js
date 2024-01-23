@@ -17,7 +17,7 @@ const mapContent = `<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
 const sidecarMapLayer = `[{"type":"Tile","properties":{"id":"osm","title":"OpenStreetMap","layerControlExclusive":true},"visible":false,"opacity":0.5,"source":{"type":"OSM"}},{"type":"Tile","properties":{"title":"EOxCloudless2019","id":"EOxCloudless"},"source":{"type":"XYZ","url":"//s2maps-tiles.eu/wmts/1.0.0/s2cloudless-2019_3857/default/g/{z}/{y}/{x}.jpg"}},{"type":"Vector","properties":{"title":"Regions","id":"regions","description":"Ecologicalregionsoftheearth."},"source":{"type":"Vector","url":"https://openlayers.org/data/vector/ecoregions.json","format":"GeoJSON","attributions":"Regions:@openlayers.org"}}]`
 
 const MAP_SIMPLE = `${sectionTypeMap}
-[subType]:simple
+[subType]:scrollytelling
 ${basicMapConfig}
 `;
 

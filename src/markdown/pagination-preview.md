@@ -1,9 +1,7 @@
-[type]: simple
+[type]: pagination
 [navigations]:[{"hero-section":"Hero"},{"basic-section":"Basic","sidecar-layers":"Sidecar Layer"},{"sidecar":"Sidecar Steps"}]
-[pageIds]:["page-1","page-2","page-3"]
 
 ---
-[pageId]:page-1
 [id]:hero-section
 [sectionType]:hero
 [subType]: full
@@ -16,7 +14,6 @@
 [subDescription]:Sub Description
 
 ---
-[pageId]:page-2
 [sectionType]:basic
 [id]:basic-section
 
@@ -31,7 +28,6 @@ PM 2.5 refers to particulate matter with a diameter of **2.5 micrometers and sma
 The current **EPA threshold is 12 micrograms per cubic meter**, 20% higher than the World Health Organization’s recommended limit of **10 micrograms per cubic meter.** Researchers have found that PM 2.5 is harmful at any concentration, and that lowering thresholds even below 10 micrograms per cubic meter could save thousands of lives.[9,10]
 
 ---
-[pageId]:page-3
 [id]:sidecar
 [sectionType]:map
 [subType]:sidecar
@@ -71,7 +67,6 @@ The current **EPA threshold is 12 micrograms per cubic meter**, 20% higher than 
 
 ---
 [id]:sidecar-layers
-[pageId]:page-2
 [sectionType]:map
 [subType]:sidecar
 [center]:[15,48]

@@ -8,7 +8,7 @@ import { changeMediaLayer, renderHtmlString } from "../../helpers/render-html";
  * Properties:
  * - [id]: Unique identifier for the media component.
  * - [content]: HTML content for display alongside the media.
- * - [subType]: Type of media display (e.g., 'simple', 'container', 'full', 'sidecar', 'tour', 'slideshow').
+ * - [subType]: Type of media display (e.g., 'scrollytelling', 'container', 'full', 'sidecar', 'tour', 'slideshow').
  * - [mediaTypes]: Types of media included (e.g., 'iframe', 'img', 'video').
  * - [urls]: Array of URLs for the media content.
  * - [captions]: Array of captions for each media item.
@@ -36,7 +36,7 @@ export class StoryTellingMedia extends LitElement {
     this.id = null;
     this.content = null;
     this.sectionType = "media";
-    this.subType = "simple";
+    this.subType = "scrollytelling";
     this.mediaTypes = null;
     this.urls = null;
     this.captions = null;
@@ -163,7 +163,7 @@ export class StoryTellingMedia extends LitElement {
       margin: 0rem auto;
       padding: 1rem 0rem;
     }
-    .media.simple {
+    .media.scrollytelling {
       width: 41rem;
     }
     .media.full {

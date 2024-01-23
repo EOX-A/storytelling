@@ -116,7 +116,7 @@ export class StoryTelling extends LitElement {
     return html`
       <story-telling-renderer
         .htmlStr=${this.#html}
-        .isNavigationAvailable=${Boolean(this.#storyMetaData.navigations)}
+        .isNavigationAvailable=${Boolean((this.#storyMetaData?.navigations || [])[this.#currentPageIndex])}
       ></story-telling-renderer>
     `;
   }
@@ -124,10 +124,10 @@ export class StoryTelling extends LitElement {
   // Private method to render pagination component
   #renderPagination() {
     return when(
-      this.#storyMetaData.pageIds && this.#currentPageIndex >= 0,
+      this.#storyMetaData.type === "pagination" && this.#currentPageIndex >= 0,
       () => html`
         <story-telling-pagination
-          .pageIds=${this.#storyMetaData.pageIds}
+          .numOfSections=${this.#storyMetaData.numOfSections}
           .currentPageIndex=${this.#currentPageIndex}
           @change=${(e) => {
             this.#currentPageIndex = e.detail.currentPageIndex;

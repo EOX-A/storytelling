@@ -84,8 +84,9 @@ function parseSectionHtml(
   renderedContent,
   sectionIndex,
   isLastSection,
-  currPageId,
-  editor
+  currentPageIndex,
+  editor,
+  viewType
 ) {
   const position = isLastSection ? "bottom" : "top";
   const topAddSection = addBtnToSectionHTML(sectionIndex, editor, "top");
@@ -107,9 +108,10 @@ function parseSectionHtml(
       break;
   }
 
-  return `<div class="wrap-main ${
-    metadata.pageId !== currPageId ? "page-hidden" : ""
-  }" id="${
+  const isPageHidden =
+    viewType === "pagination" && sectionIndex !== currentPageIndex + 1;
+
+  return `<div class="wrap-main ${isPageHidden ? "page-hidden" : ""}" id="${
     metadata.id
   }" ${position}">${topAddSection}<main>${sectionHTML}</main>${bottomAddSection}</div>`;
 }
@@ -180,7 +182,14 @@ function parseJsonLikeValue(value) {
 /**
  * Processes a markdown section to HTML and extracts metadata.
  */
-function getBlockData(section, isLastSection, index, currPageId, editorMode) {
+function getBlockData(
+  section,
+  isLastSection,
+  index,
+  currentPageIndex,
+  editorMode,
+  viewType
+) {
   const meta = getMetaData(section);
   const renderedContent = marked(section);
   const html = parseSectionHtml(
@@ -188,8 +197,9 @@ function getBlockData(section, isLastSection, index, currPageId, editorMode) {
     renderedContent,
     index,
     isLastSection,
-    currPageId,
-    editorMode
+    currentPageIndex,
+    editorMode,
+    viewType
   );
 
   return { meta, html };
@@ -203,8 +213,10 @@ function processMarkdownToHtml(markdown, editorMode, currentPageIndex) {
   let htmlStr = "";
   let sectionMetaData = [];
 
-  const storyMetaData = getMetaData(sections[0]);
-  const currPageId = storyMetaData.pageIds?.[currentPageIndex];
+  const storyMetaData = {
+    ...getMetaData(sections[0]),
+    numOfSections: sections.length - 1,
+  };
 
   sections.forEach((section, index) => {
     if (index > 0) {
@@ -213,8 +225,9 @@ function processMarkdownToHtml(markdown, editorMode, currentPageIndex) {
         section,
         isLastSection,
         index,
-        currPageId,
-        editorMode
+        currentPageIndex,
+        editorMode,
+        storyMetaData.type || "scrollytelling"
       );
 
       htmlStr += blockData.html;
