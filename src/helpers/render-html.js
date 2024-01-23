@@ -46,9 +46,10 @@ export function renderHtmlString(htmlString, eventObj) {
 
       if (currentSection) {
         const index = currentSection.index;
+        const contentEle = currentSection.dom;
 
         if (sectionType === "map")
-          handleMapSection(sectionId, nodeEle, index, steps, layers);
+          handleMapSection(sectionId, nodeEle, contentEle, index, steps, layers);
         else changeMediaLayer(sectionId, sectionType, index);
       }
     }
@@ -98,7 +99,7 @@ export function changeMediaLayer(sectionId, sectionType, index) {
 /**
  * Retrieves the EOxMap element based on section ID and type.
  */
-function getEOxMap(sectionId, sectionType) {
+export function getEOxMap(sectionId, sectionType) {
   return document.querySelector(
     `#${sectionId} eox-map#${sectionType}-${sectionId}`
   );
@@ -107,7 +108,7 @@ function getEOxMap(sectionId, sectionType) {
 /**
  * Changes the map layer visibility based on the current layer configuration.
  */
-export function changeMapLayer(sectionId, currLayer, sectionType) {
+export function changeMapLayer(sectionId, currLayers, sectionType) {
   const EOxMap = getEOxMap(sectionId, sectionType);
 
   EOxMap.map
@@ -115,10 +116,10 @@ export function changeMapLayer(sectionId, currLayer, sectionType) {
     .getArray()
     .forEach((layer) => {
       const layerId = layer.get("id");
-      if (currLayer.includes(layerId)) {
-        const index = currLayer.indexOf(layerId);
+      if (currLayers.includes(layerId)) {
+        const index = currLayers.indexOf(layerId);
         layer.setVisible(true);
-        layer.setZIndex(currLayer.length - index);
+        layer.setZIndex(currLayers.length - index);
       } else {
         layer.setVisible(false);
       }
@@ -128,7 +129,7 @@ export function changeMapLayer(sectionId, currLayer, sectionType) {
 /**
  * Retrieves content children based on section ID and type.
  */
-function getContentChildren(sectionId, sectionType) {
+export function getContentChildren(sectionId) {
   return document.querySelectorAll(`#${sectionId} section-step`);
 }
 
@@ -189,16 +190,19 @@ function processNode(node) {
 /**
  * Handle map section updates based on scrolling.
  */
-function handleMapSection(sectionId, nodeEle, index, steps, layers) {
-  const lat = steps[index][0];
-  const lon = steps[index][1];
-  const zoom = steps[index][2];
+export function handleMapSection(sectionId, mapEle, contentEle, index, steps, layers) {
+  const lat = Number(contentEle.getAttribute("lat") || steps[index][0]);
+  const lon = Number(contentEle.getAttribute("lon") || steps[index][1]);
+  const zoom = Number(contentEle.getAttribute("zoom") || steps[index][2]);
 
-  if (layers) {
-    const currLayer = layers[index];
-    changeMapLayer(sectionId, currLayer, "map");
+  if(lat && lon && zoom) {
+    const propLayers = contentEle.getAttribute("layersVisible")?.split(',').map(item => item.trim())
+    const currLayers = propLayers?.length ? propLayers : layers?.[index] 
+    if (currLayers) {
+      changeMapLayer(sectionId, currLayers, "map");
+    }
+  
+    mapEle.map.getView().setCenter(fromLonLat([lon, lat]));
+    mapEle.map.getView().setZoom(zoom);
   }
-
-  nodeEle.map.getView().setCenter(fromLonLat([lon, lat]));
-  nodeEle.map.getView().setZoom(zoom);
 }

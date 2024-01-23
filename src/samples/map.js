@@ -38,7 +38,7 @@ ${basicMapConfig}
 [sidecarPosition]:right
 [tourVPosition]:middle
 [tourHPosition]:left
-[tourSteps]:[[20.5937,78.9629,5],[-30.5662,130.7488,4],[66.1982,-30.1932,1]]
+[steps]:[[20.5937,78.9629,5],[-30.5662,130.7488,4],[66.1982,-30.1932,1]]
 
 <section-step>
 <h3>India</h3>
@@ -63,8 +63,8 @@ const MAP_SIDECAR = `${sectionTypeMap}
 [zoom]:7
 [preventScroll]:true
 [sidecarPosition]:right
-[sidecarSteps]:[[20.5937,78.9629,5],[-30.5662,130.7488,4],[66.1982,-30.1932,1]]
-[sidecarLayers]:[["regions","EOxCloudless"],["EOxCloudless"],["regions","osm"]]
+[steps]:[[20.5937,78.9629,5],[-30.5662,130.7488,4],[66.1982,-30.1932,1]]
+[layersVisible]:[["regions","EOxCloudless"],["EOxCloudless"],["regions","osm"]]
 
 <section-step>
 <h3>India</h3>

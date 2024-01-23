@@ -1,6 +1,6 @@
 // Import necessary modules from 'lit'
 import { html, LitElement } from "lit";
-import { changeMapLayer, renderHtmlString } from "../../helpers/render-html";
+import { changeMapLayer, getContentChildren, getEOxMap, handleMapSection, renderHtmlString } from "../../helpers/render-html";
 
 /**
  * StoryTellingMap - A LitElement component for rendering map sections.
@@ -17,12 +17,10 @@ import { changeMapLayer, renderHtmlString } from "../../helpers/render-html";
  * - [zoom]: Zoom level of the map.
  * - [controls]: Object defining map controls (e.g., {"zoom":{}}).
  * - [sidecarPosition]: Position of the sidecar content (eg., 'left' or 'right').
- * - [sidecarSteps]: Array of steps for the sidecar display. (eg., [[-28.5682,-129.1632,2],[-51.5662,156.7488,4],[66.1982,-30.1932,1]])
- * - [sidecarLayers]: Array of layer configurations for each sidecar step. (eg., [["regions","WIND"],["WIND"],["regions","NO2"]])
+ * - [steps]: Array of steps for the map display. (eg., [[-28.5682,-129.1632,2],[-51.5662,156.7488,4],[66.1982,-30.1932,1]])
+ * - [layersVisible]: Array of layer configurations for each step. (eg., [["regions","WIND"],["WIND"],["regions","NO2"]])
  * - [tourVPosition]: Vertical position of tour content (eg., 'top', 'middle', 'bottom').
  * - [tourHPosition]: Horizontal position of tour content (eg., 'left', 'center', 'right').
- * - [tourSteps]: Array of steps for the tour display. (eg., [[-28.5682,-129.1632,2],[-51.5662,156.7488,4],[66.1982,-30.1932,1]])
- * - [tourLayers]: Array of layer configurations for each tour step. (eg., [["regions","WIND"],["WIND"],["regions","NO2"]])
  */
 export class StoryTellingMap extends LitElement {
   static properties = {
@@ -37,12 +35,10 @@ export class StoryTellingMap extends LitElement {
     preventScroll: { attribute: false, type: Boolean },
     controls: { attribute: false, type: Object },
     sidecarPosition: { attribute: "sidecar-position", type: String },
-    sidecarSteps: { attribute: false, type: Array },
-    sidecarLayers: { attribute: false, type: Array },
+    steps: { attribute: false, type: Array },
+    layersVisible: { attribute: false, type: Array },
     tourVPosition: { attribute: "tour-v-position", type: String },
     tourHPosition: { attribute: "tour-h-position", type: String },
-    tourSteps: { attribute: false, type: Array },
-    tourLayers: { attribute: false, type: Array },
   };
 
   constructor() {
@@ -58,12 +54,10 @@ export class StoryTellingMap extends LitElement {
     this.zoom = null;
     this.preventScroll = false;
     this.sidecarPosition = "left";
-    this.sidecarSteps = null;
-    this.sidecarLayers = null;
+    this.steps = null;
+    this.layersVisible = null;
     this.tourVPosition = "middle";
     this.tourHPosition = "left";
-    this.tourSteps = null;
-    this.tourLayers = null;
   }
 
   createRenderRoot() {
@@ -77,18 +71,15 @@ export class StoryTellingMap extends LitElement {
 
   // Private method to handle initial map setup
   #initializeMap() {
-    const steps = this.sidecarSteps || this.tourSteps;
-    const layers = this.sidecarLayers || this.tourLayers;
+    const steps = this.steps;
+    const layers = this.layersVisible;
+    const index = 0
 
-    if (steps?.length) {
-      const [lng, lat, zoom] = steps[0];
-      this.center = [lat, lng];
-      this.zoom = zoom;
-    }
+    const mapEle = getEOxMap(this.id, "map")
+    const contentEle = getContentChildren(this.id)[index]
 
-    if (layers?.length) {
-      changeMapLayer(this.id, layers[0], this.sectionType);
-    }
+    if(contentEle || steps)
+    setTimeout(() => handleMapSection(this.id, mapEle, contentEle, index, steps, layers), 300)
   }
 
   // Rendering the HTML template
@@ -120,8 +111,8 @@ export class StoryTellingMap extends LitElement {
     const eventObj = {
       id: this.id,
       subType: this.subType,
-      steps: this.sidecarSteps || this.tourSteps,
-      layers: this.sidecarLayers || this.tourLayers,
+      steps: this.steps,
+      layers: this.layersVisible,
       sectionType: this.sectionType
     }
     return this.subType === "sidecar" || this.subType === "tour"

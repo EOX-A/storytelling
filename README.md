@@ -35,7 +35,7 @@ The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for t
 |---------------------|-----------------------------------------------------------|-----------------------------------------------------------|
 | `id`                | Unique identifier for the section.                        | `map-1`                                                   |
 | `sectionType`       | Type of section to be rendered                            | `map`                                                     |
-| `content`           | HTML content for display alongside the map.               | `<div class="map-content">Anything in between</div>`      |
+| `content`           | HTML content for display alongside the map.               | `<section-step>Anything in between</section-step>`      |
 | `subType`           | Type of map display (e.g., 'simple', 'container', etc.).  | `full`                                                    |
 | `center`            | Geographic center of the map (latitude, longitude).       | `[37.7749, -122.4194]`                                    |
 | `config`            | General configuration object for the map.                 | `{ "mapType": "terrain", "showLabels": true }`            |
@@ -45,12 +45,10 @@ The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for t
 | `zoom`              | Zoom level of the map.                                    | `10`                                                      |
 | `controls`          | Object defining map controls.                             | `{ "zoom": {}, "pan": {} }`                               |
 | `sidecarPosition`   | Position of the sidecar content (left or right).          | `left`                                                    |
-| `sidecarSteps`      | Array of steps for the sidecar display.                   | `[[37.7749, -122.4194, 2], [-34.6118, -58.4173, 4]]`      |
-| `sidecarLayers`     | Array of layer configurations for each sidecar step.      | `[["regions", "WIND"], ["WIND"]]`                         |
+| `steps`      | Array of steps for the map display.                   | `[[37.7749, -122.4194, 2], [-34.6118, -58.4173, 4]]`      |
+| `layersVisible`     | Array of layer configurations for each sidecar step.      | `[["regions", "WIND"], ["WIND"]]`                         |
 | `tourVPosition`     | Vertical position of tour content (top, middle, bottom).  | `middle`                                                  |
 | `tourHPosition`     | Horizontal position of tour content (left, center, right).| `center`                                                  |
-| `tourSteps`         | Array of steps for the tour display.                      | `[[37.7749, -122.4194, 2], [-34.6118, -58.4173, 4]]`      |
-| `tourLayers`        | Array of layer configurations for each tour step.         | `[["regions", "WIND"], ["WIND"]]`                         |
 
 
 ### Example 
@@ -61,6 +59,11 @@ The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for t
 [layers]:[{"type":"Tile","source":{"type":"OSM"}}]
 [zoom]:7
 [preventScroll]:true
+
+// Showing scroll content with - section-step
+<section-step lat="12" lon="32" zoom="3" layers="layer1,layer2">
+    Text here
+<section-step>
 ```
 
 ## Properties to generate `hero`-
@@ -98,7 +101,7 @@ The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for t
 |--------------------|-----------------------------------------------------------------|----------------------------------------------------------------------|
 | `id`               | Unique identifier for the media component.                      | `media-1`                                                          |
 | `sectionType`      | Type of section to be rendered.                                 | `image-gallery`                                                    |
-| `content`          | HTML content for display alongside the media.                   | `Additional information about the media section.`                  |
+| `content`          | HTML content for display alongside the media.                   | `<section-step>Text here </section-step>`                          |
 | `subType`          | Type of media display. (e.g., 'simple', 'container', 'full', 'sidecar', 'tour', 'slideshow')| `full`                                                             |
 | `mediaTypes`       | Types of media included (e.g., 'iframe', 'img', 'video').       | `["img", "video"]`                                                   |
 | `urls`             | Array of URLs for the media content.                            | `["https://example.com/image.jpg", "https://example.com/video.mp4"]` |
@@ -116,4 +119,9 @@ The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for t
 [mediaTypes]:["img"]
 [urls]:["https://www.gstatic.com/prettyearth/assets/full/14617.jpg"]
 [height]:400px
+
+// Showing scroll content with - section-step
+<section-step>
+    Text here
+<section-step>
 ```

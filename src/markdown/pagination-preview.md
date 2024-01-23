@@ -36,7 +36,7 @@ The current **EPA threshold is 12 micrograms per cubic meter**, 20% higher than 
 [zoom]:7
 [preventScroll]:true
 [sidecarPosition]:right
-[sidecarSteps]:[[20.5937,78.9629,5],[-30.5662,130.7488,4],[66.1982,-30.1932,1]]
+[steps]:[[20.5937,78.9629,5],[-30.5662,130.7488,4],[66.1982,-30.1932,1]]
 
 <section-step>
     <h3>India</h3>
@@ -74,8 +74,8 @@ The current **EPA threshold is 12 micrograms per cubic meter**, 20% higher than 
 [zoom]:2
 [preventScroll]:true
 [sidecarPosition]:left
-[sidecarSteps]:[[20.5937,78.9629,5],[-30.5662,130.7488,4],[66.1982,-30.1932,1]]
-[sidecarLayers]:[["regions","WIND"],["WIND"],["regions","osm"]]
+[steps]:[[20.5937,78.9629,5],[-30.5662,130.7488,4],[66.1982,-30.1932,1]]
+[layersVisible]:[["regions","WIND"],["WIND"],["regions","osm"]]
 
 <section-step>
     <h3>India</h3>
