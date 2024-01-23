@@ -244,7 +244,7 @@ function processMarkdownToHtml(markdown, editorMode, currentPageIndex) {
 function purifyDOM(htmlStr) {
   return DOMPurify.sanitize(htmlStr, {
     CUSTOM_ELEMENT_HANDLING: {
-      tagNameCheck: /^eox-|^story-telling-/,
+      tagNameCheck: /^eox-|^story-telling-|^section-step/,
       attributeNameCheck: new RegExp(PROPERTIES_KEYS.join("|")),
       allowCustomizedBuiltInElements: true,
     },

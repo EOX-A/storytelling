@@ -151,7 +151,21 @@ export class StoryTelling extends LitElement {
     );
   }
 
-  #styling = ``;
+  #styling = `
+    section-step {
+      min-height: 100vh;
+      display: block;
+    }
+    div.tour section-step {
+      background: white;
+      padding: 1rem;
+      border-radius: 10px;
+      min-height: 30vh;
+      max-height: 30vh;
+      overflow-y: hidden;
+      margin-bottom: calc(100vh);
+    }
+  `;
 }
 
 // Defining the custom element

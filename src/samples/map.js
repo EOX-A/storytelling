@@ -40,20 +40,20 @@ ${basicMapConfig}
 [tourHPosition]:left
 [tourSteps]:[[20.5937,78.9629,5],[-30.5662,130.7488,4],[66.1982,-30.1932,1]]
 
-<div class="map-content">
+<section-step>
 <h3>India</h3>
 ${mapContent}
-</div>
+</section-step>
 
-<div class="map-content">
+<section-step>
 <h3>Australia</h3>
 ${mapContent}
-</div>
+</section-step>
 
-<div class="map-content">
+<section-step>
 <h3>World</h3>
 ${mapContent}
-</div>
+</section-step>
 `
 
 const MAP_SIDECAR = `${sectionTypeMap}
@@ -66,20 +66,20 @@ const MAP_SIDECAR = `${sectionTypeMap}
 [sidecarSteps]:[[20.5937,78.9629,5],[-30.5662,130.7488,4],[66.1982,-30.1932,1]]
 [sidecarLayers]:[["regions","EOxCloudless"],["EOxCloudless"],["regions","osm"]]
 
-<div class="map-content">
+<section-step>
 <h3>India</h3>
 ${mapContent}
-</div>
+</section-step>
 
-<div class="map-content">
+<section-step>
 <h3>Australia</h3>
 ${mapContent}
-</div>
+</section-step>
 
-<div class="map-content">
+<section-step>
 <h3>World</h3>
 ${mapContent}
-</div>
+</section-step>
 `
 
 export { MAP_SIMPLE, MAP_CONTAINER, MAP_FULL, MAP_SIDECAR, MAP_TOUR };

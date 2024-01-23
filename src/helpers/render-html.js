@@ -24,7 +24,7 @@ export function renderHtmlString(htmlString, eventObj) {
       sectionType === "map"
         ? getEOxMap(sectionId, sectionType)
         : getMedia(sectionId, sectionType);
-    const contentChildren = getContentChildren(sectionId, sectionType);
+    const contentChildren = getContentChildren(sectionId);
     const scrollY = window.scrollY;
     let newCurrentSection = null;
 
@@ -129,7 +129,7 @@ export function changeMapLayer(sectionId, currLayer, sectionType) {
  * Retrieves content children based on section ID and type.
  */
 function getContentChildren(sectionId, sectionType) {
-  return document.querySelectorAll(`#${sectionId} .${sectionType}-content`);
+  return document.querySelectorAll(`#${sectionId} section-step`);
 }
 
 /**
