@@ -15,7 +15,7 @@ export class StorytellingPagination extends LitElement {
     this.currentPageIndex = 0;
   }
 
-  // Handler for page change event 
+  // Handler for page change event
   handelPageChange = (newPageIndex) => {
     // Check if the new page index is within bounds
     if (newPageIndex >= 0 && newPageIndex < this.numOfSections) {
@@ -28,7 +28,7 @@ export class StorytellingPagination extends LitElement {
           detail: { currentPageIndex: newPageIndex },
           bubbles: true,
           composed: true,
-        })
+        }),
       );
 
       window.scrollTo({ top: 0 });

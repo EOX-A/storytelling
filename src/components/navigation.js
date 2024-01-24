@@ -46,17 +46,16 @@ export class StorytellingNavigation extends LitElement {
                 ${Object.keys(currentNavigation)
                   .slice(0, 5)
                   .map(
-                    (id) =>
-                      html`
-                        <li class="nav-${id}">
-                          <a href="#${id}">${currentNavigation[id]}</a>
-                        </li>
-                      `
+                    (id) => html`
+                      <li class="nav-${id}">
+                        <a href="#${id}">${currentNavigation[id]}</a>
+                      </li>
+                    `,
                   )}
               </ul>
             </div>
           </div>
-        `
+        `,
       )}
     `;
   }

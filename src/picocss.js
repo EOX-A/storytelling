@@ -2647,6 +2647,6 @@ textarea,
 }
 
 /*# sourceMappingURL=pico.css.map */
-`
+`;
 
-export default picoCSS
+export default picoCSS;

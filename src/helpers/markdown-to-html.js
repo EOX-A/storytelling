@@ -69,7 +69,7 @@ function getSectionHTML(metadata, renderedContent) {
   if (renderedContent) {
     html += ` content='${noSpaceOrComments(renderedContent).replaceAll(
       "'",
-      '"'
+      '"',
     )}'`;
   }
 
@@ -86,7 +86,7 @@ function parseSectionHtml(
   isLastSection,
   currentPageIndex,
   editor,
-  viewType
+  viewType,
 ) {
   const position = isLastSection ? "bottom" : "top";
   const topAddSection = addBtnToSectionHTML(sectionIndex, editor, "top");
@@ -188,7 +188,7 @@ function getBlockData(
   index,
   currentPageIndex,
   editorMode,
-  viewType
+  viewType,
 ) {
   const meta = getMetaData(section);
   const renderedContent = marked(section);
@@ -199,7 +199,7 @@ function getBlockData(
     isLastSection,
     currentPageIndex,
     editorMode,
-    viewType
+    viewType,
   );
 
   return { meta, html };
@@ -227,7 +227,7 @@ function processMarkdownToHtml(markdown, editorMode, currentPageIndex) {
         index,
         currentPageIndex,
         editorMode,
-        storyMetaData.type || "scrollytelling"
+        storyMetaData.type || "scrollytelling",
       );
 
       htmlStr += blockData.html;
@@ -259,7 +259,7 @@ export default function markdownToHtml(editorMode, markdown, currentPageIndex) {
   const { htmlStr, storyMetaData, sectionMetaData } = processMarkdownToHtml(
     markdown || "",
     editorMode,
-    currentPageIndex
+    currentPageIndex,
   );
   const processedHtml = purifyDOM(htmlStr);
   return { storyMetaData, processedHtml, sectionMetaData };

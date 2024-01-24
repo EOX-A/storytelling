@@ -33,7 +33,10 @@ export function renderHtmlString(htmlString, eventObj) {
       const sectionTop = rect.top + window.scrollY;
       const sectionBottom = sectionTop + rect.height;
 
-      if (scrollY >= sectionTop && scrollY < sectionBottom) {
+      const threshold =
+        sectionTop + rect.height * (subType === "sidecar" ? -0.3 : -2);
+
+      if (scrollY >= threshold && scrollY < sectionBottom) {
         newCurrentSection = {
           index: key,
           dom: content,
@@ -49,7 +52,14 @@ export function renderHtmlString(htmlString, eventObj) {
         const contentEle = currentSection.dom;
 
         if (sectionType === "map")
-          handleMapSection(sectionId, nodeEle, contentEle, index, steps, layers);
+          handleMapSection(
+            sectionId,
+            nodeEle,
+            contentEle,
+            index,
+            steps,
+            layers,
+          );
         else changeMediaLayer(sectionId, sectionType, index);
       }
     }
@@ -58,14 +68,14 @@ export function renderHtmlString(htmlString, eventObj) {
   // Set up event handling after a delay
   setTimeout(() => {
     const contentParent = document.querySelector(
-      `#${sectionId} .${sectionType}-type-${subType}`
+      `#${sectionId} .${sectionType}-type-${subType}`,
     );
-    if(!contentParent) return;
-    
+    if (!contentParent) return;
+
     contentParent.removeEventListener("wheel", handleScroll);
     setTimeout(
       () => contentParent.addEventListener("wheel", handleScroll),
-      1000
+      1000,
     );
   }, 500);
 
@@ -77,7 +87,7 @@ export function renderHtmlString(htmlString, eventObj) {
  */
 function getMedia(sectionId, sectionType) {
   return document.querySelectorAll(
-    `#${sectionId} #${sectionType}-${sectionId}`
+    `#${sectionId} #${sectionType}-${sectionId}`,
   );
 }
 
@@ -101,7 +111,7 @@ export function changeMediaLayer(sectionId, sectionType, index) {
  */
 export function getEOxMap(sectionId, sectionType) {
   return document.querySelector(
-    `#${sectionId} eox-map#${sectionType}-${sectionId}`
+    `#${sectionId} eox-map#${sectionType}-${sectionId}`,
   );
 }
 
@@ -190,18 +200,28 @@ function processNode(node) {
 /**
  * Handle map section updates based on scrolling.
  */
-export function handleMapSection(sectionId, mapEle, contentEle, index, steps, layers) {
+export function handleMapSection(
+  sectionId,
+  mapEle,
+  contentEle,
+  index,
+  steps,
+  layers,
+) {
   const lat = Number(contentEle.getAttribute("lat") || steps[index][0]);
   const lon = Number(contentEle.getAttribute("lon") || steps[index][1]);
   const zoom = Number(contentEle.getAttribute("zoom") || steps[index][2]);
 
-  if(lat && lon && zoom) {
-    const propLayers = contentEle.getAttribute("layersVisible")?.split(',').map(item => item.trim())
-    const currLayers = propLayers?.length ? propLayers : layers?.[index] 
+  if (lat && lon && zoom) {
+    const propLayers = contentEle
+      .getAttribute("layersVisible")
+      ?.split(",")
+      .map((item) => item.trim());
+    const currLayers = propLayers?.length ? propLayers : layers?.[index];
     if (currLayers) {
       changeMapLayer(sectionId, currLayers, "map");
     }
-  
+
     mapEle.map.getView().setCenter(fromLonLat([lon, lat]));
     mapEle.map.getView().setZoom(zoom);
   }

@@ -38,14 +38,14 @@ export class StoryTelling extends LitElement {
     const { storyMetaData, processedHtml } = markdownToHtml(
       this.editorMode,
       markdown,
-      this.#currentPageIndex
+      this.#currentPageIndex,
     );
     this.#html = processedHtml;
     this.#storyMetaData = storyMetaData;
     setTimeout(() => highlightNavigation(), 400);
     this.requestUpdate();
     this.dispatchEvent(
-      new CustomEvent("change", { bubbles: true, composed: true })
+      new CustomEvent("change", { bubbles: true, composed: true }),
     );
   }
 
@@ -93,7 +93,7 @@ export class StoryTelling extends LitElement {
           .navigations=${this.#storyMetaData.navigations}
           .currentPageIndex=${this.#currentPageIndex}
         ></story-telling-navigation>
-      `
+      `,
     );
   }
 
@@ -107,16 +107,18 @@ export class StoryTelling extends LitElement {
           .isNavigation=${Boolean(this.#storyMetaData.navigations)}
           @change=${(e) => e.detail && this.#handleMarkDown(e.detail.markdown)}
         ></story-telling-editor>
-      `
+      `,
     );
   }
 
   // Private method to render html renderer component
   #renderHTMLRenderer() {
-    const isNavigationAvailable = Boolean((this.#storyMetaData?.navigations || [])[this.#currentPageIndex])
+    const isNavigationAvailable = Boolean(
+      (this.#storyMetaData?.navigations || [])[this.#currentPageIndex],
+    );
     return html`
       <story-telling-renderer
-        class="${isNavigationAvailable ? 'navigation-enabled' : ''}"
+        class="${isNavigationAvailable ? "navigation-enabled" : ""}"
         .htmlStr=${this.#html}
       ></story-telling-renderer>
     `;
@@ -135,7 +137,7 @@ export class StoryTelling extends LitElement {
             if (e.detail) this.#handleMarkDown(this.markdown);
           }}
         ></story-telling-pagination>
-      `
+      `,
     );
   }
 
@@ -148,7 +150,7 @@ export class StoryTelling extends LitElement {
           .markdown=${this.markdown}
           @change=${(e) => e.detail && this.#handleMarkDown(e.detail.markdown)}
         ></story-telling-custom-sections>
-      `
+      `,
     );
   }
 

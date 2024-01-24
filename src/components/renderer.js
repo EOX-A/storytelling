@@ -14,7 +14,7 @@ export class StorytellingRenderer extends LitElement {
 
   #addFirstSection() {
     const StoryTellingCustomSectionsEle = document.querySelector(
-      "story-telling-custom-sections"
+      "story-telling-custom-sections",
     );
     StoryTellingCustomSectionsEle.addSection(1, top);
   }
@@ -63,14 +63,11 @@ export class StorytellingRenderer extends LitElement {
     .page-hidden {
       display: none;
     }
-    .extra-padding {
-      // padding-top: 60px;
-    }
     .empty-preview {
       display: flex;
       align-items: center;
       justify-content: center;
-      height: 100%;
+      height: 100vh;
       flex-direction: column;
     }
     .wrap-main .add-wrap {

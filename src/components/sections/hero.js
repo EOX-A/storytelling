@@ -1,4 +1,4 @@
-import { html, LitElement } from 'lit';
+import { html, LitElement } from "lit";
 
 /**
  * StoryTellingHero - A LitElement component for rendering a hero section.
@@ -15,26 +15,26 @@ import { html, LitElement } from 'lit';
  */
 export class StoryTellingHero extends LitElement {
   static properties = {
-    subType: { attribute: 'sub-type', type: String },
-    vPosition: { attribute: 'v-position', type: String },
-    hPosition: { attribute: 'h-position', type: String },
-    img: { attribute: 'img', type: String },
-    imgAlt: { attribute: 'img-alt', type: String },
-    title: { attribute: 'title', type: String },
-    description: { attribute: 'description', type: String },
-    subDescription: { attribute: 'subDescription', type: String },
+    subType: { attribute: "sub-type", type: String },
+    vPosition: { attribute: "v-position", type: String },
+    hPosition: { attribute: "h-position", type: String },
+    img: { attribute: "img", type: String },
+    imgAlt: { attribute: "img-alt", type: String },
+    title: { attribute: "title", type: String },
+    description: { attribute: "description", type: String },
+    subDescription: { attribute: "subDescription", type: String },
   };
 
   constructor() {
     super();
-    this.subType = 'full';
-    this.vPosition = 'middle';
-    this.hPosition = 'center';
-    this.img = 'https://www.gstatic.com/prettyearth/assets/full/14617.jpg';
-    this.imgAlt = '';
-    this.title = '';
-    this.description = '';
-    this.subDescription = '';
+    this.subType = "full";
+    this.vPosition = "middle";
+    this.hPosition = "center";
+    this.img = "https://www.gstatic.com/prettyearth/assets/full/14617.jpg";
+    this.imgAlt = "";
+    this.title = "";
+    this.description = "";
+    this.subDescription = "";
   }
 
   // Overriding LitElement's method to use light DOM
@@ -51,7 +51,10 @@ export class StoryTellingHero extends LitElement {
       <div class="hero hero-${this.subType}">
         <img class="hero-img" src=${this.img} alt=${this.imgAlt} />
         <div class="hero-overlay"></div>
-        <div class="hero-content hero-${this.hPosition} hero-${this.vPosition} container">
+        <div
+          class="hero-content hero-${this.hPosition} hero-${this
+            .vPosition} container"
+        >
           <h1 class="title">${this.title}</h1>
           <p class="description">${this.description}</p>
           <p class="sub-description">${this.subDescription}</p>
@@ -99,10 +102,13 @@ export class StoryTellingHero extends LitElement {
     .hero-content h1,
     .hero-content p {
       color: white;
+      margin-bottom: 0rem;
     }
     .hero-content p.description {
       font-size: 1.25rem;
       font-weight: 400;
+      margin-bottom: 0rem;
+      margin-top: 0.2rem;
     }
     .hero-content p.sub-description {
       font-size: 0.75rem;
@@ -133,4 +139,4 @@ export class StoryTellingHero extends LitElement {
 }
 
 // Define the custom element
-customElements.define('story-telling-hero', StoryTellingHero);
+customElements.define("story-telling-hero", StoryTellingHero);

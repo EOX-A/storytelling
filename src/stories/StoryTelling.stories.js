@@ -1,6 +1,6 @@
 import { StoryTelling } from "./StoryTelling";
-import scrollytellingPreviewMarkdown from "../markdown/scrollytelling-preview.md?raw"
-import paginationPreviewMarkdown from "../markdown/pagination-preview.md?raw"
+import scrollytellingPreviewMarkdown from "../markdown/scrollytelling-preview.md?raw";
+import paginationPreviewMarkdown from "../markdown/pagination-preview.md?raw";
 
 export default {
   title: "Module",
@@ -10,7 +10,7 @@ export default {
 export const ScrollyTellingPreview = {
   args: {
     editorMode: false,
-    markdown: scrollytellingPreviewMarkdown
+    markdown: scrollytellingPreviewMarkdown,
   },
   render: (args) => StoryTelling(args),
 };
@@ -18,7 +18,7 @@ export const ScrollyTellingPreview = {
 export const PaginationPreview = {
   args: {
     editorMode: false,
-    markdown: paginationPreviewMarkdown
+    markdown: paginationPreviewMarkdown,
   },
   render: (args) => StoryTelling(args),
 };
@@ -42,7 +42,7 @@ export const BlankPreview = {
 export const MarkdownAsURL = {
   args: {
     editorMode: true,
-    url: "https://raw.githubusercontent.com/EOX-A/storytelling/536f06b6567c1f83ad03f5c8bcff21da727a3f58/public/scrollytelling-preview.md"
+    url: `${window.location.origin}/scrollytelling-preview.md`,
   },
   render: (args) => StoryTelling(args),
 };

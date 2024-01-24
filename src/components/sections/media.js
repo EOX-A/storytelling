@@ -70,8 +70,8 @@ export class StoryTellingMedia extends LitElement {
           this.#renderMediaItem(
             url,
             this.mediaTypes?.[index],
-            this.captions?.[index]
-          )
+            this.captions?.[index],
+          ),
         )}
       </div>
     `;

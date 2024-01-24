@@ -12,9 +12,9 @@ const mapContent = `<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-`
+`;
 
-const sidecarMapLayer = `[{"type":"Tile","properties":{"id":"osm","title":"OpenStreetMap","layerControlExclusive":true},"visible":false,"opacity":0.5,"source":{"type":"OSM"}},{"type":"Tile","properties":{"title":"EOxCloudless2019","id":"EOxCloudless"},"source":{"type":"XYZ","url":"//s2maps-tiles.eu/wmts/1.0.0/s2cloudless-2019_3857/default/g/{z}/{y}/{x}.jpg"}},{"type":"Vector","properties":{"title":"Regions","id":"regions","description":"Ecologicalregionsoftheearth."},"source":{"type":"Vector","url":"https://openlayers.org/data/vector/ecoregions.json","format":"GeoJSON","attributions":"Regions:@openlayers.org"}}]`
+const sidecarMapLayer = `[{"type":"Tile","properties":{"id":"osm","title":"OpenStreetMap","layerControlExclusive":true},"visible":false,"opacity":0.5,"source":{"type":"OSM"}},{"type":"Tile","properties":{"title":"EOxCloudless2019","id":"EOxCloudless"},"source":{"type":"XYZ","url":"//s2maps-tiles.eu/wmts/1.0.0/s2cloudless-2019_3857/default/g/{z}/{y}/{x}.jpg"}},{"type":"Vector","properties":{"title":"Regions","id":"regions","description":"Ecologicalregionsoftheearth."},"source":{"type":"Vector","url":"https://openlayers.org/data/vector/ecoregions.json","format":"GeoJSON","attributions":"Regions:@openlayers.org"}}]`;
 
 const MAP_SIMPLE = `<!--
     ${sectionTypeMap}
@@ -29,7 +29,6 @@ const MAP_CONTAINER = `<!--
     ${basicMapConfig}
 -->
 `;
-
 
 const MAP_FULL = `<!--
     ${sectionTypeMap}
@@ -62,7 +61,7 @@ const MAP_TOUR = `<!--
     <h3>World</h3>
     ${mapContent}
 </section-step>
-`
+`;
 
 const MAP_SIDECAR = `<!--
     ${sectionTypeMap}
@@ -90,6 +89,6 @@ const MAP_SIDECAR = `<!--
     <h3>World</h3>
     ${mapContent}
 </section-step>
-`
+`;
 
 export { MAP_SIMPLE, MAP_CONTAINER, MAP_FULL, MAP_SIDECAR, MAP_TOUR };

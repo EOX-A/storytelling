@@ -1,6 +1,12 @@
 // Import necessary modules from 'lit'
 import { html, LitElement } from "lit";
-import { changeMapLayer, getContentChildren, getEOxMap, handleMapSection, renderHtmlString } from "../../helpers/render-html";
+import {
+  changeMapLayer,
+  getContentChildren,
+  getEOxMap,
+  handleMapSection,
+  renderHtmlString,
+} from "../../helpers/render-html";
 
 /**
  * StoryTellingMap - A LitElement component for rendering map sections.
@@ -73,13 +79,17 @@ export class StoryTellingMap extends LitElement {
   #initializeMap() {
     const steps = this.steps;
     const layers = this.layersVisible;
-    const index = 0
+    const index = 0;
 
-    const mapEle = getEOxMap(this.id, "map")
-    const contentEle = getContentChildren(this.id)[index]
+    const mapEle = getEOxMap(this.id, "map");
+    const contentEle = getContentChildren(this.id)[index];
 
-    if(contentEle || steps)
-    setTimeout(() => handleMapSection(this.id, mapEle, contentEle, index, steps, layers), 300)
+    if (contentEle || steps)
+      setTimeout(
+        () =>
+          handleMapSection(this.id, mapEle, contentEle, index, steps, layers),
+        300,
+      );
   }
 
   // Rendering the HTML template
@@ -113,8 +123,8 @@ export class StoryTellingMap extends LitElement {
       subType: this.subType,
       steps: this.steps,
       layers: this.layersVisible,
-      sectionType: this.sectionType
-    }
+      sectionType: this.sectionType,
+    };
     return this.subType === "sidecar" || this.subType === "tour"
       ? html`
           <div class="${mapContentClass}">

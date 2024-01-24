@@ -17,7 +17,7 @@ export class StorytellingSampleSection extends LitElement {
     sections.splice(
       this.#addSection,
       0,
-      SAMPLE_COMPONENTS[typeIndex].components[index].markdown
+      SAMPLE_COMPONENTS[typeIndex].components[index].markdown,
     );
     const markdown = sections.join("\n---\n");
     this.#addSection = null;
@@ -26,7 +26,7 @@ export class StorytellingSampleSection extends LitElement {
         detail: { markdown: markdown },
         bubbles: true,
         composed: true,
-      })
+      }),
     );
     this.requestUpdate();
   }
@@ -43,9 +43,7 @@ export class StorytellingSampleSection extends LitElement {
         addList.forEach((add) => {
           const index = add.getAttribute("data-key");
           const position = add.getAttribute("data-position") || "top";
-          add.addEventListener("click", () =>
-            this.addSection(index, position)
-          );
+          add.addEventListener("click", () => this.addSection(index, position));
         });
       }
     }, 200);
@@ -79,22 +77,25 @@ export class StorytellingSampleSection extends LitElement {
                           (component, index) => html`
                             <div
                               class="grid-item"
-                              @click=${() => this.addComponent(index, typeIndex)}
+                              @click=${() =>
+                                this.addComponent(index, typeIndex)}
                               id="${type.name}-${index}"
                             >
                               <icon></icon>
                               <p>${component.name}</p>
                             </div>
                             <style>
-                              .modal-section #${type.name}-${index} icon::before {
+                              .modal-section
+                                #${type.name}-${index}
+                                icon::before {
                                 content: url("${component.icon}");
                               }
                             </style>
-                          `
+                          `,
                         )}
                       </div>
                     </div>
-                  `
+                  `,
                 )}
               </div>
             </div>
@@ -108,7 +109,7 @@ export class StorytellingSampleSection extends LitElement {
               Close
             </p>
           </div>
-        `
+        `,
       )}
     `;
   }
@@ -200,5 +201,5 @@ export class StorytellingSampleSection extends LitElement {
 }
 customElements.define(
   "story-telling-custom-sections",
-  StorytellingSampleSection
+  StorytellingSampleSection,
 );

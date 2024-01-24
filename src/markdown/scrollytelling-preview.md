@@ -4,6 +4,7 @@
 -->
 
 ---
+
 <!--
     [id]:hero-section
     [sectionType]:hero
@@ -18,6 +19,7 @@
 -->
 
 ---
+
 <!--
     [sectionType]:basic
     [id]:basic-section
@@ -32,6 +34,7 @@ Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots 
 The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested. **Sections 1.10.32 and 1.10.33** from "de Finibus Bonorum et Malorum" by Cicero are also reproduced in their exact original form, accompanied by English versions from the 1914 translation by H. Rackham.
 
 ---
+
 <!--
     [id]:sidecar
     [sectionType]:map
@@ -71,6 +74,7 @@ The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for t
 </section-step>
 
 ---
+
 <!--
     [id]:sidecar-layers
     [sectionType]:map
@@ -111,8 +115,8 @@ The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for t
     <p>The current EPA threshold is 12 micrograms per cubic meter, 20% higher than the World Health Organization’s recommended limit of 10 micrograms per cubic meter. Researchers have found that PM 2.5 is harmful at any concentration, and that lowering thresholds even below 10 micrograms per cubic meter could save thousands of lives.[9,10]</p>
 </section-step>
 
-
 ---
+
 <!--
     [id]:tour
     [sectionType]:map
@@ -154,8 +158,8 @@ The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for t
     <p>The current EPA threshold is 12 micrograms per cubic meter, 20% higher than the World Health Organization’s recommended limit of 10 micrograms per cubic meter. Researchers have found that PM 2.5 is harmful at any concentration, and that lowering thresholds even below 10 micrograms per cubic meter could save thousands of lives.[9,10]</p>
 </section-step>
 
-
 ---
+
 <!--
     [sectionType]:map
     [subType]:full
@@ -167,6 +171,7 @@ The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for t
 -->
 
 ---
+
 <!--
     [sectionType]:map
     [subType]:scrollytelling
@@ -177,6 +182,7 @@ The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for t
 -->
 
 ---
+
 <!--
     [sectionType]:map
     [subType]:container
@@ -187,6 +193,7 @@ The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for t
 -->
 
 ---
+
 <!--
     [sectionType]:media
     [subType]:container
@@ -197,6 +204,7 @@ The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for t
 -->
 
 ---
+
 <!--
     [sectionType]:media
     [subType]:scrollytelling
@@ -207,6 +215,7 @@ The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for t
 -->
 
 ---
+
 <!--
     [sectionType]:media
     [subType]:container
@@ -217,6 +226,7 @@ The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for t
 -->
 
 ---
+
 <!--
     [sectionType]:media
     [subType]:scrollytelling
@@ -226,8 +236,8 @@ The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for t
     [captions]:["Loremipsum"]
 -->
 
-
 ---
+
 <!--
     [id]:media-sidecar
     [sectionType]:media
@@ -263,6 +273,7 @@ The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for t
 </section-step>
 
 ---
+
 <!--
     [id]:media-tour
     [sectionType]:media

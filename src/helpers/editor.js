@@ -14,7 +14,7 @@ function enableTextSelection() {
 function handleEditorContainerMouseDown(
   e,
   editorContainer,
-  StoryTellingEditor
+  StoryTellingEditor,
 ) {
   if (e.target === editorContainer) {
     disableTextSelection();
@@ -88,20 +88,20 @@ function createMonacoEditor(StoryTellingEditor) {
 export default function initEditor(
   editorContainer,
   resizeHandle,
-  StoryTellingEditor
+  StoryTellingEditor,
 ) {
   editorContainer.addEventListener("mousedown", (e) =>
-    handleEditorContainerMouseDown(e, editorContainer, StoryTellingEditor)
+    handleEditorContainerMouseDown(e, editorContainer, StoryTellingEditor),
   );
 
   window.addEventListener("mousemove", (e) =>
-    handleMouseMove(e, editorContainer, StoryTellingEditor)
+    handleMouseMove(e, editorContainer, StoryTellingEditor),
   );
 
   window.addEventListener("mouseup", () => handleMouseUp(StoryTellingEditor));
 
   resizeHandle.addEventListener("mousedown", (e) =>
-    handleResizeHandleMouseDown(e, StoryTellingEditor)
+    handleResizeHandleMouseDown(e, StoryTellingEditor),
   );
 
   return createMonacoEditor(StoryTellingEditor);
