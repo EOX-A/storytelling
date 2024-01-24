@@ -34,7 +34,7 @@ export const Editor = {
 export const BlankPreview = {
   args: {
     editorMode: true,
-    markdown: "[type]: scrollytelling",
+    markdown: `[type]: scrollytelling`,
   },
   render: (args) => StoryTelling(args),
 };

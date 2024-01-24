@@ -16,69 +16,79 @@ const mapContent = `<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
 
 const sidecarMapLayer = `[{"type":"Tile","properties":{"id":"osm","title":"OpenStreetMap","layerControlExclusive":true},"visible":false,"opacity":0.5,"source":{"type":"OSM"}},{"type":"Tile","properties":{"title":"EOxCloudless2019","id":"EOxCloudless"},"source":{"type":"XYZ","url":"//s2maps-tiles.eu/wmts/1.0.0/s2cloudless-2019_3857/default/g/{z}/{y}/{x}.jpg"}},{"type":"Vector","properties":{"title":"Regions","id":"regions","description":"Ecologicalregionsoftheearth."},"source":{"type":"Vector","url":"https://openlayers.org/data/vector/ecoregions.json","format":"GeoJSON","attributions":"Regions:@openlayers.org"}}]`
 
-const MAP_SIMPLE = `${sectionTypeMap}
-[subType]:scrollytelling
-${basicMapConfig}
+const MAP_SIMPLE = `<!--
+    ${sectionTypeMap}
+    [subType]:scrollytelling
+    ${basicMapConfig}
+-->
 `;
 
-const MAP_CONTAINER = `${sectionTypeMap}
-[subType]:container
-${basicMapConfig}
+const MAP_CONTAINER = `<!--
+    ${sectionTypeMap}
+    [subType]:container
+    ${basicMapConfig}
+-->
 `;
 
 
-const MAP_FULL = `${sectionTypeMap}
-[subType]:full
-${basicMapConfig}
+const MAP_FULL = `<!--
+    ${sectionTypeMap}
+    [subType]:full
+    ${basicMapConfig}
+-->
 `;
 
-const MAP_TOUR = `${sectionTypeMap}
-[subType]:tour
-${basicMapConfig}
-[sidecarPosition]:right
-[tourVPosition]:middle
-[tourHPosition]:left
-[steps]:[[20.5937,78.9629,5],[-30.5662,130.7488,4],[66.1982,-30.1932,1]]
+const MAP_TOUR = `<!--
+    ${sectionTypeMap}
+    [subType]:tour
+    ${basicMapConfig}
+    [sidecarPosition]:right
+    [tourVPosition]:middle
+    [tourHPosition]:left
+    [steps]:[[20.5937,78.9629,5],[-30.5662,130.7488,4],[66.1982,-30.1932,1]]
+-->
 
 <section-step>
-<h3>India</h3>
-${mapContent}
+    <h3>India</h3>
+    ${mapContent}
 </section-step>
 
 <section-step>
-<h3>Australia</h3>
-${mapContent}
+    <h3>Australia</h3>
+    ${mapContent}
 </section-step>
 
 <section-step>
-<h3>World</h3>
-${mapContent}
+    <h3>World</h3>
+    ${mapContent}
 </section-step>
 `
 
-const MAP_SIDECAR = `${sectionTypeMap}
-[subType]:sidecar
-[center]:[15,48]
-[layers]:${sidecarMapLayer}
-[zoom]:7
-[preventScroll]:true
-[sidecarPosition]:right
-[steps]:[[20.5937,78.9629,5],[-30.5662,130.7488,4],[66.1982,-30.1932,1]]
-[layersVisible]:[["regions","EOxCloudless"],["EOxCloudless"],["regions","osm"]]
+const MAP_SIDECAR = `<!--
+    ${sectionTypeMap}
+    [subType]:sidecar
+    [center]:[15,48]
+    [layers]:${sidecarMapLayer}
+    [zoom]:7
+    [preventScroll]:true
+    [sidecarPosition]:right
+    [steps]:[[20.5937,78.9629,5],[-30.5662,130.7488,4],[66.1982,-30.1932,1]]
+    [layersVisible]:[["regions","EOxCloudless"],["EOxCloudless"],["regions","osm"]]
+-->
 
 <section-step>
-<h3>India</h3>
-${mapContent}
+    <h3>India</h3>
+    ${mapContent}
 </section-step>
 
 <section-step>
-<h3>Australia</h3>
-${mapContent}
+    <h3>Australia</h3>
+    ${mapContent}
 </section-step>
 
 <section-step>
-<h3>World</h3>
-${mapContent}
+    <h3>World</h3>
+    ${mapContent}
 </section-step>
 `
 
