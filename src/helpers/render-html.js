@@ -67,7 +67,7 @@ export function renderHtmlString(htmlString, eventObj) {
       () => contentParent.addEventListener("wheel", handleScroll),
       1000
     );
-  }, 200);
+  }, 500);
 
   return dom;
 }

@@ -121,7 +121,7 @@ The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for t
 [height]:400px
 
 // Showing scroll content with - section-step
-<section-step>
+<section-step type="type of media - img/iframe" url="media-url" caption="any caption">
     Text here
 <section-step>
 ```

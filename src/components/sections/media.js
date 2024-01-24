@@ -31,19 +31,89 @@ export class StoryTellingMedia extends LitElement {
     height: { attribute: "height", type: String },
   };
 
+  #arrNodes = null;
   constructor() {
     super();
     this.id = null;
     this.content = null;
     this.sectionType = "media";
     this.subType = "scrollytelling";
-    this.mediaTypes = null;
-    this.urls = null;
-    this.captions = null;
+    this.mediaTypes = [];
+    this.urls = [];
+    this.captions = [];
     this.sidecarPosition = "left";
     this.tourVPosition = "middle";
     this.tourHPosition = "left";
     this.height = "auto";
+  }
+
+  // Update media item properties based on the rendered nodes
+  #updateMediaItems(arrNodes) {
+    if (["sidecar", "tour"].includes(this.subType)) {
+      arrNodes.forEach((node, index) => {
+        if (node) {
+          this.urls[index] = node.getAttribute("url") || this.urls[index];
+          this.captions[index] =
+            node.getAttribute("caption") || this.captions[index];
+          this.mediaTypes[index] =
+            node.getAttribute("type") || this.mediaTypes[index];
+        }
+      });
+    }
+  }
+
+  // Helper function to render media items
+  #renderMediaItems() {
+    return html`
+      <div class="media ${this.subType}">
+        ${this.urls.map((url, index) =>
+          this.#renderMediaItem(
+            url,
+            this.mediaTypes?.[index],
+            this.captions?.[index]
+          )
+        )}
+      </div>
+    `;
+  }
+
+  // Render individual media items based on their type
+  #renderMediaItem(url, mediaType, caption) {
+    switch (mediaType) {
+      case "img":
+        return html`
+            <img 
+              src="${url}" 
+              id="media-${this.id}" 
+              alt="${caption || ""}" 
+              height="${this.height}"
+            ></img>
+          `;
+      case "iframe":
+        return html`
+          <iframe
+            src="${url}"
+            id="media-${this.id}"
+            height="${this.height}"
+          ></iframe>
+        `;
+      default:
+        return html``;
+    }
+  }
+
+  // Render sidecar or tour content if applicable
+  #renderSidecarOrTourContent(arrNodes) {
+    return this.subType === "sidecar" || this.subType === "tour"
+      ? html`
+          <div
+            class="media-content-wrap ${this.subType} order-${this
+              .sidecarPosition}"
+          >
+            ${arrNodes}
+          </div>
+        `
+      : html``;
   }
 
   createRenderRoot() {
@@ -51,57 +121,31 @@ export class StoryTellingMedia extends LitElement {
   }
 
   firstUpdated() {
-    if (this.urls) {
-      changeMediaLayer(this.id, this.sectionType, 0);
-    }
+    // Render HTML content and update media items
+    this.#arrNodes = renderHtmlString(this.content, {
+      id: this.id,
+      subType: this.subType,
+      sectionType: this.sectionType,
+    });
+    this.#updateMediaItems(this.#arrNodes);
+
+    // Update media layer if URLs are present
+    if (this.urls?.length) changeMediaLayer(this.id, this.sectionType, 0);
+
+    this.requestUpdate();
   }
 
+  // Render the component's HTML template
   render() {
     return html`
       <style>
         ${this.#styling}
       </style>
       <div class="media-type-${this.subType}">
-        <div class="media ${this.subType}">
-          ${this.urls.map((url, index) => this.#renderMediaItem(url, index))}
-        </div>
-        ${this.#renderSidecarOrTourContent()}
+        <div class="media ${this.subType}">${this.#renderMediaItems()}</div>
+        ${this.#renderSidecarOrTourContent(this.#arrNodes)}
       </div>
     `;
-  }
-
-  #renderMediaItem(url, index) {
-    switch (this.mediaTypes[index]) {
-      case "img":
-        return html`<img id="media-${this.id}" src="${url}" alt="${this.captions?.[index] || ''}" height="${this.height}"></img>`;
-      case "iframe":
-        return html`<iframe
-          id="media-${this.id}"
-          src="${url}"
-          height="${this.height}"
-        ></iframe>`;
-      default:
-        return null;
-    }
-  }
-
-  #renderSidecarOrTourContent() {
-    const eventObj = {
-      id: this.id,
-      subType: this.subType,
-      sectionType: this.sectionType,
-    };
-
-    return this.subType === "sidecar" || this.subType === "tour"
-      ? html`
-          <div
-            class="media-content-wrap ${this.subType} order-${this
-              .sidecarPosition}"
-          >
-            ${renderHtmlString(this.content, eventObj)}
-          </div>
-        `
-      : html``;
   }
 
   #styling = `
