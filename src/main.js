@@ -113,10 +113,11 @@ export class StoryTelling extends LitElement {
 
   // Private method to render html renderer component
   #renderHTMLRenderer() {
+    const isNavigationAvailable = Boolean((this.#storyMetaData?.navigations || [])[this.#currentPageIndex])
     return html`
       <story-telling-renderer
+        class="${isNavigationAvailable ? 'navigation-enabled' : ''}"
         .htmlStr=${this.#html}
-        .isNavigationAvailable=${Boolean((this.#storyMetaData?.navigations || [])[this.#currentPageIndex])}
       ></story-telling-renderer>
     `;
   }
@@ -152,6 +153,19 @@ export class StoryTelling extends LitElement {
   }
 
   #styling = `
+    story-telling, story-telling-renderer {    
+      height: auto;
+      display: block;
+    }
+    story-telling-renderer.navigation-enabled {
+      padding-top: 60px;
+    }
+    story-telling-navigation {
+      width: 100%;
+      position: fixed;
+      top: 0;
+      z-index: 999;
+    }
     section-step {
       min-height: 100vh;
       display: block;

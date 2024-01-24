@@ -206,7 +206,7 @@ export class StoryTellingMedia extends LitElement {
     .media.full img {
       height: 100vh;
     }
-    .media.sidecar {
+    .media.sidecar, .media.tour {
       width: 100%;
       flex: 70%;
       height: 100vh;
@@ -214,13 +214,16 @@ export class StoryTellingMedia extends LitElement {
       padding: 0rem 0rem;
       top:0;
     }
-    .media.tour {
-      width: 100%;
-      flex: 70%;
-      height: 100vh;
-      position: sticky;
-      padding: 0rem 0rem;
-      top:0;
+    .navigation-enabled .media.sidecar, 
+    .navigation-enabled .media.tour, 
+    .navigation-enabled .media.full, 
+    .navigation-enabled .media.full img,
+    .navigation-enabled .media.sidecar img, 
+    .navigation-enabled .media.tour img,
+    .navigation-enabled .media.sidecar iframe, 
+    .navigation-enabled .media.tour iframe {
+      height: calc(100vh - 60px);
+      top: 60px;
     }
     .media.tour {
       width: 100%;

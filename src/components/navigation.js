@@ -67,11 +67,10 @@ export class StorytellingNavigation extends LitElement {
       width: 100%;
       background: white;
       padding: 10px 0px;
-      position: fixed;
-      top: 0;
-      z-index: 999;
       color: black;
       box-shadow: 0px 0px 13px 3px #8080802e;
+      max-height: 60px;
+      height: 60px;
     }
     .navigation .container ul {
       display: flex;

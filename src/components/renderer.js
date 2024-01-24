@@ -4,13 +4,11 @@ import { renderHtmlString } from "../helpers/render-html";
 // Define LitElement for rendering storytelling content
 export class StorytellingRenderer extends LitElement {
   static properties = {
-    isNavigationAvailable: { attribute: false, type: Boolean },
     htmlStr: { attribute: "html", type: String },
   };
 
   constructor() {
     super();
-    this.isNavigationAvailable = false;
     this.htmlStr = null;
   }
 
@@ -31,7 +29,7 @@ export class StorytellingRenderer extends LitElement {
       <style>
         ${this.#styling}
       </style>
-      <div class="main ${this.isNavigationAvailable ? "extra-padding" : ""}">
+      <div class="main">
         <div class="preview-wrapper row">
           ${this.htmlStr
             ? html`<div>${renderHtmlString(this.htmlStr)}</div>`
@@ -54,6 +52,10 @@ export class StorytellingRenderer extends LitElement {
       margin: 0;
       padding:0;
       display: flex;
+      height: fit-content;
+    }
+    .preview-wrapper {
+      height: fit-content;
     }
     .row {
       width: 100%;
@@ -62,7 +64,7 @@ export class StorytellingRenderer extends LitElement {
       display: none;
     }
     .extra-padding {
-      padding-top: 60px;
+      // padding-top: 60px;
     }
     .empty-preview {
       display: flex;

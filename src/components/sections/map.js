@@ -165,7 +165,7 @@ export class StoryTellingMap extends LitElement {
       height: 100vh;
       padding: 0rem 0rem;
     }
-    .map.sidecar {
+    .map.sidecar, .map.tour {
       width: 100%;
       flex: 70%;
       height: 100vh;
@@ -173,13 +173,11 @@ export class StoryTellingMap extends LitElement {
       padding: 0rem 0rem;
       top:0;
     }
-    .map.tour {
-      width: 100%;
-      flex: 70%;
-      height: 100vh;
-      position: sticky;
-      padding: 0rem 0rem;
-      top:0;
+    .navigation-enabled .map.sidecar, 
+    .navigation-enabled .map.tour, 
+    .navigation-enabled .map.full {
+      height: calc(100vh - 60px);
+      top: 60px;
     }
     .map.tour {
       width: 100%;

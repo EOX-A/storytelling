@@ -30,6 +30,8 @@ export class StorytellingPagination extends LitElement {
           composed: true,
         })
       );
+
+      window.scrollTo({ top: 0 });
     }
   };
 
@@ -91,7 +93,7 @@ export class StorytellingPagination extends LitElement {
       justify-content: center;
       padding: 0.1rem;
       cursor: pointer;
-      box-shadow: 1px 2px 10px 1px #7e7e7e1f;
+      box-shadow: 1px 2px 10px 1px #7e7e7e59;
     }
     .pagination ul li:hover {
       background: #f2f2f2;

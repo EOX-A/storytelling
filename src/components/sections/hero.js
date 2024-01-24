@@ -68,6 +68,9 @@ export class StoryTellingHero extends LitElement {
       height: 100vh;
       overflow: hidden;
     }
+    .navigation-enabled .hero {
+      height: calc(100vh - 60px);
+    }
     .hero-overlay {
       position: absolute;
       top: 0;
