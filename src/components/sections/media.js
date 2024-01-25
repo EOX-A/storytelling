@@ -8,7 +8,7 @@ import { changeMediaLayer, renderHtmlString } from "../../helpers/render-html";
  * Properties:
  * - [id]: Unique identifier for the media component.
  * - [content]: HTML content for display alongside the media.
- * - [subType]: Type of media display (e.g., 'scrollytelling', 'container', 'full', 'sidecar', 'tour', 'slideshow').
+ * - [subType]: Type of media display (e.g., 'basic', 'container', 'full', 'sidecar', 'tour', 'slideshow').
  * - [mediaTypes]: Types of media included (e.g., 'iframe', 'img', 'video').
  * - [urls]: Array of URLs for the media content.
  * - [captions]: Array of captions for each media item.
@@ -19,16 +19,37 @@ import { changeMediaLayer, renderHtmlString } from "../../helpers/render-html";
  */
 export class StoryTellingMedia extends LitElement {
   static properties = {
-    id: { attribute: "id", type: String },
+    id: { attribute: "id", type: String, example: "id" },
+    sectionType: { attribute: "section-type", type: String, example: "media" },
     content: { attribute: "content", type: String },
-    subType: { attribute: "sub-type", type: String },
-    mediaTypes: { attribute: "media-type", type: Array },
-    urls: { attribute: "urls", type: Array },
-    captions: { attribute: "captions", type: Array },
-    sidecarPosition: { attribute: "sidecar-position", type: String },
-    tourVPosition: { attribute: "tour-v-position", type: String },
-    tourHPosition: { attribute: "tour-h-position", type: String },
-    height: { attribute: "height", type: String },
+    subType: {
+      attribute: "sub-type",
+      type: String,
+      example: "basic|container|full|sidecar|tour|slideshow",
+    },
+    mediaTypes: {
+      attribute: "media-type",
+      type: Array,
+      example: `["img|iframe|video"]`,
+    },
+    urls: { attribute: "urls", type: Array, example: `["url"]` },
+    captions: { attribute: "captions", type: Array, example: `["caption"]` },
+    sidecarPosition: {
+      attribute: "sidecar-position",
+      type: String,
+      example: "left|right",
+    },
+    tourVPosition: {
+      attribute: "tour-v-position",
+      type: String,
+      example: "top|middle|bottom",
+    },
+    tourHPosition: {
+      attribute: "tour-h-position",
+      type: String,
+      example: "left|center|right",
+    },
+    height: { attribute: "height", type: String, example: "100%" },
   };
 
   #arrNodes = null;
@@ -37,7 +58,7 @@ export class StoryTellingMedia extends LitElement {
     this.id = null;
     this.content = null;
     this.sectionType = "media";
-    this.subType = "scrollytelling";
+    this.subType = "basic";
     this.mediaTypes = [];
     this.urls = [];
     this.captions = [];
@@ -195,7 +216,7 @@ export class StoryTellingMedia extends LitElement {
       margin: 0rem auto;
       padding: 1rem 0rem;
     }
-    .media.scrollytelling {
+    .media.basic {
       width: 41rem;
     }
     .media.full {

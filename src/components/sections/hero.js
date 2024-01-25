@@ -15,18 +15,38 @@ import { html, LitElement } from "lit";
  */
 export class StoryTellingHero extends LitElement {
   static properties = {
-    subType: { attribute: "sub-type", type: String },
-    vPosition: { attribute: "v-position", type: String },
-    hPosition: { attribute: "h-position", type: String },
-    img: { attribute: "img", type: String },
-    imgAlt: { attribute: "img-alt", type: String },
-    title: { attribute: "title", type: String },
-    description: { attribute: "description", type: String },
-    subDescription: { attribute: "subDescription", type: String },
+    id: { attribute: "id", type: String, example: "id" },
+    sectionType: { attribute: "section-type", type: String, example: "hero" },
+    subType: { attribute: "sub-type", type: String, example: "full" },
+    vPosition: {
+      attribute: "v-position",
+      type: String,
+      example: "top|middle|bottom",
+    },
+    hPosition: {
+      attribute: "h-position",
+      type: String,
+      example: "left|center|right",
+    },
+    img: { attribute: "img", type: String, example: "url" },
+    imgAlt: { attribute: "img-alt", type: String, example: "Some caption" },
+    title: { attribute: "title", type: String, example: "Title here!" },
+    description: {
+      attribute: "description",
+      type: String,
+      example: "Description here!",
+    },
+    subDescription: {
+      attribute: "subDescription",
+      type: String,
+      example: "Sub-Description here!",
+    },
   };
 
   constructor() {
     super();
+    this.id = null;
+    this.sectionType = "hero";
     this.subType = "full";
     this.vPosition = "middle";
     this.hPosition = "center";

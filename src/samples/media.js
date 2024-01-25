@@ -9,7 +9,7 @@ const mediaContent = `<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit
 
 const MEDIA_SIMPLE = `<!--
     ${sectionType}
-    [subType]:scrollytelling
+    [subType]:basic
     [mediaTypes]:["img"]
     [urls]:["https://www.gstatic.com/prettyearth/assets/full/14617.jpg"]
     [height]:400px
@@ -35,10 +35,10 @@ const MEDIA_FULL = `<!--
 
 const MEDIA_IFRAME = `<!--${sectionType}
     [subType]:full
-    [subType]:scrollytelling
+    [subType]:basic
     [mediaTypes]:["iframe"]
     [height]:800px
-    [urls]:["https://spacetime.blueskyhq.io/ghg-emissions-fires?admin-levels=2&baseMap=light&data=fires&dataSetSubtype=point&dataSetType=vector&duration=6m&palette=default&pin=-&places=World&scale=quantile&shape-ids=dd0cd186-f7f7-4ced-b1ea-9da6100148fb&temporal=2023-05-15T00_00_00.000Z&timeBucket=1d&visualChoice=heatmap&embed=1&disable=zoom_search_timelapse_time-bucket&freezoBound=0&embedBound=-145.483897,-60.256167,154.878057,81.23915"]
+    [urls]:["https://ourworldindata.org/grapher/carbon-intensity-electricity"]
 -->
 `;
 
@@ -59,8 +59,8 @@ const MEDIA_SIDECAR = `<!--
     [subType]:sidecar
     [mediaTypes]:["img","iframe"]
     [sidecarPosition]:right
-    [urls]:["https://www.gstatic.com/prettyearth/assets/full/14617.jpg","https://spacetime.blueskyhq.io/ghg-emissions-fires?admin-levels=2&baseMap=light&data=fires&dataSetSubtype=point&dataSetType=vector&duration=6m&palette=default&pin=-&places=World&scale=quantile&shape-ids=dd0cd186-f7f7-4ced-b1ea-9da6100148fb&temporal=2023-05-15T00_00_00.000Z&timeBucket=1d&visualChoice=heatmap&embed=1&disable=zoom_search_timelapse_time-bucket&freezoBound=0&embedBound=-145.483897,-60.256167,154.878057,81.23915"]
-    [captions]:["Loremipsum","Loremipsum","Loremipsum"]
+    [urls]:["https://www.gstatic.com/prettyearth/assets/full/14617.jpg","https://ourworldindata.org/grapher/carbon-intensity-electricity"]
+    [captions]:["Loremipsum","Loremipsum"]
 -->
 
 <section-step>

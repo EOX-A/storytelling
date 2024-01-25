@@ -14,7 +14,7 @@ import {
  * Properties:
  * - [id]: Unique identifier for the map component.
  * - [content]: HTML content for display alongside the map.
- * - [subType]: Type of map display (e.g., 'scrollytelling', 'container', 'full', 'sidecar', 'tour', 'slideshow').
+ * - [subType]: Type of map display (e.g., 'basic', 'container', 'full', 'sidecar', 'tour', 'slideshow').
  * - [center]: Geographic center of the map (eg., latitude, longitude).
  * - [config]: General configuration object for the map. (eg., EOxMap Config - {})
  * - [layers]: Array of layer configurations for the map. (eg., EOxMap Layer - [{}])
@@ -30,21 +30,46 @@ import {
  */
 export class StoryTellingMap extends LitElement {
   static properties = {
-    id: { attribute: "id", type: String },
+    id: { attribute: "id", type: String, example: "id" },
+    sectionType: { attribute: "section-type", type: String, example: "map" },
     content: { attribute: "content", type: String },
-    subType: { attribute: "sub-type", type: String },
-    center: { attribute: false, type: Array },
+    subType: {
+      attribute: "sub-type",
+      type: String,
+      example: "basic|container|full|sidecar|tour|slideshow",
+    },
+    center: { attribute: false, type: Array, example: "[0,0]" },
     config: { attribute: false, type: Object },
-    layers: { attribute: false, type: Array },
+    layers: {
+      attribute: false,
+      type: Array,
+      example: `[{"type":"Tile","source":{"type":"OSM"}}]`,
+    },
     sync: { attribute: "sync", type: String },
-    zoom: { attribute: false, type: Number },
-    preventScroll: { attribute: false, type: Boolean },
+    zoom: { attribute: false, type: Number, example: "2" },
+    preventScroll: { attribute: false, type: Boolean, example: "true" },
     controls: { attribute: false, type: Object },
-    sidecarPosition: { attribute: "sidecar-position", type: String },
-    steps: { attribute: false, type: Array },
-    layersVisible: { attribute: false, type: Array },
-    tourVPosition: { attribute: "tour-v-position", type: String },
-    tourHPosition: { attribute: "tour-h-position", type: String },
+    sidecarPosition: {
+      attribute: "sidecar-position",
+      type: String,
+      example: "left|right",
+    },
+    steps: {
+      attribute: false,
+      type: Array,
+      example: `[["lat","long","zoom"]]`,
+    },
+    layersVisible: { attribute: false, type: Array, example: `[["layer-id"]]` },
+    tourVPosition: {
+      attribute: "tour-v-position",
+      type: String,
+      example: "top|middle|bottom",
+    },
+    tourHPosition: {
+      attribute: "tour-h-position",
+      type: String,
+      example: "left|center|right",
+    },
   };
 
   constructor() {
@@ -52,7 +77,7 @@ export class StoryTellingMap extends LitElement {
     this.id = null;
     this.content = null;
     this.sectionType = "map";
-    this.subType = "scrollytelling";
+    this.subType = "basic";
     this.center = [0, 0];
     this.config = null;
     this.layers = null;
@@ -167,7 +192,7 @@ export class StoryTellingMap extends LitElement {
       margin: 0rem auto;
       padding: 1rem 0rem;
     }
-    .map.scrollytelling {
+    .map.basic {
       width: 41rem;height: 500px;
     }
     .map.full {

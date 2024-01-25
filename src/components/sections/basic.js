@@ -11,11 +11,15 @@ import { renderHtmlString } from "../../helpers/render-html";
 export class StoryTellingBasic extends LitElement {
   // Define the properties of the component
   static properties = {
+    id: { attribute: "id", type: String, example: "id" },
+    sectionType: { attribute: "section-type", type: String, example: "basic" },
     content: { attribute: "content", type: String },
   };
 
   constructor() {
     super();
+    this.id = null;
+    this.sectionType = "basic";
     this.content = null;
   }
 

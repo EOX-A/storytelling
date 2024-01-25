@@ -1,4 +1,41 @@
 import * as monaco from "monaco-editor/esm/vs/editor/editor.main";
+import { buildWorkerDefinition } from "monaco-editor-workers";
+import { CUSTOM_ELEMENTS } from "./custom-elements";
+
+buildWorkerDefinition('../../node_modules/monaco-editor-workers/dist/workers', import.meta.url, false);
+
+function getMarkDownSuggestions() {
+  let suggestions = [];
+
+  // Iterate over each key in the CUSTOM_ELEMENTS object.
+  Object.keys(CUSTOM_ELEMENTS).forEach((eleKey) => {
+    if (!eleKey.includes("story-telling-")) return;
+
+    const element = CUSTOM_ELEMENTS[eleKey];
+    let section = `\n<!--\n`;
+
+    element.class.elementProperties.forEach((property, key) => {
+      const example = property.example;
+      if (example) {
+        section += `    [${key}]:${example}\n`;
+      }
+    });
+
+    // Close the markdown comment section.
+    section += `-->\n\n`;
+
+    // Add a suggestion object to the suggestions array.
+    suggestions.push({
+      label: eleKey.replace("story-telling-", "---"),
+      kind: 27,
+      insertText: section
+    });
+  });
+
+  // Return the array of suggestions.
+  return suggestions;
+}
+
 
 // Function to disable text selection
 function disableTextSelection() {
@@ -70,6 +107,12 @@ function handleResizeHandleMouseDown(e, StoryTellingEditor) {
 
 // Function to create Monaco editor
 function createMonacoEditor(StoryTellingEditor) {
+  monaco.languages.registerCompletionItemProvider("markdown", {
+    provideCompletionItems: function () {
+      return { suggestions: getMarkDownSuggestions() };
+    },
+  });
+
   return monaco.editor.create(document.getElementById("editor"), {
     language: "markdown",
     theme: "vs",

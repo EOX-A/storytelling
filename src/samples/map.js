@@ -18,7 +18,7 @@ const sidecarMapLayer = `[{"type":"Tile","properties":{"id":"osm","title":"OpenS
 
 const MAP_SIMPLE = `<!--
     ${sectionTypeMap}
-    [subType]:scrollytelling
+    [subType]:basic
     ${basicMapConfig}
 -->
 `;

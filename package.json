@@ -36,6 +36,7 @@
     "lit": "^3.1.0",
     "marked": "^11.1.0",
     "monaco-editor": "^0.45.0",
+    "monaco-editor-workers": "^0.45.0",
     "ol": "^8.2.0"
   }
 }

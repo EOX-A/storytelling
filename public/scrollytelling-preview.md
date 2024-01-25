@@ -169,7 +169,7 @@ The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for t
 ---
 <!--
     [sectionType]:map
-    [subType]:scrollytelling
+    [subType]:basic
     [center]:[15,48]
     [layers]:[{"type":"Tile","source":{"type":"OSM"}}]
     [zoom]:7
@@ -199,7 +199,7 @@ The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for t
 ---
 <!--
     [sectionType]:media
-    [subType]:scrollytelling
+    [subType]:basic
     [mediaTypes]:["img"]
     [urls]:["https://www.gstatic.com/prettyearth/assets/full/14617.jpg"]
     [captions]:["Lore ipsum"]
@@ -212,17 +212,17 @@ The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for t
     [subType]:container
     [mediaTypes]:["iframe"]
     [height]:800px
-    [urls]:["https://spacetime.blueskyhq.io/ghg-emissions-fires?admin-levels=2&baseMap=light&data=fires&dataSetSubtype=point&dataSetType=vector&duration=6m&palette=default&pin=-&places=World&scale=quantile&shape-ids=dd0cd186-f7f7-4ced-b1ea-9da6100148fb&temporal=2023-05-15T00_00_00.000Z&timeBucket=1d&visualChoice=heatmap&embed=1&disable=zoom_search_timelapse_time-bucket&freezoBound=0&embedBound=-145.483897,-60.256167,154.878057,81.23915"]
+    [urls]:["https://ourworldindata.org/grapher/carbon-intensity-electricity"]
     [captions]:["Loremipsum"]
 -->
 
 ---
 <!--
     [sectionType]:media
-    [subType]:scrollytelling
+    [subType]:basic
     [mediaTypes]:["iframe"]
     [height]:800px
-    [urls]:["https://spacetime.blueskyhq.io/ghg-emissions-fires?admin-levels=2&baseMap=light&data=fires&dataSetSubtype=point&dataSetType=vector&duration=6m&palette=default&pin=-&places=World&scale=quantile&shape-ids=dd0cd186-f7f7-4ced-b1ea-9da6100148fb&temporal=2023-05-15T00_00_00.000Z&timeBucket=1d&visualChoice=heatmap&embed=1&disable=zoom_search_timelapse_time-bucket&freezoBound=0&embedBound=-145.483897,-60.256167,154.878057,81.23915"]
+    [urls]:["https://ourworldindata.org/grapher/carbon-intensity-electricity"]
     [captions]:["Loremipsum"]
 -->
 
@@ -244,7 +244,7 @@ The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for t
     <p>The current EPA threshold is 12 micrograms per cubic meter, 20% higher than the World Health Organization’s recommended limit of 10 micrograms per cubic meter. Researchers have found that PM 2.5 is harmful at any concentration, and that lowering thresholds even below 10 micrograms per cubic meter could save thousands of lives.[9,10]</p>
 </section-step>
 
-<section-step url="https://spacetime.blueskyhq.io/ghg-emissions-fires?admin-levels=2&baseMap=light&data=fires&dataSetSubtype=point&dataSetType=vector&duration=6m&palette=default&pin=-&places=World&scale=quantile&shape-ids=dd0cd186-f7f7-4ced-b1ea-9da6100148fb&temporal=2023-05-15T00_00_00.000Z&timeBucket=1d&visualChoice=heatmap&embed=1&disable=zoom_search_timelapse_time-bucket&freezoBound=0&embedBound=-145.483897,-60.256167,154.878057,81.23915" type="iframe">
+<section-step url="https://ourworldindata.org/grapher/carbon-intensity-electricity" type="iframe">
     <h3>Australia</h3>
     <p>The current EPA threshold is 12 micrograms per cubic meter, 20% higher than the World Health Organization’s recommended limit of 10 micrograms per cubic meter. Researchers have found that PM 2.5 is harmful at any concentration, and that lowering thresholds even below 10 micrograms per cubic meter could save thousands of lives.[9,10]</p>
     <p>The current EPA threshold is 12 micrograms per cubic meter, 20% higher than the World Health Organization’s recommended limit of 10 micrograms per cubic meter. Researchers have found that PM 2.5 is harmful at any concentration, and that lowering thresholds even below 10 micrograms per cubic meter could save thousands of lives.[9,10]</p>
