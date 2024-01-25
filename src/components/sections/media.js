@@ -153,7 +153,7 @@ export class StoryTellingMedia extends LitElement {
     // Update media layer if URLs are present
     if (this.urls?.length) changeMediaLayer(this.id, this.sectionType, 0);
 
-    this.requestUpdate();
+    setTimeout(() => this.requestUpdate(), 100);
   }
 
   // Render the component's HTML template

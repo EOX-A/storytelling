@@ -4,6 +4,7 @@
 -->
 
 ---
+
 <!--
     [id]:hero-section
     [sectionType]:hero
@@ -18,6 +19,7 @@
 -->
 
 ---
+
 <!--
     [sectionType]:basic
     [id]:basic-section
@@ -32,6 +34,7 @@ Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots 
 The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested. **Sections 1.10.32 and 1.10.33** from "de Finibus Bonorum et Malorum" by Cicero are also reproduced in their exact original form, accompanied by English versions from the 1914 translation by H. Rackham.
 
 ---
+
 <!--
     [id]:sidecar
     [sectionType]:map
@@ -71,6 +74,7 @@ The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for t
 </section-step>
 
 ---
+
 <!--
     [id]:sidecar-layers
     [sectionType]:map
@@ -112,6 +116,7 @@ The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for t
 </section-step>
 
 ---
+
 <!--
     [id]:tour
     [sectionType]:map
@@ -154,6 +159,7 @@ The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for t
 </section-step>
 
 ---
+
 <!--
     [sectionType]:map
     [subType]:full
@@ -165,6 +171,7 @@ The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for t
 -->
 
 ---
+
 <!--
     [sectionType]:map
     [subType]:basic
@@ -186,6 +193,7 @@ The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for t
 -->
 
 ---
+
 <!--
     [sectionType]:media
     [subType]:container
@@ -196,6 +204,7 @@ The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for t
 -->
 
 ---
+
 <!--
     [sectionType]:media
     [subType]:basic
@@ -206,6 +215,7 @@ The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for t
 -->
 
 ---
+
 <!--
     [sectionType]:media
     [subType]:container
@@ -216,6 +226,7 @@ The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for t
 -->
 
 ---
+
 <!--
     [sectionType]:media
     [subType]:basic
@@ -226,6 +237,7 @@ The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for t
 -->
 
 ---
+
 <!--
     [id]:media-sidecar
     [sectionType]:media
@@ -261,6 +273,7 @@ The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for t
 </section-step>
 
 ---
+
 <!--
     [id]:media-tour
     [sectionType]:media

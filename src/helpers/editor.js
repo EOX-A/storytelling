@@ -2,7 +2,11 @@ import * as monaco from "monaco-editor/esm/vs/editor/editor.main";
 import { buildWorkerDefinition } from "monaco-editor-workers";
 import { CUSTOM_ELEMENTS } from "./custom-elements";
 
-buildWorkerDefinition('../../node_modules/monaco-editor-workers/dist/workers', import.meta.url, false);
+buildWorkerDefinition(
+  "../../node_modules/monaco-editor-workers/dist/workers",
+  import.meta.url,
+  false,
+);
 
 function getMarkDownSuggestions() {
   let suggestions = [];
@@ -28,14 +32,13 @@ function getMarkDownSuggestions() {
     suggestions.push({
       label: eleKey.replace("story-telling-", "---"),
       kind: 27,
-      insertText: section
+      insertText: section,
     });
   });
 
   // Return the array of suggestions.
   return suggestions;
 }
-
 
 // Function to disable text selection
 function disableTextSelection() {

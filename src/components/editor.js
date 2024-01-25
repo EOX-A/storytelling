@@ -9,6 +9,7 @@ class StoryTellingEditor extends LitElement {
     isNavigation: { attribute: "markdown", type: Boolean },
   };
 
+  #debounceSetTimeoutEvent = false;
   #temporaryEnableEditor = true;
   #editorUpdate = false;
   constructor() {
@@ -45,13 +46,20 @@ class StoryTellingEditor extends LitElement {
     // Event listener for editor content change
     this.editor.onDidChangeModelContent(() => {
       this.#editorUpdate = true;
-      this.dispatchEvent(
-        new CustomEvent("change", {
-          detail: { markdown: this.getCurrentValue() },
-          bubbles: true,
-          composed: true,
-        }),
-      );
+      if (this.#debounceSetTimeoutEvent)
+        clearTimeout(this.#debounceSetTimeoutEvent);
+      document.querySelector(".editor-saver").style.display = "inline-block";
+      this.#debounceSetTimeoutEvent = setTimeout(() => {
+        this.dispatchEvent(
+          new CustomEvent("change", {
+            detail: { markdown: this.getCurrentValue() },
+            bubbles: true,
+            composed: true,
+          }),
+        );
+
+        document.querySelector(".editor-saver").style.display = "none";
+      }, 2500);
     });
   }
 
@@ -110,6 +118,7 @@ class StoryTellingEditor extends LitElement {
       >
         <div id="editor"></div>
         <div class="resize-handle"></div>
+        <span class="editor-saver"></span>
       </div>
       <div class="switch-button">
         <label class="switch">
@@ -166,6 +175,40 @@ class StoryTellingEditor extends LitElement {
     .editor-hide {
       display: none;
     }
+
+
+    .editor-saver {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      position: absolute;
+      top: 30px;
+      right: 50px;
+      animation: rotate 1s linear infinite;
+      display: none;
+    }
+    .editor-saver::before {
+      content: "";
+      box-sizing: border-box;
+      position: absolute;
+      inset: 0px;
+      border-radius: 50%;
+      border: 5px solid #5b5b5b85;
+      animation: spin 2s linear infinite ;
+    }
+
+    @keyframes rotate {
+      100% {transform: rotate(360deg)}
+    }
+
+    @keyframes spin {
+      0%   {clip-path:polygon(50% 50%,0 0,0 0,0 0,0 0,0 0)}
+      25%  {clip-path:polygon(50% 50%,0 0,100% 0,100% 0,100% 0,100% 0)}
+      50%  {clip-path:polygon(50% 50%,0 0,100% 0,100% 100%,100% 100%,100% 100%)}
+      75%  {clip-path:polygon(50% 50%,0 0,100% 0,100% 100%,0 100%,0 100%)}
+      100% {clip-path:polygon(50% 50%,0 0,100% 0,100% 100%,0 100%,0 0)}
+    }
+
 
     .switch-button {
       position: fixed;

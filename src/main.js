@@ -52,7 +52,7 @@ export class StoryTelling extends LitElement {
   // Lifecycle method that runs when the component is first updated
   async firstUpdated() {
     const markdown = this.url ? await loadMarkdown(this.url) : this.markdown;
-    this.#handleMarkDown(markdown);
+    setTimeout(() => this.#handleMarkDown(markdown), 100);
   }
 
   // Overriding LitElement's method to use light DOM
