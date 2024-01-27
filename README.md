@@ -28,22 +28,22 @@ The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for t
 
 ## Properties to generate `map`-
 
-| Property          | Description                                                | Example                                                    |
-| ----------------- | ---------------------------------------------------------- | ---------------------------------------------------------- |
-| `id`              | Unique identifier for the section.                         | `map-1`                                                    |
-| `sectionType`     | Type of section to be rendered                             | `map`                                                      |
-| `content`         | HTML content for display alongside the map.                | `<section-step>Anything in between</section-step>`         |
-| `subType`         | Type of map display (e.g., 'simple', 'container', etc.).   | `full`                                                     |
-| `center`          | Geographic center of the map (latitude, longitude).        | `[37.7749, -122.4194]`                                     |
-| `config`          | General configuration object for the map.                  | `{ "mapType": "terrain", "showLabels": true }`             |
-| `layers`          | Array of layer configurations for the map.                 | `[{ "type": "tile", "url": "https://example.com/tiles" }]` |
-| `preventScroll`   | Boolean to prevent map scrolling.                          | `true`                                                     |
-| `sync`            | Synchronization identifier for coordinating multiple maps. | `sync-1`                                                   |
-| `zoom`            | Zoom level of the map.                                     | `10`                                                       |
-| `controls`        | Object defining map controls.                              | `{ "zoom": {}, "pan": {} }`                                |
-| `stepPosition`    | Position for map section content (left, center or right).  | `left`                                                     |
-| `steps`           | Array of steps for the map display.                        | `[[37.7749, -122.4194, 2], [-34.6118, -58.4173, 4]]`       |
-| `layersVisible`   | Array of layer configurations for each sidecar step.       | `[["regions", "WIND"], ["WIND"]]`                          |
+| Property        | Description                                                | Example                                                    |
+| --------------- | ---------------------------------------------------------- | ---------------------------------------------------------- |
+| `id`            | Unique identifier for the section.                         | `map-1`                                                    |
+| `sectionType`   | Type of section to be rendered                             | `map`                                                      |
+| `content`       | HTML content for display alongside the map.                | `<section-step>Anything in between</section-step>`         |
+| `subType`       | Type of map display (e.g., 'simple', 'container', etc.).   | `full`                                                     |
+| `center`        | Geographic center of the map (latitude, longitude).        | `[37.7749, -122.4194]`                                     |
+| `config`        | General configuration object for the map.                  | `{ "mapType": "terrain", "showLabels": true }`             |
+| `layers`        | Array of layer configurations for the map.                 | `[{ "type": "tile", "url": "https://example.com/tiles" }]` |
+| `preventScroll` | Boolean to prevent map scrolling.                          | `true`                                                     |
+| `sync`          | Synchronization identifier for coordinating multiple maps. | `sync-1`                                                   |
+| `zoom`          | Zoom level of the map.                                     | `10`                                                       |
+| `controls`      | Object defining map controls.                              | `{ "zoom": {}, "pan": {} }`                                |
+| `stepPosition`  | Position for map section content (left, center or right).  | `left`                                                     |
+| `steps`         | Array of steps for the map display.                        | `[[37.7749, -122.4194, 2], [-34.6118, -58.4173, 4]]`       |
+| `layersVisible` | Array of layer configurations for each sidecar step.       | `[["regions", "WIND"], ["WIND"]]`                          |
 
 ### Example
 
@@ -94,17 +94,17 @@ Text here
 
 ## Properties to generate `media`-
 
-| Property          | Description                                                                                  | Example                                                              |
-| ----------------- | -------------------------------------------------------------------------------------------- | -------------------------------------------------------------------- |
-| `id`              | Unique identifier for the media component.                                                   | `media-1`                                                            |
-| `sectionType`     | Type of section to be rendered.                                                              | `image-gallery`                                                      |
-| `content`         | HTML content for display alongside the media.                                                | `<section-step>Text here </section-step>`                            |
-| `subType`         | Type of media display. (e.g., 'simple', 'container', 'full', 'sidecar', 'tour', 'slideshow') | `full`                                                               |
-| `mediaTypes`      | Types of media included (e.g., 'iframe', 'img', 'video').                                    | `["img", "video"]`                                                   |
-| `urls`            | Array of URLs for the media content.                                                         | `["https://example.com/image.jpg", "https://example.com/video.mp4"]` |
-| `captions`        | Array of captions for each media item.                                                       | `["A beautiful image", "An engaging video"]`                         |
-| `stepPosition`    | Position for media section content (left, center or right).                                  | `right`                                                              |
-| `height`          | Height of the media element.                                                                 | `300px`                                                              |
+| Property       | Description                                                                                  | Example                                                              |
+| -------------- | -------------------------------------------------------------------------------------------- | -------------------------------------------------------------------- |
+| `id`           | Unique identifier for the media component.                                                   | `media-1`                                                            |
+| `sectionType`  | Type of section to be rendered.                                                              | `image-gallery`                                                      |
+| `content`      | HTML content for display alongside the media.                                                | `<section-step>Text here </section-step>`                            |
+| `subType`      | Type of media display. (e.g., 'simple', 'container', 'full', 'sidecar', 'tour', 'slideshow') | `full`                                                               |
+| `mediaTypes`   | Types of media included (e.g., 'iframe', 'img', 'video').                                    | `["img", "video"]`                                                   |
+| `urls`         | Array of URLs for the media content.                                                         | `["https://example.com/image.jpg", "https://example.com/video.mp4"]` |
+| `captions`     | Array of captions for each media item.                                                       | `["A beautiful image", "An engaging video"]`                         |
+| `stepPosition` | Position for media section content (left, center or right).                                  | `right`                                                              |
+| `height`       | Height of the media element.                                                                 | `300px`                                                              |
 
 ### Example
 
