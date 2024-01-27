@@ -41,9 +41,7 @@ const MAP_TOUR = `<!--
     ${sectionTypeMap}
     [subType]:tour
     ${basicMapConfig}
-    [sidecarPosition]:right
-    [tourVPosition]:middle
-    [tourHPosition]:left
+    [position]:right
     [steps]:[[20.5937,78.9629,5],[-30.5662,130.7488,4],[66.1982,-30.1932,1]]
 -->
 
@@ -70,7 +68,7 @@ const MAP_SIDECAR = `<!--
     [layers]:${sidecarMapLayer}
     [zoom]:7
     [preventScroll]:true
-    [sidecarPosition]:right
+    [position]:right
     [steps]:[[20.5937,78.9629,5],[-30.5662,130.7488,4],[66.1982,-30.1932,1]]
     [layersVisible]:[["regions","EOxCloudless"],["EOxCloudless"],["regions","osm"]]
 -->

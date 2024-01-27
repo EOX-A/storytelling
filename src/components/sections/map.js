@@ -1,5 +1,5 @@
 // Import necessary modules from 'lit'
-import { html, LitElement } from "lit";
+import { html, LitElement, nothing } from "lit";
 import {
   changeMapLayer,
   getContentChildren,
@@ -22,11 +22,9 @@ import {
  * - [sync]: Synchronization identifier for coordinating multiple maps.
  * - [zoom]: Zoom level of the map.
  * - [controls]: Object defining map controls (e.g., {"zoom":{}}).
- * - [sidecarPosition]: Position of the sidecar content (eg., 'left' or 'right').
+ * - [position]: Position of the sidecar content (eg., 'left' or 'right').
  * - [steps]: Array of steps for the map display. (eg., [[-28.5682,-129.1632,2],[-51.5662,156.7488,4],[66.1982,-30.1932,1]])
  * - [layersVisible]: Array of layer configurations for each step. (eg., [["regions","WIND"],["WIND"],["regions","NO2"]])
- * - [tourVPosition]: Vertical position of tour content (eg., 'top', 'middle', 'bottom').
- * - [tourHPosition]: Horizontal position of tour content (eg., 'left', 'center', 'right').
  */
 export class StoryTellingMap extends LitElement {
   static properties = {
@@ -49,10 +47,10 @@ export class StoryTellingMap extends LitElement {
     zoom: { attribute: false, type: Number, example: "2" },
     preventScroll: { attribute: false, type: Boolean, example: "true" },
     controls: { attribute: false, type: Object },
-    sidecarPosition: {
+    position: {
       attribute: "sidecar-position",
       type: String,
-      example: "left|right",
+      example: "left|right|center",
     },
     steps: {
       attribute: false,
@@ -60,16 +58,6 @@ export class StoryTellingMap extends LitElement {
       example: `[["lat","long","zoom"]]`,
     },
     layersVisible: { attribute: false, type: Array, example: `[["layer-id"]]` },
-    tourVPosition: {
-      attribute: "tour-v-position",
-      type: String,
-      example: "top|middle|bottom",
-    },
-    tourHPosition: {
-      attribute: "tour-h-position",
-      type: String,
-      example: "left|center|right",
-    },
   };
 
   constructor() {
@@ -84,11 +72,9 @@ export class StoryTellingMap extends LitElement {
     this.sync = null;
     this.zoom = null;
     this.preventScroll = false;
-    this.sidecarPosition = "left";
+    this.position = "left";
     this.steps = null;
     this.layersVisible = null;
-    this.tourVPosition = "middle";
-    this.tourHPosition = "left";
   }
 
   createRenderRoot() {
@@ -123,8 +109,7 @@ export class StoryTellingMap extends LitElement {
       <style>
         ${this.#styling}
       </style>
-      <div class="map-type-${this.subType}">
-        ${this.#renderMapContent()}
+      <div class="map-type-${this.subType} wrap-${this.position}">
         <eox-map
           id="map-${this.id}"
           class="map ${this.subType}"
@@ -136,13 +121,14 @@ export class StoryTellingMap extends LitElement {
           ${this.config ? `.config=${this.config}` : ""}
           ${this.controls ? `.config=${this.controls}` : ""}
         ></eox-map>
+        ${this.#renderMapContent()}
       </div>
     `;
   }
 
   // Private method to render map content conditionally
   #renderMapContent() {
-    const mapContentClass = `map-content-wrap ${this.subType} order-${this.sidecarPosition}`;
+    const mapContentClass = `map-content-wrap ${this.subType} order-${this.position}`;
     const eventObj = {
       id: this.id,
       subType: this.subType,
@@ -166,6 +152,12 @@ export class StoryTellingMap extends LitElement {
     .map-type-tour {
       display: grid;
     }
+    .map-type-tour.wrap-left {
+      justify-items: start;
+    }
+    .map-type-tour.wrap-right {
+      justify-items: end;
+    }
     @media screen and (max-width: 1024px) {
       .map-type-sidecar {
         display: grid;
@@ -180,8 +172,11 @@ export class StoryTellingMap extends LitElement {
       display: none;
       padding: 2rem;
     }
-    .order-right {
-      order: 2;
+    .order-left {
+      order: 1;
+    }
+    .map-type-tour .order-left, .order-right {
+      order: 3;
     }
     .map-content-wrap.sidecar, .map-content-wrap.tour {
       display: block;
@@ -195,6 +190,7 @@ export class StoryTellingMap extends LitElement {
     /** EOxmap **/
 
     .map {
+      order: 2;
       margin: 0rem auto;
       padding: 1rem 0rem;
     }

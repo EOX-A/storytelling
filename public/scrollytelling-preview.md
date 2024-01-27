@@ -40,7 +40,7 @@ The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for t
     [layers]:[{"type":"Tile","source":{"type":"OSM"}}]
     [zoom]:7
     [preventScroll]:true
-    [sidecarPosition]:right
+    [position]:right
 -->
 
 <section-step lat="20.5937" lon="78.9629" zoom="5">
@@ -79,7 +79,7 @@ The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for t
     [layers]:[{"type":"WebGLTile","properties":{"id":"s2","layerControlExclusive":true,"title":"s2"},"style":{"variables":{"red":1,"green":2,"blue":3,"redMax":3000,"greenMax":3000,"blueMax":3000},"color":["array",["/",["band",["var","red"]],["var","redMax"]],["/",["band",["var","green"]],["var","greenMax"]],["/",["band",["var","blue"]],["var","blueMax"]],1],"gamma":1.1},"source":{"type":"GeoTIFF","normalize":false,"sources":[{"url":"https://s2downloads.eox.at/demo/EOxCloudless/2020/rgbnir/s2cloudless2020-16bits_sinlge-file_z0-4.tif"}]}},{"type":"Tile","properties":{"id":"osm","title":"OpenStreetMap","layerControlExclusive":true},"visible":false,"opacity":0.5,"source":{"type":"OSM"}},{"type":"Tile","properties":{"id":"WIND","title":"WIND"},"source":{"type":"TileWMS","url":"https://services.sentinel-hub.com/ogc/wms/0635c213-17a1-48ee-aef7-9d1731695a54","params":{"LAYERS":"AWS_VIS_WIND_V_10M"}}},{"type":"Tile","properties":{"id":"NO2","title":"NO2"},"source":{"type":"TileWMS","url":"https://services.sentinel-hub.com/ogc/wms/0635c213-17a1-48ee-aef7-9d1731695a54","params":{"LAYERS":"AWS_NO2-VISUALISATION"}}},{"type":"Vector","properties":{"title":"Regions","id":"regions","description":"Ecologicalregionsoftheearth."},"source":{"type":"Vector","url":"https://openlayers.org/data/vector/ecoregions.json","format":"GeoJSON","attributions":"Regions:@openlayers.org"}}]
     [zoom]:2
     [preventScroll]:true
-    [sidecarPosition]:left
+    [position]:left
     [steps]:[[20.5937,78.9629,5],[-30.5662,130.7488,4],[66.1982,-30.1932,1]]
     [layersVisible]:[["dd","WIND"],["WIND"],["regions","osm"]]
 -->
@@ -121,9 +121,7 @@ The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for t
     [layers]:[{"type":"Tile","source":{"type":"OSM"}}]
     [zoom]:7
     [preventScroll]:true
-    [sidecarPosition]:right
-    [tourVPosition]:middle
-    [tourHPosition]:left
+    [position]:right
     [steps]:[[20.5937,78.9629,5],[-30.5662,130.7488,4],[66.1982,-30.1932,1]]
 -->
 
@@ -232,7 +230,7 @@ The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for t
     [id]:media-sidecar
     [sectionType]:media
     [subType]:sidecar
-    [sidecarPosition]:left
+    [position]:left
 -->
 
 <section-step url="https://www.gstatic.com/prettyearth/assets/full/14617.jpg" caption="Loremipsum" type="img">
@@ -268,7 +266,7 @@ The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for t
     [sectionType]:media
     [subType]:tour
     [mediaTypes]:["img","img","img"]
-    [sidecarPosition]:left
+    [position]:left
     [urls]:["https://www.gstatic.com/prettyearth/assets/full/14617.jpg","https://www.gstatic.com/prettyearth/assets/full/12516.jpg","https://www.gstatic.com/prettyearth/assets/full/5046.jpg"]
     [captions]:["Loremipsum","Loremipsum","Loremipsum"]
 -->

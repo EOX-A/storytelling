@@ -12,9 +12,7 @@ import { changeMediaLayer, renderHtmlString } from "../../helpers/render-html";
  * - [mediaTypes]: Types of media included (e.g., 'iframe', 'img', 'video').
  * - [urls]: Array of URLs for the media content.
  * - [captions]: Array of captions for each media item.
- * - [sidecarPosition]: Position of the sidecar content ('left' or 'right').
- * - [tourVPosition]: Vertical position of tour content ('top', 'middle', 'bottom').
- * - [tourHPosition]: Horizontal position of tour content ('left', 'center', 'right').
+ * - [position]: Position of the sidecar content ('left' or 'right').
  * - [height]: Height of the media element.
  */
 export class StoryTellingMedia extends LitElement {
@@ -34,20 +32,10 @@ export class StoryTellingMedia extends LitElement {
     },
     urls: { attribute: "urls", type: Array, example: `["url"]` },
     captions: { attribute: "captions", type: Array, example: `["caption"]` },
-    sidecarPosition: {
+    position: {
       attribute: "sidecar-position",
       type: String,
-      example: "left|right",
-    },
-    tourVPosition: {
-      attribute: "tour-v-position",
-      type: String,
-      example: "top|middle|bottom",
-    },
-    tourHPosition: {
-      attribute: "tour-h-position",
-      type: String,
-      example: "left|center|right",
+      example: "left|right|center",
     },
     height: { attribute: "height", type: String, example: "100%" },
   };
@@ -62,9 +50,7 @@ export class StoryTellingMedia extends LitElement {
     this.mediaTypes = [];
     this.urls = [];
     this.captions = [];
-    this.sidecarPosition = "left";
-    this.tourVPosition = "middle";
-    this.tourHPosition = "left";
+    this.position = "left";
     this.height = "auto";
   }
 
@@ -129,7 +115,7 @@ export class StoryTellingMedia extends LitElement {
       ? html`
           <div
             class="media-content-wrap ${this.subType} order-${this
-              .sidecarPosition}"
+              .position}"
           >
             ${arrNodes}
           </div>
@@ -162,7 +148,7 @@ export class StoryTellingMedia extends LitElement {
       <style>
         ${this.#styling}
       </style>
-      <div class="media-type-${this.subType}">
+      <div class="media-type-${this.subType} wrap-${this.position}">
         <div class="media ${this.subType}">${this.#renderMediaItems()}</div>
         ${this.#renderSidecarOrTourContent(this.#arrNodes)}
       </div>
@@ -175,6 +161,12 @@ export class StoryTellingMedia extends LitElement {
     }
     .media-type-tour {
       display: grid;
+    }
+    .media-type-tour.wrap-left {
+      justify-items: start;
+    }
+    .media-type-tour.wrap-right {
+      justify-items: end;
     }
     @media screen and (max-width: 1024px) {
       .media-type-sidecar {
@@ -190,8 +182,11 @@ export class StoryTellingMedia extends LitElement {
       display: none;
       padding: 2rem;
     }
-    .order-right {
-      order: 2;
+    .order-left {
+      order: 1;
+    }
+    .media-type-tour .order-left, .order-right {
+      order: 3;
     }
     .media-content-wrap.sidecar, .media-content-wrap.tour {
       display: block;
@@ -206,6 +201,7 @@ export class StoryTellingMedia extends LitElement {
 
     .media {
       overflow: hidden;
+      order: 2;
     }
 
     .media img, .media iframe {

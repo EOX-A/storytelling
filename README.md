@@ -41,11 +41,9 @@ The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for t
 | `sync`            | Synchronization identifier for coordinating multiple maps. | `sync-1`                                                   |
 | `zoom`            | Zoom level of the map.                                     | `10`                                                       |
 | `controls`        | Object defining map controls.                              | `{ "zoom": {}, "pan": {} }`                                |
-| `sidecarPosition` | Position of the sidecar content (left or right).           | `left`                                                     |
+| `position`        | Position for map section content (left, center or right).  | `left`                                                     |
 | `steps`           | Array of steps for the map display.                        | `[[37.7749, -122.4194, 2], [-34.6118, -58.4173, 4]]`       |
 | `layersVisible`   | Array of layer configurations for each sidecar step.       | `[["regions", "WIND"], ["WIND"]]`                          |
-| `tourVPosition`   | Vertical position of tour content (top, middle, bottom).   | `middle`                                                   |
-| `tourHPosition`   | Horizontal position of tour content (left, center, right). | `center`                                                   |
 
 ### Example
 
@@ -105,9 +103,7 @@ Text here
 | `mediaTypes`      | Types of media included (e.g., 'iframe', 'img', 'video').                                    | `["img", "video"]`                                                   |
 | `urls`            | Array of URLs for the media content.                                                         | `["https://example.com/image.jpg", "https://example.com/video.mp4"]` |
 | `captions`        | Array of captions for each media item.                                                       | `["A beautiful image", "An engaging video"]`                         |
-| `sidecarPosition` | Position of the sidecar content ('left' or 'right').                                         | `right`                                                              |
-| `tourVPosition`   | Vertical position of tour content ('top', 'middle', 'bottom').                               | `bottom`                                                             |
-| `tourHPosition`   | Horizontal position of tour content ('left', 'center', 'right').                             | `center`                                                             |
+| `position`        | Position for media section content (left, center or right).                                  | `right`                                                              |
 | `height`          | Height of the media element.                                                                 | `300px`                                                              |
 
 ### Example
