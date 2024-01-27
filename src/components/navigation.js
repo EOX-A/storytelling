@@ -70,11 +70,21 @@ export class StorytellingNavigation extends LitElement {
       box-shadow: 0px 0px 13px 3px #8080802e;
       max-height: 60px;
       height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
     .navigation .container ul {
       display: flex;
       align-items: center;
       justify-content: center;
+      margin-bottom: 0px;
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+      overflow-x: auto;
+    }
+    .navigation .container ul::-webkit-scrollbar { 
+      display: none;
     }
     .navigation .container ul li {
       list-style: none;

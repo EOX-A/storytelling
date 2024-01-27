@@ -99,15 +99,13 @@ export class StorytellingSampleSection extends LitElement {
                 )}
               </div>
             </div>
-            <p
-              style="color: white;font-weight: 600"
+            <div
               @click=${() => {
                 this.#addSection = null;
                 this.requestUpdate();
               }}
-            >
-              Close
-            </p>
+              class="modal-overlay"
+            ></div>
           </div>
         `,
       )}
@@ -128,12 +126,22 @@ export class StorytellingSampleSection extends LitElement {
       flex-direction: column;
       z-index: 99999;
     }
+    .modal-overlay {
+      background: transparent;
+      width: 100%;
+      height: 100%;
+      position: fixed;
+      top:0;
+      left:0;
+      cursor: pointer;
+    }
     .modal-section {
       width: 60%;
       max-width: 900px;
       padding: 18px 30px;
       background: white;
       border-radius: 10px;
+      z-index: 1;
     }
     .modal-section .modal-overflow-y {
       overflow-y: auto;
@@ -180,6 +188,7 @@ export class StorytellingSampleSection extends LitElement {
       font-size: 0.8rem;
       color: #555555;
       font-weight: 500;
+      padding: 4px 0px;
     }
     .grid-container {
       display: grid;
@@ -189,13 +198,28 @@ export class StorytellingSampleSection extends LitElement {
     .grid-item {
       text-align: center;
       cursor: pointer;
-    }
-    .modal-section .grid-item:hover > icon::before {
-      border-color: #dbdbdb;
+      padding: 0px;
+      border: 1px solid #e5eaf0;
+      border-radius: 8px;
+      transition: all 0.2s ease-in-out;
     }
     .modal-section .grid-item:hover > p {
       color: black;
       font-weight: 900;
+    }
+    .grid-item:hover {
+      border-color: #2273EC;
+      background-color: #f7f7f7;
+    }
+    @media screen and (max-width: 1024px) {
+      .modal-section {
+        width: 90%;
+        padding: 18px 20px;
+      }
+      .grid-container {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px 20px;
+      }
     }
   `;
 }

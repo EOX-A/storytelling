@@ -171,6 +171,12 @@ class StoryTellingEditor extends LitElement {
       border: 2px solid #ebebeb;
       cursor: auto;
     }
+    @media screen and (max-width: 1024px) {
+      .editor-wrapper {
+        right: 2.5%;
+        width: 95%;
+      }
+    }
 
     .editor-hide {
       display: none;
@@ -216,7 +222,7 @@ class StoryTellingEditor extends LitElement {
       right: 60px;
       display: inline-block;
       font-size: 0;
-      z-index: 999999;
+      z-index: 99999;
       border: 5px white solid;
       border-radius: 34px;
       box-shadow: 1px 2px 10px 1px #7e7e7e59;
@@ -298,6 +304,11 @@ class StoryTellingEditor extends LitElement {
     }
     .switch .icon.editor-view {
       opacity: 0;
+    }
+    @media screen and (max-width: 1024px) {
+      .switch-button {
+        right: 20px;
+      }
     }
   `;
 }
