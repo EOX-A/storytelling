@@ -166,6 +166,12 @@ export class StoryTellingMap extends LitElement {
     .map-type-tour {
       display: grid;
     }
+    @media screen and (max-width: 990px) {
+      .map-type-sidecar {
+        display: grid;
+        grid-template-columns: repeat(1, 1fr);
+      }
+    }
 
     /** Map Content **/
     
@@ -193,7 +199,8 @@ export class StoryTellingMap extends LitElement {
       padding: 1rem 0rem;
     }
     .map.basic {
-      width: 41rem;height: 500px;
+      width: 41rem;
+      height: 500px;
     }
     .map.full {
       width: 100%;
@@ -219,6 +226,22 @@ export class StoryTellingMap extends LitElement {
     }
     .map.container {
       height: 500px;
+    }
+    @media screen and (max-width: 990px) {
+      .navigation-enabled .map.sidecar, .map.sidecar {
+        background: white;
+        height: 40vh;
+        box-shadow: 0 10px 17px 0px #80808036;
+      }
+      .map-content-wrap.sidecar {
+        order: 2;
+      }
+      .map.basic {
+        width: 100%;
+      }
+      .map-content-wrap.tour {
+        width: 100%;
+      }
     }
   `;
 }

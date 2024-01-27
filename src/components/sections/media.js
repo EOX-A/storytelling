@@ -176,6 +176,12 @@ export class StoryTellingMedia extends LitElement {
     .media-type-tour {
       display: grid;
     }
+    @media screen and (max-width: 990px) {
+      .media-type-sidecar {
+        display: grid;
+        grid-template-columns: repeat(1, 1fr);
+      }
+    }
 
     /** Map Content **/
     
@@ -248,6 +254,22 @@ export class StoryTellingMedia extends LitElement {
     }
     .media.tour {
       width: 100%;
+    }
+    @media screen and (max-width: 990px) {
+      .navigation-enabled .media.sidecar, .media.sidecar {
+        background: white;
+        height: 40vh;
+        box-shadow: 0 10px 17px 0px #80808036;
+      }
+      .map-content-wrap.sidecar {
+        order: 2;
+      }
+      .media.basic {
+        width: 100%;
+      }
+      .media-content-wrap.tour {
+        width: 100%;
+      }
     }
   `;
 }

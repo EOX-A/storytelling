@@ -43,7 +43,18 @@ export class StoryTellingBasic extends LitElement {
     .basic {
       width: 41rem;
       margin: 0 auto;
-      padding: 1rem 0;
+      padding: 2rem 0;
+    }
+    @media screen and (max-width: 990px) {
+      .basic {
+        width: 100%;
+        padding: 2rem 4rem;
+      }
+    }
+    @media screen and (max-width: 768px) {
+      .basic {
+        padding: 2rem;
+      }
     }
   `;
 }
