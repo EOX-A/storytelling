@@ -52,7 +52,7 @@ export class StoryTelling extends LitElement {
   // Lifecycle method that runs when the component is first updated
   async firstUpdated() {
     const markdown = this.url ? await loadMarkdown(this.url) : this.markdown;
-    setTimeout(() => this.#handleMarkDown(markdown), 100);
+    setTimeout(() => this.#handleMarkDown(markdown), 1000);
   }
 
   // Overriding LitElement's method to use light DOM
@@ -66,6 +66,16 @@ export class StoryTelling extends LitElement {
       <style>
         ${this.#styling}
       </style>
+
+      <!-- Init Loader Component -->
+      ${when(
+        this.#html === null,
+        () => html`
+          <div class="init-loader">
+            <span class="loader"></span>
+          </div>
+        `,
+      )}
 
       <!-- Navigation Component -->
       ${this.#renderNavigation()}
@@ -180,6 +190,43 @@ export class StoryTelling extends LitElement {
       max-height: 30vh;
       overflow-y: hidden;
       margin-bottom: calc(100vh);
+    }
+    div.init-loader {
+      background: white;
+      position: fixed;
+      width: 100%;
+      height: 100vh;
+      top: 0;
+      z-index: 999999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .init-loader .loader {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      position: relative;
+      animation: rotate 1s linear infinite;
+    }
+    .init-loader .loader::before {
+      content: "";
+      box-sizing: border-box;
+      position: absolute;
+      inset: 0px;
+      border-radius: 50%;
+      border: 2.5px solid #858585;
+      animation: init-loader-animation 2s linear infinite;
+    }
+    @keyframes rotate {
+      100%   {transform: rotate(360deg)}
+    }
+    @keyframes init-loader-animation {
+        0%   {clip-path:polygon(50% 50%,0 0,0 0,0 0,0 0,0 0)}
+        25%  {clip-path:polygon(50% 50%,0 0,100% 0,100% 0,100% 0,100% 0)}
+        50%  {clip-path:polygon(50% 50%,0 0,100% 0,100% 100%,100% 100%,100% 100%)}
+        75%  {clip-path:polygon(50% 50%,0 0,100% 0,100% 100%,0 100%,0 100%)}
+        100% {clip-path:polygon(50% 50%,0 0,100% 0,100% 100%,0 100%,0 0)}
     }
   `;
 }
