@@ -176,7 +176,7 @@ export class StoryTellingMedia extends LitElement {
     .media-type-tour {
       display: grid;
     }
-    @media screen and (max-width: 990px) {
+    @media screen and (max-width: 1024px) {
       .media-type-sidecar {
         display: grid;
         grid-template-columns: repeat(1, 1fr);
@@ -255,7 +255,7 @@ export class StoryTellingMedia extends LitElement {
     .media.tour {
       width: 100%;
     }
-    @media screen and (max-width: 990px) {
+    @media screen and (max-width: 1024px) {
       .navigation-enabled .media.sidecar, .media.sidecar {
         background: white;
         height: 40vh;

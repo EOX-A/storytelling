@@ -166,7 +166,7 @@ export class StoryTellingMap extends LitElement {
     .map-type-tour {
       display: grid;
     }
-    @media screen and (max-width: 990px) {
+    @media screen and (max-width: 1024px) {
       .map-type-sidecar {
         display: grid;
         grid-template-columns: repeat(1, 1fr);
@@ -227,7 +227,7 @@ export class StoryTellingMap extends LitElement {
     .map.container {
       height: 500px;
     }
-    @media screen and (max-width: 990px) {
+    @media screen and (max-width: 1024px) {
       .navigation-enabled .map.sidecar, .map.sidecar {
         background: white;
         height: 40vh;
