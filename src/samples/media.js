@@ -58,7 +58,7 @@ const MEDIA_SIDECAR = `<!--
     ${sectionType}
     [subType]:sidecar
     [mediaTypes]:["img","iframe"]
-    [position]:right
+    [stepPosition]:right
     [urls]:["https://www.gstatic.com/prettyearth/assets/full/14617.jpg","https://ourworldindata.org/grapher/carbon-intensity-electricity"]
     [captions]:["Loremipsum","Loremipsum"]
 -->
@@ -78,7 +78,7 @@ const MEDIA_TOUR = `<!--
     ${sectionType}
     [subType]:tour
     [mediaTypes]:["img","img","img"]
-    [position]:right
+    [stepPosition]:right
     [urls]:["https://www.gstatic.com/prettyearth/assets/full/14617.jpg","https://www.gstatic.com/prettyearth/assets/full/12516.jpg","https://www.gstatic.com/prettyearth/assets/full/5046.jpg"]
     [captions]:["Loremipsum","Loremipsum","Loremipsum"]
 -->

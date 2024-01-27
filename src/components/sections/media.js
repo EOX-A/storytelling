@@ -12,7 +12,7 @@ import { changeMediaLayer, renderHtmlString } from "../../helpers/render-html";
  * - [mediaTypes]: Types of media included (e.g., 'iframe', 'img', 'video').
  * - [urls]: Array of URLs for the media content.
  * - [captions]: Array of captions for each media item.
- * - [position]: Position of the sidecar content ('left' or 'right').
+ * - [stepPosition]: Position of the sidecar content ('left' or 'right').
  * - [height]: Height of the media element.
  */
 export class StoryTellingMedia extends LitElement {
@@ -32,8 +32,8 @@ export class StoryTellingMedia extends LitElement {
     },
     urls: { attribute: "urls", type: Array, example: `["url"]` },
     captions: { attribute: "captions", type: Array, example: `["caption"]` },
-    position: {
-      attribute: "sidecar-position",
+    stepPosition: {
+      attribute: "step-position",
       type: String,
       example: "left|right|center",
     },
@@ -50,7 +50,7 @@ export class StoryTellingMedia extends LitElement {
     this.mediaTypes = [];
     this.urls = [];
     this.captions = [];
-    this.position = "left";
+    this.stepPosition = "left";
     this.height = "auto";
   }
 
@@ -115,7 +115,7 @@ export class StoryTellingMedia extends LitElement {
       ? html`
           <div
             class="media-content-wrap ${this.subType} order-${this
-              .position}"
+              .stepPosition}"
           >
             ${arrNodes}
           </div>
@@ -148,7 +148,7 @@ export class StoryTellingMedia extends LitElement {
       <style>
         ${this.#styling}
       </style>
-      <div class="media-type-${this.subType} wrap-${this.position}">
+      <div class="media-type-${this.subType} wrap-${this.stepPosition}">
         <div class="media ${this.subType}">${this.#renderMediaItems()}</div>
         ${this.#renderSidecarOrTourContent(this.#arrNodes)}
       </div>

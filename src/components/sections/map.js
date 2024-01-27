@@ -22,7 +22,7 @@ import {
  * - [sync]: Synchronization identifier for coordinating multiple maps.
  * - [zoom]: Zoom level of the map.
  * - [controls]: Object defining map controls (e.g., {"zoom":{}}).
- * - [position]: Position of the sidecar content (eg., 'left' or 'right').
+ * - [stepPosition]: Position of the sidecar content (eg., 'left' or 'right').
  * - [steps]: Array of steps for the map display. (eg., [[-28.5682,-129.1632,2],[-51.5662,156.7488,4],[66.1982,-30.1932,1]])
  * - [layersVisible]: Array of layer configurations for each step. (eg., [["regions","WIND"],["WIND"],["regions","NO2"]])
  */
@@ -47,8 +47,8 @@ export class StoryTellingMap extends LitElement {
     zoom: { attribute: false, type: Number, example: "2" },
     preventScroll: { attribute: false, type: Boolean, example: "true" },
     controls: { attribute: false, type: Object },
-    position: {
-      attribute: "sidecar-position",
+    stepPosition: {
+      attribute: "step-position",
       type: String,
       example: "left|right|center",
     },
@@ -72,7 +72,7 @@ export class StoryTellingMap extends LitElement {
     this.sync = null;
     this.zoom = null;
     this.preventScroll = false;
-    this.position = "left";
+    this.stepPosition = "left";
     this.steps = null;
     this.layersVisible = null;
   }
@@ -109,7 +109,7 @@ export class StoryTellingMap extends LitElement {
       <style>
         ${this.#styling}
       </style>
-      <div class="map-type-${this.subType} wrap-${this.position}">
+      <div class="map-type-${this.subType} wrap-${this.stepPosition}">
         <eox-map
           id="map-${this.id}"
           class="map ${this.subType}"
@@ -128,7 +128,7 @@ export class StoryTellingMap extends LitElement {
 
   // Private method to render map content conditionally
   #renderMapContent() {
-    const mapContentClass = `map-content-wrap ${this.subType} order-${this.position}`;
+    const mapContentClass = `map-content-wrap ${this.subType} order-${this.stepPosition}`;
     const eventObj = {
       id: this.id,
       subType: this.subType,
