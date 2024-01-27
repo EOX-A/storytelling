@@ -48,6 +48,11 @@ export class StorytellingPagination extends LitElement {
     const rightArrowStateClass =
       this.currentPageIndex >= this.numOfSections - 1 ? "disabled" : "enabled";
 
+    const currPageNumber = (this.currentPageIndex + 1)
+      .toString()
+      .padStart(2, "0");
+    const totalPageNumber = this.numOfSections.toString().padStart(2, "0");
+
     return html`
       <style>
         ${this.#styling}
@@ -59,6 +64,12 @@ export class StorytellingPagination extends LitElement {
             @click="${() => this.handelPageChange(this.currentPageIndex - 1)}"
             class="pagination-left ${leftArrowStateClass}"
           ></li>
+
+          <div class="page-number">
+            <span class="current">${currPageNumber}</span>
+            <span>/</span>
+            <span>${totalPageNumber}</span>
+          </div>
 
           <!-- Right Arrow -->
           <li
@@ -118,6 +129,20 @@ export class StorytellingPagination extends LitElement {
     }
     .pagination ul li.pagination-right::before {
       content: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ctitle%3Emenu-right%3C/title%3E%3Cpath d='M10,17L15,12L10,7V17Z' /%3E%3C/svg%3E");
+    }
+    .pagination .page-number {
+      background: white;
+      height: 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0rem 0.6rem;
+      border-radius: 100px;
+      font-size: 14px;
+    }
+    .pagination .page-number span {
+      padding: 0px 0.15rem;
+      font-weight: 800;
     }
   `;
 }
