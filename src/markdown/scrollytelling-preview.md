@@ -1,6 +1,6 @@
 <!--
     [type]: scrollytelling
-    [navigations]:[{"hero-section":"Hero","basic-section":"Basic","sidecar":"SidecarSteps","sidecar-layers":"SidecarLayer"}]
+    [navigations]:[{"hero-section":"Hero","intro":"Introduction","climate-related-disaster":"Disasters","policy":"Policy","sidecar":"Sidecar"}]
 -->
 
 ---
@@ -126,7 +126,24 @@ In the interactive chart you can see the number of countries that have submitted
 
 ### Total greenhouse gas emissions per year
 
-<iframe src="https://ourworldindata.org/grapher/total-ghg-emissions" loading="lazy" style="width: 100%; height: 600px; border: 0px none;"></iframe>
+---
+
+<!--
+    [id]:policy-2
+    [sectionType]:media
+    [subType]:container
+    [mediaTypes]:["iframe"]
+    [urls]:["https://ourworldindata.org/grapher/total-ghg-emissions"]
+    [captions]:["Lore ipsum"]
+    [height]:800px
+-->
+
+---
+
+<!--
+    [id]:policy-1
+    [sectionType]:basic
+-->
 
 **Definition of the SDG indicator:** Indicator 13.2.2 is the “total greenhouse gas emissions per year” in the [UN SDG framework](https://unstats.un.org/sdgs/indicators/Global%20Indicator%20Framework%20after%202023%20refinement_Eng.pdf).
 
