@@ -1,11 +1,12 @@
 const initTheme = {
   "background-color": "white",
   "font-color": "#2c3d49",
-  "font-hover-color": "#1b2832",
   "primary-color": "#0c88db",
   "primary-hover-color": "#08769b",
   "secondary-color": "#596b78",
   "secondary-hover-color": "#415462",
+  "header-font-family": "'Signika Negative', sans-serif",
+  "body-font-family": "'Mukta', sans-serif",
 };
 
 function hexToRGBA(hex, alpha = 1) {
@@ -36,18 +37,16 @@ export default function getBrandStyling(newTheme = {}) {
 
   const bgColor = theme["background-color"];
   const fontColor = theme["font-color"];
-  const fontHoverColor = theme["font-hover-color"];
   const primaryColor = theme["primary-color"];
   const primaryHoverColor = theme["primary-hover-color"];
   const primaryHoverBgColor = hexToRGBA(theme["primary-hover-color"], 0.1);
   const secondaryColor = theme["secondary-color"];
   const secondaryHoverColor = theme["secondary-hover-color"];
+  const headerFontFamily = theme["header-font-family"];
+  const bodyFontFamily = theme["body-font-family"];
 
   return `
     @import url("https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.classless.min.css");
-    * {
-      font-family: "Mukta", sans-serif;
-    }
     :root, 
     [data-theme=dark], 
     [data-theme=light],
@@ -70,6 +69,19 @@ export default function getBrandStyling(newTheme = {}) {
       --primary-background-hover: ${primaryHoverBgColor};
       --secondary: ${secondaryColor};
       --secondary-hover: ${secondaryHoverColor};
+      --header-font-family: ${headerFontFamily};
+      --body-font-family: ${bodyFontFamily};
+    }
+    * {
+      font-family: var(--body-font-family);
+    }
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+      font-family: var(--header-font-family);
     }
     @media (min-width: 576px) {
       .container{
@@ -107,7 +119,6 @@ export default function getBrandStyling(newTheme = {}) {
     h1,
     h2,
     h3 {
-      font-family: "Signika Negative", sans-serif;
       line-height: 120%;
       margin-top: 0.8rem;
       margin-bottom: 0.8rem;
