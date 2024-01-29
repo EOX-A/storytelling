@@ -184,7 +184,7 @@ GHG emissions are measure in terms of carbon dioxide equivalents because each gr
     [layers]:[ { "type": "Tile", "source": { "type": "TileWMS", "url": "https://ows.mundialis.de/services/service", "params": { "LAYERS": "TOPO-WMS" } } } ]
     [zoom]:7
     [preventScroll]:true
-    [stepPosition]:right
+    [stepPosition]:left
 -->
 
 <section-step lat="20.5937" lon="78.9629" zoom="5">

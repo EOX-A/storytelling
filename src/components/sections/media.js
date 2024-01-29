@@ -209,6 +209,11 @@ export class StoryTellingMedia extends LitElement {
       object-fit: cover;
     }
 
+    .media.sidecar iframe, 
+    .media.tour iframe {
+      pointer-events: none;
+    }
+
     .media.sidecar img, .media.tour img,
     .media.sidecar iframe, .media.tour iframe {
       height: 100vh;
