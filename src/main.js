@@ -37,6 +37,38 @@ export class StoryTelling extends LitElement {
     this.type = "scrollytelling";
   }
 
+  smoothScrollWithWheelEvent(endY, speed) {
+    const startY = window.scrollY || window.pageYOffset;
+    const distanceY = endY - startY;
+    const duration = distanceY / speed;
+    let startTime = null;
+
+    function easeInOutCubic(t) {
+      return t < 0.5 ? 4 * t * t * t : (t - 1) * (2 * t - 2) * (2 * t - 2) + 1; // ease in out cubic fucntion
+    }
+
+    function animation(currentTime) {
+      if (startTime === null) startTime = currentTime;
+      const timeElapsed = currentTime - startTime;
+      const nextY =
+        startY +
+        distanceY * easeInOutCubic(Math.min(timeElapsed / duration, 1));
+
+      const wheelEvent = new WheelEvent("change", {
+        deltaY: speed,
+        deltaMode: 0,
+      });
+      document.dispatchEvent(wheelEvent);
+
+      window.scrollTo(0, nextY);
+      if (timeElapsed < duration) {
+        requestAnimationFrame(animation);
+      }
+    }
+
+    requestAnimationFrame(animation);
+  }
+
   // Handles markdown processing
   #handleMarkDown(markdown) {
     this.markdown = markdown;
@@ -49,9 +81,10 @@ export class StoryTelling extends LitElement {
     this.#html = processedHtml;
     this.#storyMetaData = storyMetaData;
     setTimeout(() => highlightNavigation(), 400);
+    // setTimeout(() => this.smoothScrollWithWheelEvent(document.body.scrollHeight, 1), 2000)
     this.requestUpdate();
     this.dispatchEvent(
-      new CustomEvent("change", { bubbles: true, composed: true }),
+      new CustomEvent("wheel", { bubbles: true, composed: true }),
     );
   }
 
