@@ -46,3 +46,15 @@ export const MarkdownAsURL = {
   },
   render: (args) => StoryTelling(args),
 };
+
+export const CustomTheme = {
+  args: {
+    editorMode: false,
+    markdown: scrollytellingPreviewMarkdown,
+    theme: {
+      "primary-color": "#bc6c0c",
+      "primary-hover-color": "#b6680a",
+    },
+  },
+  render: (args) => StoryTelling(args),
+};

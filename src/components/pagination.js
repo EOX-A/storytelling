@@ -104,6 +104,9 @@ export class StorytellingPagination extends LitElement {
       justify-content: center;
       padding: 0.1rem;
       cursor: pointer;
+    }
+    .pagination ul li, 
+    div.page-number {
       box-shadow: 1px 2px 10px 1px #7e7e7e59;
     }
     .pagination ul li:hover {

@@ -113,6 +113,9 @@ export class StorytellingNavigation extends LitElement {
     .navigation li.active a:after {
       background: black;
     }
+    .navigation li a:hover {
+      --primary-background-hover: transparent;
+    }
   `;
 }
 
