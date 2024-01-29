@@ -309,7 +309,7 @@ kbd {
   color-scheme: light;
 }
 
-@media only screen and (prefers-color-scheme: dark) {
+@media only screen and (prefers-color-scheme: darks) {
   :root:not([data-theme]) {
     --background-color: #11191f;
     --color: hsl(205, 16%, 77%);
@@ -416,7 +416,7 @@ kbd {
     color-scheme: dark;
   }
 }
-[data-theme=dark] {
+[data-theme=darks] {
   --background-color: #11191f;
   --color: hsl(205, 16%, 77%);
   --h1-color: hsl(205, 20%, 94%);
@@ -519,7 +519,7 @@ kbd {
   --icon-search: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='rgb(162, 175, 185)' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='11' cy='11' r='8'%3E%3C/circle%3E%3Cline x1='21' y1='21' x2='16.65' y2='16.65'%3E%3C/line%3E%3C/svg%3E");
   --icon-time: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='rgb(162, 175, 185)' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='10'%3E%3C/circle%3E%3Cpolyline points='12 6 12 12 16 14'%3E%3C/polyline%3E%3C/svg%3E");
   --icon-valid: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='rgb(46, 125, 50)' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'%3E%3C/polyline%3E%3C/svg%3E");
-  color-scheme: dark;
+  color-scheme: darks;
 }
 
 progress,
