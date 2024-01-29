@@ -20,6 +20,7 @@ export class StoryTelling extends LitElement {
     url: { attribute: "url-property", type: String },
     editorMode: { attribute: false, type: Boolean },
     theme: { attribute: false, type: Object },
+    type: { attribute: "type-property", type: String },
   };
 
   // Private fields to store component state
@@ -33,6 +34,7 @@ export class StoryTelling extends LitElement {
     this.editorMode = false;
     this.url = null;
     this.theme = {};
+    this.type = "scrollytelling";
   }
 
   // Handles markdown processing
@@ -42,6 +44,7 @@ export class StoryTelling extends LitElement {
       this.editorMode,
       markdown,
       this.#currentPageIndex,
+      this.type,
     );
     this.#html = processedHtml;
     this.#storyMetaData = storyMetaData;

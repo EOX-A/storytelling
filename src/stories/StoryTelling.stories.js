@@ -18,6 +18,7 @@ export const ScrollyTellingPreview = {
 export const PaginationPreview = {
   args: {
     editorMode: false,
+    type: "pagination",
     markdown: paginationPreviewMarkdown,
   },
   render: (args) => StoryTelling(args),

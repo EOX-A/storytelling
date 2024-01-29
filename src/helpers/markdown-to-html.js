@@ -208,13 +208,15 @@ function getBlockData(
 /**
  * Converts markdown to HTML with extracted metadata.
  */
-function processMarkdownToHtml(markdown, editorMode, currentPageIndex) {
+function processMarkdownToHtml(markdown, editorMode, currentPageIndex, type) {
   const sections = getSectionsAsMarkdownArray(markdown);
   let htmlStr = "";
   let sectionMetaData = [];
 
+  const meta = getMetaData(sections[0]);
   const storyMetaData = {
-    ...getMetaData(sections[0]),
+    ...meta,
+    type: meta.type || type || "scrollytelling",
     numOfSections: sections.length - 1,
   };
 
@@ -227,7 +229,7 @@ function processMarkdownToHtml(markdown, editorMode, currentPageIndex) {
         index,
         currentPageIndex,
         editorMode,
-        storyMetaData.type || "scrollytelling",
+        storyMetaData.type,
       );
 
       htmlStr += blockData.html;
@@ -255,11 +257,17 @@ function purifyDOM(htmlStr) {
  * Main function to convert markdown to HTML with metadata.
  * It sanitizes the generated HTML for security.
  */
-export default function markdownToHtml(editorMode, markdown, currentPageIndex) {
+export default function markdownToHtml(
+  editorMode,
+  markdown,
+  currentPageIndex,
+  type,
+) {
   const { htmlStr, storyMetaData, sectionMetaData } = processMarkdownToHtml(
     markdown || "",
     editorMode,
     currentPageIndex,
+    type,
   );
   const processedHtml = purifyDOM(htmlStr);
   return { storyMetaData, processedHtml, sectionMetaData };

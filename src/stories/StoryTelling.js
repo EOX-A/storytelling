@@ -4,7 +4,7 @@ import "../main";
 /**
  * Primary UI component for user interaction
  */
-export const StoryTelling = ({ markdown, url, editorMode, theme }) => {
+export const StoryTelling = ({ markdown, url, editorMode, theme, type }) => {
   return html`
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -20,6 +20,7 @@ export const StoryTelling = ({ markdown, url, editorMode, theme }) => {
       .editorMode=${editorMode || false}
       .url=${url || null}
       .theme=${theme || {}}
+      .type=${type}
       .markdown=${markdown}
     ></story-telling>
   `;
