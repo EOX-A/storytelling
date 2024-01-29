@@ -185,6 +185,7 @@ GHG emissions are measure in terms of carbon dioxide equivalents because each gr
     [zoom]:7
     [preventScroll]:true
     [stepPosition]:left
+    [controls]: { "Zoom": {}, "FullScreen": {} }
 -->
 
 <section-step lat="20.5937" lon="78.9629" zoom="5">
@@ -250,6 +251,7 @@ Human emissions have been the main driver of this change. Aerosols have played a
     [zoom]:7
     [preventScroll]:true
     [stepPosition]:left
+    [controls]: { "Zoom": {}, "FullScreen": {} }
 -->
 
 <section-step lat="20.5937" lon="78.9629" zoom="5">
@@ -374,6 +376,7 @@ What has been true in the past two decades will be true in the future. For the p
     [zoom]:7
     [preventScroll]:true
     [stepPosition]:left
+    [controls]: { "Zoom": {}, "FullScreen": {} }
 -->
 
 <section-step lat="20.5937" lon="78.9629" zoom="5" layersVisible="TOPO_NASA">

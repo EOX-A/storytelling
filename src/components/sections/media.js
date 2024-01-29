@@ -262,7 +262,7 @@ export class StoryTellingMedia extends LitElement {
         height: 40vh;
         box-shadow: 0 10px 17px 0px #80808036;
       }
-      .map-content-wrap.sidecar {
+      .media-content-wrap.sidecar {
         order: 2;
       }
       .media.basic {

@@ -118,8 +118,8 @@ export class StoryTellingMap extends LitElement {
           .layers="${this.layers}"
           .zoom="${this.zoom}"
           .preventScroll="${this.preventScroll}"
-          ${this.config ? `.config=${this.config}` : ""}
-          ${this.controls ? `.config=${this.controls}` : ""}
+          .controls="${this.controls|| {}}"
+          ${this.config ? html`.config="${this.config}"` : ""}
         ></eox-map>
         ${this.#renderMapContent()}
       </div>
