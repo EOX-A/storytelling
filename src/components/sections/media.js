@@ -149,7 +149,7 @@ export class StoryTellingMedia extends LitElement {
         ${this.#styling}
       </style>
       <div class="media-type-${this.subType} wrap-${this.stepPosition}">
-        <div class="media ${this.subType}">${this.#renderMediaItems()}</div>
+        ${this.#renderMediaItems()}
         ${this.#renderSidecarOrTourContent(this.#arrNodes)}
       </div>
     `;

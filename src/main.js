@@ -186,7 +186,7 @@ export class StoryTelling extends LitElement {
       background: white;
       padding: 1rem;
       border-radius: 10px;
-      min-height: 30vh;
+      min-height: 8vh;
       max-height: 30vh;
       overflow-y: hidden;
       margin-bottom: calc(100vh);

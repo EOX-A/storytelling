@@ -43,7 +43,13 @@ export class StoryTellingBasic extends LitElement {
     .basic {
       width: 41rem;
       margin: 0 auto;
-      padding: 2rem 0;
+      padding: 4rem 0;
+    }
+    .basic p:first-child {
+      margin-top: 0;
+    }
+    .basic p:last-child {
+      margin-bottom: 0;
     }
     @media screen and (max-width: 1024px) {
       .basic {
