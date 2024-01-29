@@ -46,7 +46,7 @@ export class StorytellingSampleSection extends LitElement {
           add.addEventListener("click", () => this.addSection(index, position));
         });
       }
-    }, 200);
+    }, 1200);
   }
 
   createRenderRoot() {
