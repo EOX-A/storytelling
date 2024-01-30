@@ -8,6 +8,7 @@ import "./components/pagination";
 import "./components/sample-sections";
 import "./components/editor";
 import "./components/renderer";
+import "./components/autoplay";
 import getBrandStyling from "./helpers/brand-styling";
 
 /**
@@ -26,6 +27,7 @@ export class StoryTelling extends LitElement {
   // Private fields to store component state
   #html = null;
   #storyMetaData = {};
+  #sectionMetaData = [];
   #currentPageIndex = 0;
 
   constructor() {
@@ -37,42 +39,10 @@ export class StoryTelling extends LitElement {
     this.type = "scrollytelling";
   }
 
-  smoothScrollWithWheelEvent(endY, speed) {
-    const startY = window.scrollY || window.pageYOffset;
-    const distanceY = endY - startY;
-    const duration = distanceY / speed;
-    let startTime = null;
-
-    function easeInOutCubic(t) {
-      return t < 0.5 ? 4 * t * t * t : (t - 1) * (2 * t - 2) * (2 * t - 2) + 1; // ease in out cubic fucntion
-    }
-
-    function animation(currentTime) {
-      if (startTime === null) startTime = currentTime;
-      const timeElapsed = currentTime - startTime;
-      const nextY =
-        startY +
-        distanceY * easeInOutCubic(Math.min(timeElapsed / duration, 1));
-
-      const wheelEvent = new WheelEvent("change", {
-        deltaY: speed,
-        deltaMode: 0,
-      });
-      document.dispatchEvent(wheelEvent);
-
-      window.scrollTo(0, nextY);
-      if (timeElapsed < duration) {
-        requestAnimationFrame(animation);
-      }
-    }
-
-    requestAnimationFrame(animation);
-  }
-
   // Handles markdown processing
   #handleMarkDown(markdown) {
     this.markdown = markdown;
-    const { storyMetaData, processedHtml } = markdownToHtml(
+    const { storyMetaData, processedHtml, sectionMetaData } = markdownToHtml(
       this.editorMode,
       markdown,
       this.#currentPageIndex,
@@ -80,8 +50,8 @@ export class StoryTelling extends LitElement {
     );
     this.#html = processedHtml;
     this.#storyMetaData = storyMetaData;
+    this.#sectionMetaData = sectionMetaData;
     setTimeout(() => highlightNavigation(), 400);
-    // setTimeout(() => this.smoothScrollWithWheelEvent(document.body.scrollHeight, 1), 2000)
     this.requestUpdate();
     this.dispatchEvent(
       new CustomEvent("wheel", { bubbles: true, composed: true }),
@@ -107,14 +77,7 @@ export class StoryTelling extends LitElement {
       </style>
 
       <!-- Init Loader Component -->
-      ${when(
-        this.#html === null,
-        () => html`
-          <div class="init-loader">
-            <span class="loader"></span>
-          </div>
-        `,
-      )}
+      ${this.#renderInitialLoader()}
 
       <!-- Navigation Component -->
       ${this.#renderNavigation()}
@@ -128,9 +91,24 @@ export class StoryTelling extends LitElement {
       <!-- Pagination Component -->
       ${this.#renderPagination()}
 
+      <!-- Autoplay Component -->
+      ${this.#renderAutoplay()}
+
       <!-- Custom Section Component -->
       ${this.#renderCustomSections()}
     `;
+  }
+
+  // Initial loader
+  #renderInitialLoader() {
+    return when(
+      this.#html === null,
+      () => html`
+        <div class="init-loader">
+          <span class="loader"></span>
+        </div>
+      `,
+    );
   }
 
   // Private method to render navigation component
@@ -186,6 +164,18 @@ export class StoryTelling extends LitElement {
             if (e.detail) this.#handleMarkDown(this.markdown);
           }}
         ></story-telling-pagination>
+      `,
+    );
+  }
+
+  // Initial loader
+  #renderAutoplay() {
+    return when(
+      this.#storyMetaData && this.#storyMetaData.type !== "pagination",
+      () => html`
+        <story-telling-autoplay
+          .sectionMetaData=${this.#sectionMetaData}
+        ></story-telling-autoplay>
       `,
     );
   }
