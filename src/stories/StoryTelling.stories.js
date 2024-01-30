@@ -11,6 +11,7 @@ export const ScrollyTellingPreview = {
   args: {
     editorMode: false,
     markdown: scrollytellingPreviewMarkdown,
+    autoplay: true,
   },
   render: (args) => StoryTelling(args),
 };

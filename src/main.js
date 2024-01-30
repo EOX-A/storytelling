@@ -22,6 +22,7 @@ export class StoryTelling extends LitElement {
     editorMode: { attribute: false, type: Boolean },
     theme: { attribute: false, type: Object },
     type: { attribute: "type-property", type: String },
+    autoplay: { attribute: false, type: Boolean },
   };
 
   // Private fields to store component state
@@ -37,6 +38,7 @@ export class StoryTelling extends LitElement {
     this.url = null;
     this.theme = {};
     this.type = "scrollytelling";
+    this.autoplay = false;
   }
 
   // Handles markdown processing
@@ -171,7 +173,9 @@ export class StoryTelling extends LitElement {
   // Initial loader
   #renderAutoplay() {
     return when(
-      this.#storyMetaData && this.#storyMetaData.type !== "pagination",
+      this.autoplay &&
+        this.#storyMetaData &&
+        this.#storyMetaData.type !== "pagination",
       () => html`
         <story-telling-autoplay
           .sectionMetaData=${this.#sectionMetaData}

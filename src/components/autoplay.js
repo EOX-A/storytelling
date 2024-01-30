@@ -1,19 +1,11 @@
 import { html, LitElement } from "lit";
 import { when } from "lit/directives/when.js";
 
+// Predefined speed settings
 const SPEED = [
-  {
-    value: "0.1",
-    title: "0.5x",
-  },
-  {
-    value: "0.5",
-    title: "1x",
-  },
-  {
-    value: "1",
-    title: "2x",
-  },
+  { value: "0.1", title: "0.5x" },
+  { value: "0.5", title: "1x" },
+  { value: "1", title: "2x" },
 ];
 
 export class StorytellingAutoPlay extends LitElement {
@@ -22,63 +14,67 @@ export class StorytellingAutoPlay extends LitElement {
     sectionMetaData: { attribute: false, type: Array },
   };
 
-  #speedIndex = 1;
+  #speedIndex = 1; // Index of the current speed setting
+
   constructor() {
     super();
-
     this.sectionMetaData = [];
     this.isPaused = true;
     this.isStopped = true;
   }
 
+  // Smooth scrolling function with wheel event simulation
   smoothScrollWithWheelEvent(endY, speed) {
     const startY = window.scrollY || window.pageYOffset;
     const distanceY = endY - startY;
     const duration = Math.abs(distanceY) / speed;
     let startTime = null;
 
-    const animation = (currentTime, sectionMetaData) => {
+    const animateScroll = (currentTime) => {
       if (this.isStopped) return;
-
       if (startTime === null) startTime = currentTime;
+
       const timeElapsed = currentTime - startTime;
       const nextY = startY + distanceY * Math.min(timeElapsed / duration, 1);
 
       if (!this.isPaused) {
-        sectionMetaData.forEach((meta) => {
-          if (["sidecar", "tour"].includes(meta.subType)) {
-            const wheelEvent = new WheelEvent("wheel", {
-              deltaY: speed,
-              deltaMode: 0,
-              bubbles: true,
-              cancelable: true,
-            });
-
-            const contentParent = document.querySelector(
-              `#${meta.id} .${meta.sectionType}-type-${meta.subType}`,
-            );
-
-            contentParent?.dispatchEvent(wheelEvent);
-          }
-        });
-
+        this.simulateWheelEvents();
         window.scrollTo(0, nextY);
 
-        // Check if the bottom is reached or if the animation duration is completed
         if (
           timeElapsed < duration &&
           window.scrollY + window.innerHeight < document.body.offsetHeight
         ) {
-          requestAnimationFrame((time) => animation(time, sectionMetaData));
-        } else this.stop();
+          requestAnimationFrame(animateScroll);
+        } else {
+          this.stop();
+        }
       }
     };
 
-    requestAnimationFrame((currentTime) =>
-      animation(currentTime, this.sectionMetaData),
-    );
+    requestAnimationFrame(animateScroll);
   }
 
+  // Simulates wheel events for sections with specific subtypes
+  simulateWheelEvents() {
+    this.sectionMetaData.forEach((meta) => {
+      if (["sidecar", "tour"].includes(meta.subType)) {
+        const wheelEvent = new WheelEvent("wheel", {
+          deltaY: SPEED[this.#speedIndex].value,
+          deltaMode: 0,
+          bubbles: true,
+          cancelable: true,
+        });
+
+        const contentParent = document.querySelector(
+          `#${meta.id} .${meta.sectionType}-type-${meta.subType}`,
+        );
+        contentParent?.dispatchEvent(wheelEvent);
+      }
+    });
+  }
+
+  // Play control functions
   pause() {
     if (!this.isPaused) {
       this.isPaused = true;
@@ -90,7 +86,6 @@ export class StorytellingAutoPlay extends LitElement {
     if (this.isPaused) {
       this.isPaused = false;
       this.play();
-      this.requestUpdate();
     }
   }
 
@@ -98,7 +93,9 @@ export class StorytellingAutoPlay extends LitElement {
     if (!this.isStopped) {
       this.isStopped = true;
       this.isPaused = true;
+      this.#speedIndex = 1;
       window.scrollTo({ top: 0 });
+
       this.requestUpdate();
     }
   }
@@ -109,7 +106,7 @@ export class StorytellingAutoPlay extends LitElement {
       this.isPaused = false;
       this.smoothScrollWithWheelEvent(
         document.body.scrollHeight,
-        SPEED[this.#speedIndex || 0].value,
+        SPEED[this.#speedIndex].value,
       );
       this.requestUpdate();
     } else {
@@ -117,12 +114,12 @@ export class StorytellingAutoPlay extends LitElement {
     }
   }
 
+  // Handles speed selection
   handleSpeed(index) {
     if (this.#speedIndex !== index) {
       this.#speedIndex = index;
-      if (this.isPaused) {
-        this.requestUpdate();
-      } else {
+      if (this.isPaused) this.requestUpdate();
+      else {
         this.pause();
         this.play();
       }
@@ -134,6 +131,7 @@ export class StorytellingAutoPlay extends LitElement {
     return this;
   }
 
+  // Render function to define the UI of the component
   render() {
     const currBtn = this.isPaused ? "play-button" : "pause-button";
     const stopBtnState = this.isStopped ? "disabled" : "enabled";
@@ -145,26 +143,24 @@ export class StorytellingAutoPlay extends LitElement {
       <div class="autoplay">
         <ul>
           <li @click="${this.play}" class="${currBtn}"></li>
-
           <div class="speed">
-            ${SPEED.map((speed, index) => {
-              const curr = this.#speedIndex === index ? "curr" : "";
-              return html`<span
-                @click="${() => this.handleSpeed(index)}"
-                class="${curr}"
-                >${speed.title}</span
-              >`;
-            })}
+            ${SPEED.map((speed, index) =>
+              this.#renderSpeedButton(speed, index),
+            )}
           </div>
-
           <li @click="${this.stop}" class="stop-button ${stopBtnState}"></li>
         </ul>
       </div>
-      ${when(
-        !this.isPaused,
-        () => html` <div class="autoplay-overlay"></div> `,
-      )}
+      ${when(!this.isPaused, () => html`<div class="autoplay-overlay"></div>`)}
     `;
+  }
+
+  // Helper method to render each speed button
+  #renderSpeedButton(speed, index) {
+    const curr = this.#speedIndex === index ? "curr" : "";
+    return html`<span @click="${() => this.handleSpeed(index)}" class="${curr}"
+      >${speed.title}</span
+    >`;
   }
 
   // Private styling CSS
@@ -179,6 +175,7 @@ export class StorytellingAutoPlay extends LitElement {
       display: flex;
       align-items: center;
       justify-content: center;
+      margin-bottom: 0;
     }
     .autoplay ul li {
       list-style: none;
