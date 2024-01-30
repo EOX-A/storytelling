@@ -16,13 +16,11 @@ import {
  * - [content]: HTML content for display alongside the map.
  * - [subType]: Type of map display (e.g., 'basic', 'container', 'full', 'sidecar', 'tour', 'slideshow').
  * - [center]: Geographic center of the map (eg., latitude, longitude).
- * - [config]: General configuration object for the map. (eg., EOxMap Config - {})
  * - [layers]: Array of layer configurations for the map. (eg., EOxMap Layer - [{}])
  * - [preventScroll]: Boolean to prevent map scrolling. (eg., true, false)
- * - [sync]: Synchronization identifier for coordinating multiple maps.
  * - [zoom]: Zoom level of the map.
  * - [controls]: Object defining map controls (e.g., {"zoom":{}}).
- * - [stepPosition]: Position of the sidecar content (eg., 'left' or 'right').
+ * - [stepPosition]: Position of the sidecar content (eg., 'left', 'center' or 'right').
  * - [steps]: Array of steps for the map display. (eg., [[-28.5682,-129.1632,2],[-51.5662,156.7488,4],[66.1982,-30.1932,1]])
  * - [layersVisible]: Array of layer configurations for each step. (eg., [["regions","WIND"],["WIND"],["regions","NO2"]])
  */
@@ -43,7 +41,6 @@ export class StoryTellingMap extends LitElement {
       type: Array,
       example: `[{"type":"Tile","source":{"type":"OSM"}}]`,
     },
-    sync: { attribute: "sync", type: String },
     zoom: { attribute: false, type: Number, example: "2" },
     preventScroll: { attribute: false, type: Boolean, example: "true" },
     controls: { attribute: false, type: Object },
@@ -67,9 +64,7 @@ export class StoryTellingMap extends LitElement {
     this.sectionType = "map";
     this.subType = "basic";
     this.center = [0, 0];
-    this.config = null;
     this.layers = null;
-    this.sync = null;
     this.zoom = null;
     this.preventScroll = false;
     this.stepPosition = "left";
@@ -119,7 +114,6 @@ export class StoryTellingMap extends LitElement {
           .zoom="${this.zoom}"
           .preventScroll="${this.preventScroll}"
           .controls="${this.controls || {}}"
-          ${this.config ? html`.config="${this.config}"` : ""}
         ></eox-map>
         ${this.#renderMapContent()}
       </div>

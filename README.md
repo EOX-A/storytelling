@@ -35,7 +35,6 @@ The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for t
 | `content`       | HTML content for display alongside the map.                | `<section-step>Anything in between</section-step>`         |
 | `subType`       | Type of map display (e.g., 'simple', 'container', etc.).   | `full`                                                     |
 | `center`        | Geographic center of the map (latitude, longitude).        | `[37.7749, -122.4194]`                                     |
-| `config`        | General configuration object for the map.                  | `{ "mapType": "terrain", "showLabels": true }`             |
 | `layers`        | Array of layer configurations for the map.                 | `[{ "type": "tile", "url": "https://example.com/tiles" }]` |
 | `preventScroll` | Boolean to prevent map scrolling.                          | `true`                                                     |
 | `sync`          | Synchronization identifier for coordinating multiple maps. | `sync-1`                                                   |

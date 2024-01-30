@@ -29,6 +29,7 @@ export class StoryTelling extends LitElement {
   #html = null;
   #storyMetaData = {};
   #sectionMetaData = [];
+  #errors = [];
   #currentPageIndex = 0;
 
   constructor() {
@@ -44,15 +45,17 @@ export class StoryTelling extends LitElement {
   // Handles markdown processing
   #handleMarkDown(markdown) {
     this.markdown = markdown;
-    const { storyMetaData, processedHtml, sectionMetaData } = markdownToHtml(
-      this.editorMode,
-      markdown,
-      this.#currentPageIndex,
-      this.type,
-    );
+    const { errors, storyMetaData, processedHtml, sectionMetaData } =
+      markdownToHtml(
+        this.editorMode,
+        markdown,
+        this.#currentPageIndex,
+        this.type,
+      );
     this.#html = processedHtml;
     this.#storyMetaData = storyMetaData;
     this.#sectionMetaData = sectionMetaData;
+    this.#errors = errors;
     setTimeout(() => highlightNavigation(), 400);
     this.requestUpdate();
     this.dispatchEvent(
@@ -134,6 +137,7 @@ export class StoryTelling extends LitElement {
         <story-telling-editor
           .markdown=${this.markdown}
           .isNavigation=${Boolean(this.#storyMetaData.navigations)}
+          .errors=${this.#errors}
           @change=${(e) => e.detail && this.#handleMarkDown(e.detail.markdown)}
         ></story-telling-editor>
       `,

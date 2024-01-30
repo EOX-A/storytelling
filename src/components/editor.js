@@ -1,10 +1,12 @@
 import { LitElement, html } from "lit";
 import initEditor from "../helpers/editor";
+import { when } from "lit/directives/when.js";
 
 // Define LitElement for the editor
 class StoryTellingEditor extends LitElement {
   // Define static properties for LitElement
   static properties = {
+    errors: { attribute: false, type: Array },
     markdown: { attribute: "markdown", type: String },
     isNavigation: { attribute: "markdown", type: Boolean },
   };
@@ -19,6 +21,8 @@ class StoryTellingEditor extends LitElement {
     this.isNavigation = false;
     this.dragging = false;
     this.resizing = false;
+    this.errors = [];
+
     // Bind methods to the instance
     this.disableTextSelection = this.disableTextSelection.bind(this);
     this.enableTextSelection = this.enableTextSelection.bind(this);
@@ -107,6 +111,7 @@ class StoryTellingEditor extends LitElement {
   // Override render method to define the HTML structure
   render() {
     const editorView = !this.#temporaryEnableEditor ? "editor-hide" : "";
+
     return html`
       <style>
         ${this.#styling}
@@ -119,6 +124,21 @@ class StoryTellingEditor extends LitElement {
         <div id="editor"></div>
         <div class="resize-handle"></div>
         <span class="editor-saver"></span>
+        ${when(
+          this.errors?.length,
+          () => html`
+          <div class="editor-error">
+            <div class="editor-error-wrapper">
+              <div class="overflow">
+                <h6>⛔ Error</h6>
+                <ul>
+                  ${this.errors.map(({ errors, type }) => errors.map((error) => html`<li><strong>${type}</strong>: ${error.context.message || error.message}</li>`))}
+                <ul>
+              </div>
+            </div>
+          </div>
+        `,
+        )}
       </div>
       <div class="switch-button">
         <label class="switch">
@@ -160,6 +180,7 @@ class StoryTellingEditor extends LitElement {
       left: 0;
       background-color: #444444;
       cursor: sw-resize;
+      z-index: 1;
     }
     .editor-wrapper.partial-height {
       height: calc(100vh - 100px);
@@ -180,6 +201,48 @@ class StoryTellingEditor extends LitElement {
 
     .editor-hide {
       display: none;
+    }
+
+    .editor-error {
+      cursor: auto;
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      width: 100%;
+      height: 105px;
+      background: #ffc7d3;
+      border-bottom-right-radius: 10px;
+      border: 2px solid #ff7b9640;
+    }
+    .editor-error .editor-error-wrapper {
+      padding: 0.5rem;
+      height: 100%;
+    }
+    .editor-error .editor-error-wrapper .overflow { 
+      height: 100%;
+      overflow-y: auto;
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+      width: 85%;
+    }
+    .editor-error .editor-error-wrapper .overflow::-webkit-scrollbar { 
+      display: none;
+    }
+    .editor-error .editor-error-wrapper h6 {
+      margin: 0;
+      padding: 0;
+      font-size: 0.7rem;
+      color: #dd264c;
+    }
+    .editor-error .editor-error-wrapper ul {
+      margin-top: 0.25rem;
+    }
+    .editor-error .editor-error-wrapper li {
+      color: #dd264c;
+      font-size: 0.6rem;
+      font-weight: 400;
+      margin-bottom: 0;
+      margin-left: 0.2rem;
     }
 
 

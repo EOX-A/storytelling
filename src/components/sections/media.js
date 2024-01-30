@@ -8,7 +8,7 @@ import { changeMediaLayer, renderHtmlString } from "../../helpers/render-html";
  * Properties:
  * - [id]: Unique identifier for the media component.
  * - [content]: HTML content for display alongside the media.
- * - [subType]: Type of media display (e.g., 'basic', 'container', 'full', 'sidecar', 'tour', 'slideshow').
+ * - [subType]: Type of media display (e.g., 'basic', 'container', 'full', 'sidecar', 'tour').
  * - [mediaTypes]: Types of media included (e.g., 'iframe', 'img', 'video').
  * - [urls]: Array of URLs for the media content.
  * - [captions]: Array of captions for each media item.

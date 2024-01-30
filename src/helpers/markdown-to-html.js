@@ -3,6 +3,13 @@ import { PROPERTIES_KEYS } from "./custom-elements";
 import { getSectionsAsMarkdownArray } from "./misc";
 import { marked } from "marked";
 import { CUSTOM_ELEMENTS } from "./custom-elements";
+import {
+  basicSectionMetaSchema,
+  heroSectionMetaSchema,
+  mapSectionMetaSchema,
+  mediaSectionMetaSchema,
+  storyMetaSchema,
+} from "./markdown-validator";
 
 marked.use({ breaks: true, gfm: true });
 
@@ -191,6 +198,11 @@ function getBlockData(
   viewType,
 ) {
   const meta = getMetaData(section);
+
+  const sectionErrors = parseError(
+    { ...meta, section: section },
+    `Section ${index} (#ID - ${meta.id})`,
+  );
   const renderedContent = marked(section);
   const html = parseSectionHtml(
     meta,
@@ -202,7 +214,40 @@ function getBlockData(
     viewType,
   );
 
-  return { meta, html };
+  return { meta, html, sectionErrors };
+}
+
+function parseError(obj, section) {
+  let type = section || "Story Meta";
+  let errors = [];
+  const options = { abortEarly: false };
+
+  function getError(schema) {
+    const result = schema.validate(obj, options);
+    return result.error?.details || [];
+  }
+
+  if (section) {
+    switch (obj.sectionType) {
+      case "media":
+        errors = getError(mediaSectionMetaSchema);
+        break;
+      case "map":
+        errors = getError(mapSectionMetaSchema);
+        break;
+      case "hero":
+        errors = getError(heroSectionMetaSchema);
+        break;
+      default:
+        errors = getError(basicSectionMetaSchema);
+        break;
+    }
+  } else errors = getError(storyMetaSchema);
+
+  return {
+    type: type,
+    errors: errors,
+  };
 }
 
 /**
@@ -212,6 +257,7 @@ function processMarkdownToHtml(markdown, editorMode, currentPageIndex, type) {
   const sections = getSectionsAsMarkdownArray(markdown);
   let htmlStr = "";
   let sectionMetaData = [];
+  let errors = [];
 
   const meta = getMetaData(sections[0]);
   const storyMetaData = {
@@ -234,10 +280,15 @@ function processMarkdownToHtml(markdown, editorMode, currentPageIndex, type) {
 
       htmlStr += blockData.html;
       sectionMetaData.push(blockData.meta);
+      if (blockData.sectionErrors.errors.length)
+        errors.push(blockData.sectionErrors);
     }
   });
 
-  return { htmlStr, storyMetaData, sectionMetaData };
+  const storyMetaError = parseError(storyMetaData);
+  if (storyMetaError.errors.length) errors.push(storyMetaError);
+
+  return { htmlStr, storyMetaData, sectionMetaData, errors };
 }
 
 /**
@@ -263,12 +314,8 @@ export default function markdownToHtml(
   currentPageIndex,
   type,
 ) {
-  const { htmlStr, storyMetaData, sectionMetaData } = processMarkdownToHtml(
-    markdown || "",
-    editorMode,
-    currentPageIndex,
-    type,
-  );
+  const { htmlStr, storyMetaData, sectionMetaData, errors } =
+    processMarkdownToHtml(markdown || "", editorMode, currentPageIndex, type);
   const processedHtml = purifyDOM(htmlStr);
-  return { storyMetaData, processedHtml, sectionMetaData };
+  return { storyMetaData, processedHtml, sectionMetaData, errors };
 }

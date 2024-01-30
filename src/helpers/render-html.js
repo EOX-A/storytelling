@@ -180,7 +180,7 @@ function processCustomElement(element) {
 /**
  * Process a DOM node, handling specific node types.
  */
-function processNode(node) {
+export function processNode(node) {
   if (
     node.nodeName === "P" ||
     node.nodeName === "DIV" ||
@@ -208,9 +208,9 @@ export function handleMapSection(
   steps,
   layers,
 ) {
-  const lat = Number(contentEle.getAttribute("lat") || steps[index][0]);
-  const lon = Number(contentEle.getAttribute("lon") || steps[index][1]);
-  const zoom = Number(contentEle.getAttribute("zoom") || steps[index][2]);
+  const lat = Number(contentEle.getAttribute("lat") || steps?.[index][0]);
+  const lon = Number(contentEle.getAttribute("lon") || steps?.[index][1]);
+  const zoom = Number(contentEle.getAttribute("zoom") || steps?.[index][2]);
 
   if (lat && lon && zoom) {
     const propLayers = contentEle

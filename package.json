@@ -32,6 +32,7 @@
     "@eox/layercontrol": "^0.13.1",
     "@eox/map": "^1.1.0",
     "isomorphic-dompurify": "^2.0.0",
+    "joi": "^17.12.1",
     "lit": "^3.1.0",
     "marked": "^11.1.0",
     "monaco-editor": "^0.45.0",

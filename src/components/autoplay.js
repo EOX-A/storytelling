@@ -102,6 +102,7 @@ export class StorytellingAutoPlay extends LitElement {
 
   play() {
     if (this.isStopped || this.isPaused) {
+      if (this.isStopped) window.scrollTo({ top: 0 });
       this.isStopped = false;
       this.isPaused = false;
       this.smoothScrollWithWheelEvent(
