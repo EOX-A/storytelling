@@ -1,4 +1,4 @@
-import { html, LitElement } from "lit";
+import { html, LitElement, nothing } from "lit";
 
 /**
  * StoryTellingHero - A LitElement component for rendering a hero section.
@@ -9,6 +9,8 @@ import { html, LitElement } from "lit";
  * - [hPosition]: Horizontal position of the content (e.g., 'left', 'center', 'right').
  * - [img]: URL of the background image.
  * - [imgAlt]: Alternate text for the image.
+ * - [video]: URL of the background video.
+ * - [videoAlt]: Alternate text for the image.
  * - [title]: Title text for the hero section.
  * - [description]: Description text.
  * - [subDescription]: Sub-description text.
@@ -30,6 +32,8 @@ export class StoryTellingHero extends LitElement {
     },
     img: { attribute: "img", type: String, example: "url" },
     imgAlt: { attribute: "img-alt", type: String, example: "Some caption" },
+    video: { attribute: "video", type: String, example: "url" },
+    videoAlt: { attribute: "video-alt", type: String, example: "Some caption" },
     title: { attribute: "title", type: String, example: "Title here!" },
     description: {
       attribute: "description",
@@ -50,8 +54,10 @@ export class StoryTellingHero extends LitElement {
     this.subType = "full";
     this.vPosition = "middle";
     this.hPosition = "center";
-    this.img = "https://www.gstatic.com/prettyearth/assets/full/14617.jpg";
+    this.img = "";
     this.imgAlt = "";
+    this.video = "";
+    this.videoAlt = "";
     this.title = "";
     this.description = "";
     this.subDescription = "";
@@ -69,7 +75,19 @@ export class StoryTellingHero extends LitElement {
         ${this.#styling}
       </style>
       <div class="hero hero-${this.subType}">
-        <img class="hero-img" src=${this.img} alt=${this.imgAlt} />
+        ${this.img.length
+          ? html`<img class="hero-img" src=${this.img} alt=${this.imgAlt} />`
+          : nothing}
+        ${this.video.length
+          ? html`<video
+              class="hero-img"
+              src=${this.video}
+              alt=${this.videoAlt}
+              loop
+              muted
+              autoplay
+            />`
+          : nothing}
         <div class="hero-overlay"></div>
         <div
           class="hero-content hero-${this.hPosition} hero-${this
