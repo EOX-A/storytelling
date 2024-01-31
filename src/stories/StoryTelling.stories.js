@@ -1,6 +1,7 @@
 import { StoryTelling } from "./StoryTelling";
 import scrollytellingPreviewMarkdown from "../markdown/scrollytelling-preview.md?raw";
 import paginationPreviewMarkdown from "../markdown/pagination-preview.md?raw";
+import withoutNavPreviewMarkdown from "../markdown/without-nav-preview.md?raw";
 
 export default {
   title: "Module",
@@ -21,6 +22,15 @@ export const PaginationPreview = {
     editorMode: false,
     type: "pagination",
     markdown: paginationPreviewMarkdown,
+  },
+  render: (args) => StoryTelling(args),
+};
+
+export const WithoutNavPreview = {
+  args: {
+    editorMode: false,
+    markdown: withoutNavPreviewMarkdown,
+    autoplay: true,
   },
   render: (args) => StoryTelling(args),
 };
