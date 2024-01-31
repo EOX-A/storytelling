@@ -52,7 +52,7 @@ The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for t
     <p>The current EPA threshold is 12 micrograms per cubic meter, 20% higher than the World Health Organization’s recommended limit of 10 micrograms per cubic meter. Researchers have found that PM 2.5 is harmful at any concentration, and that lowering thresholds even below 10 micrograms per cubic meter could save thousands of lives.[9,10]</p>
 </section-step>
 
-<section-step lat="-30.5662" lon="130.7488" zoom="4">
+<section-step lat="-30.5662" lon="130.7488" zoom="4" duration="1000">
     <h3>Australia</h3>
     <p>The current EPA threshold is 12 micrograms per cubic meter, 20% higher than the World Health Organization’s recommended limit of 10 micrograms per cubic meter. Researchers have found that PM 2.5 is harmful at any concentration, and that lowering thresholds even below 10 micrograms per cubic meter could save thousands of lives.[9,10]</p>
     <p>The current EPA threshold is 12 micrograms per cubic meter, 20% higher than the World Health Organization’s recommended limit of 10 micrograms per cubic meter. Researchers have found that PM 2.5 is harmful at any concentration, and that lowering thresholds even below 10 micrograms per cubic meter could save thousands of lives.[9,10]</p>
@@ -80,7 +80,7 @@ The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for t
     [zoom]:2
     [preventScroll]:true
     [stepPosition]:left
-    [steps]:[[20.5937,78.9629,5],[-30.5662,130.7488,4],[66.1982,-30.1932,1]]
+    [steps]:[[20.5937,78.9629,5],[-30.5662,130.7488,4, 1000],[66.1982,-30.1932,1]]
     [layersVisible]:[["dd","WIND"],["WIND"],["regions","osm"]]
 -->
 
@@ -122,7 +122,7 @@ The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for t
     [zoom]:7
     [preventScroll]:true
     [stepPosition]:right
-    [steps]:[[20.5937,78.9629,5],[-30.5662,130.7488,4],[66.1982,-30.1932,1]]
+    [steps]:[[20.5937,78.9629,5],[-30.5662,130.7488,4, 1000],[66.1982,-30.1932,1]]
 -->
 
 <section-step>

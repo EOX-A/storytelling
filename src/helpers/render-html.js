@@ -211,6 +211,9 @@ export function handleMapSection(
   const lat = Number(contentEle.getAttribute("lat") || steps?.[index][0]);
   const lon = Number(contentEle.getAttribute("lon") || steps?.[index][1]);
   const zoom = Number(contentEle.getAttribute("zoom") || steps?.[index][2]);
+  const duration = Number(
+    contentEle.getAttribute("duration") || steps?.[index][3],
+  );
 
   if (lat && lon && zoom) {
     const propLayers = contentEle
@@ -222,7 +225,8 @@ export function handleMapSection(
       changeMapLayer(sectionId, currLayers, "map");
     }
 
-    mapEle.map.getView().setCenter(fromLonLat([lon, lat]));
-    mapEle.map.getView().setZoom(zoom);
+    mapEle.map
+      .getView()
+      .animate({ center: fromLonLat([lon, lat]), zoom, duration });
   }
 }
