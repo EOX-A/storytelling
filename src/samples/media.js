@@ -42,13 +42,25 @@ const MEDIA_IFRAME = `<!--${sectionType}
 -->
 `;
 
-const MEDIA_HERO = `<!--
+const MEDIA_HERO_IMAGE = `<!--
     [sectionType]:hero
     [subType]: full
     [vPosition]: middle
     [hPosition]: center
     [img]: https://www.gstatic.com/prettyearth/assets/full/14617.jpg
     [imgAlt]: Satellite Img
+    [title]:Global Air Quality
+    [description]:Exploring 19 years of particulate matter in the air we breathe
+-->
+`;
+
+const MEDIA_HERO_VIDEO = `<!--
+    [sectionType]:hero
+    [subType]: full
+    [vPosition]: middle
+    [hPosition]: center
+    [video]: https://i.imgur.com/i9nkrTM.mp4
+    [imgAlt]: Some Text 
     [title]:Global Air Quality
     [description]:Exploring 19 years of particulate matter in the air we breathe
 -->
@@ -97,7 +109,8 @@ const MEDIA_TOUR = `<!--
 export {
   MEDIA_CONTAINER,
   MEDIA_FULL,
-  MEDIA_HERO,
+  MEDIA_HERO_IMAGE,
+  MEDIA_HERO_VIDEO,
   MEDIA_IFRAME,
   MEDIA_SIDECAR,
   MEDIA_SIMPLE,
