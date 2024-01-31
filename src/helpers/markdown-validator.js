@@ -1,6 +1,87 @@
 import Joi from "joi";
 import { processNode } from "./render-html";
 
+const customHtmlValidation = (value, helpers, sectionType) => {
+  // Common setup
+  const parser = new DOMParser();
+  const doc = parser.parseFromString(value, "text/html");
+  const doms = Array.from(doc.body.childNodes).map(processNode);
+  let error;
+
+  // Validation for 'map'
+  if (sectionType === "map") {
+    const { steps, layersVisible } = helpers.state.ancestors[0];
+    if (!value.includes("section-step")) {
+      return helpers.error("any.custom", {
+        message: "<section-step> required to render `sidecar` or `tour` map.",
+      });
+    }
+
+    let sectionStepsIndex = -1;
+
+    doms.forEach((dom) => {
+      if (dom.tagName?.toLowerCase() === "section-step") {
+        sectionStepsIndex += 1;
+        const isValidPropsAvail = Boolean(
+          dom.getAttribute("layersVisible") ||
+            (dom.getAttribute("lat") &&
+              dom.getAttribute("lon") &&
+              dom.getAttribute("zoom")),
+        );
+        const isValidMetaAvail =
+          steps?.[sectionStepsIndex] || layersVisible?.[sectionStepsIndex];
+
+        if (!isValidPropsAvail && !isValidMetaAvail) {
+          error = helpers.error("any.custom", {
+            message:
+              "Either the [steps/layersVisible] meta value is required, or the <section-step> must have either `layersVisible='id1,id2'` or `lat='0.0'`, `lon='0.0'`, and `zoom='1'` as properties.",
+          });
+        }
+      }
+    });
+  }
+
+  // Validation for 'media'
+  if (sectionType === "media") {
+    const { urls, mediaTypes } = helpers.state.ancestors[0];
+    if (!value.includes("section-step")) {
+      return helpers.error("any.custom", {
+        message: "<section-step> required to render `sidecar` or `tour` map.",
+      });
+    }
+
+    let sectionStepsIndex = -1;
+
+    doms.forEach((dom) => {
+      if (dom.tagName?.toLowerCase() === "section-step") {
+        sectionStepsIndex += 1;
+        const isValidPropsAvail = Boolean(
+          dom.getAttribute("url") && dom.getAttribute("type"),
+        );
+        const isValidMetaAvail =
+          urls?.[sectionStepsIndex] && mediaTypes?.[sectionStepsIndex];
+
+        if (!isValidPropsAvail && !isValidMetaAvail) {
+          error = helpers.error("any.custom", {
+            message:
+              "Either the [url] and [type] meta value is required, or the <section-step> must have `url='uri'` and `type='img/iframe'` as properties.",
+          });
+        }
+      }
+    });
+  }
+
+  return error || value;
+};
+
+// Schema for basic sections
+const basicMeta = {
+  id: Joi.string().pattern(new RegExp("^[a-zA-Z0-9-]*$")).required(),
+  sectionType: Joi.string().valid("basic", "hero", "map", "media").required(),
+  section: Joi.string(),
+};
+
+// Schema for story meta
 export const storyMetaSchema = Joi.object({
   id: Joi.string().pattern(new RegExp("^[a-zA-Z0-9-]*$")).required(),
   type: Joi.string().valid("pagination", "scrollytelling").required(),
@@ -8,72 +89,10 @@ export const storyMetaSchema = Joi.object({
   navigations: Joi.array().items(Joi.object().pattern(Joi.string(), Joi.any())),
 });
 
-const basicMeta = {
-  id: Joi.string().pattern(new RegExp("^[a-zA-Z0-9-]*$")).required(),
-  sectionType: Joi.string().valid("basic", "hero", "map", "media").required(),
-  section: Joi.string(),
-};
-
-function getAllProperties(element) {
-  let props = [];
-  let obj = element;
-
-  do {
-    props = props.concat(Object.getOwnPropertyNames(obj));
-    obj = Object.getPrototypeOf(obj);
-  } while (obj);
-
-  // Removing duplicates
-  props = [...new Set(props)];
-
-  return props;
-}
-
-const customHtmlValidation = (value, helpers) => {
-  // Access the context to check for 'steps' and 'layersVisible'
-  const { steps, layersVisible } = helpers.state.ancestors[0];
-
-  // Check if either 'steps' or 'layersVisible' is present
-  if (steps || layersVisible) {
-    return value; // Skip custom validation if either is present
-  } else if (!value.includes("section-step")) {
-    return helpers.error("any.custom", {
-      message:
-        "Need either <section-step> html ele or [steps/layersVisible] meta value to render sidecar/tour map.",
-    });
-  }
-
-  // Parse the HTML string into a document
-  const parser = new DOMParser();
-  const doc = parser.parseFromString(value, "text/html");
-
-  // Process child nodes of the document body
-  const doms = Array.from(doc.body.childNodes).map(processNode);
-  let error;
-
-  doms.forEach((dom) => {
-    if (dom.tagName?.toLowerCase() === "section-step") {
-      if (
-        !Boolean(
-          dom.getAttribute("layersVisible") ||
-            (dom.getAttribute("lat") &&
-              dom.getAttribute("lon") &&
-              dom.getAttribute("zoom")),
-        )
-      ) {
-        error = helpers.error("any.custom", {
-          message:
-            "<section-step> requires either `layersVisible` or `lon`, `lon` & `zoom` properties",
-        });
-      }
-    }
-  });
-
-  return error || value;
-};
-
+// Schema for basic sections
 export const basicSectionMetaSchema = Joi.object(basicMeta);
 
+// Schema for hero sections
 export const heroSectionMetaSchema = Joi.object({
   ...basicMeta,
   subType: Joi.string().valid("full").required(),
@@ -88,6 +107,7 @@ export const heroSectionMetaSchema = Joi.object({
   subDescription: Joi.string(),
 });
 
+// Schema for map sections
 export const mapSectionMetaSchema = Joi.object({
   ...basicMeta,
   subType: Joi.string()
@@ -105,15 +125,18 @@ export const mapSectionMetaSchema = Joi.object({
       then: Joi.required(),
       otherwise: Joi.optional(),
     }),
-  steps: Joi.array().items(Joi.array().items(Joi.number()).length(3)),
+  steps: Joi.array().items(Joi.array().items(Joi.number()).min(3)),
   layersVisible: Joi.array().items(Joi.array().items(Joi.string())),
   section: Joi.string().when("subType", {
     is: Joi.valid("sidecar", "tour"),
-    then: Joi.string().custom(customHtmlValidation),
+    then: Joi.string().custom((value, helpers) =>
+      customHtmlValidation(value, helpers, "map"),
+    ),
     otherwise: Joi.string(),
   }),
 });
 
+// Schema for media sections
 export const mediaSectionMetaSchema = Joi.object({
   ...basicMeta,
   subType: Joi.string()
@@ -130,4 +153,11 @@ export const mediaSectionMetaSchema = Joi.object({
       otherwise: Joi.optional(),
     }),
   height: Joi.string(),
+  section: Joi.string().when("subType", {
+    is: Joi.valid("sidecar", "tour"),
+    then: Joi.string().custom((value, helpers) =>
+      customHtmlValidation(value, helpers, "media"),
+    ),
+    otherwise: Joi.string(),
+  }),
 });
