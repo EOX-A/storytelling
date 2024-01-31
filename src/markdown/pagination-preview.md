@@ -10,8 +10,8 @@
     [subType]: full
     [vPosition]: middle
     [hPosition]: center
-    [img]: https://images.unsplash.com/photo-1461880234904-751a2f54f1c7?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D
-    [imgAlt]: Satellite Img
+    [video]: https://i.imgur.com/i9nkrTM.mp4
+    [videoAlt]: Some video
     [title]:Climate Change
     [description]:Take urgent action to combat climate change and its impacts
     [subDescription]:SUSTAINABLE DEVELOPMENT GOAL 13

@@ -14,7 +14,8 @@ import {
 import {
   MEDIA_CONTAINER,
   MEDIA_FULL,
-  MEDIA_HERO,
+  MEDIA_HERO_IMAGE,
+  MEDIA_HERO_VIDEO,
   MEDIA_IFRAME,
   MEDIA_SIDECAR,
   MEDIA_SIMPLE,
@@ -106,9 +107,14 @@ const SAMPLE_COMPONENTS = [
         markdown: MEDIA_FULL,
       },
       {
-        name: "Hero",
+        name: "Hero Image",
         icon: "data:image/svg+xml,%3Csvg viewBox='0 0 138 112' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='138' height='112' rx='4' fill='%23f7f7f7'/%3E%3Crect x='11' y='11' width='116' height='90' rx='4' fill='%23ebebeb'/%3E%3Crect x='35' y='49' width='69' height='7' rx='3.5' fill='%235E5E5E'/%3E%3Crect x='51' y='59' width='37' height='4' rx='2' fill='%23BEBEBE'/%3E%3C/svg%3E%0A",
-        markdown: MEDIA_HERO,
+        markdown: MEDIA_HERO_IMAGE,
+      },
+      {
+        name: "Hero Video",
+        icon: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 138 112' fill='none'%3E%3Crect width='138' height='112' rx='4' fill='%23F2F2F2'/%3E%3Crect x='11' y='11' width='116' height='90' rx='4' fill='%23D8D8D8'/%3E%3Crect x='35' y='49' width='69' height='7' rx='3.5' fill='%235E5E5E'/%3E%3Crect x='51' y='59' width='37' height='4' rx='2' fill='%23BEBEBE'/%3E%3Cline x1='20.6233' y1='87.6712' x2='75.6233' y2='24.6712' stroke='%235E5E5E' stroke-opacity='0.1'/%3E%3Cline x1='64.6233' y1='87.6712' x2='119.623' y2='24.6712' stroke='%235E5E5E' stroke-opacity='0.1'/%3E%3C/svg%3E",
+        markdown: MEDIA_HERO_VIDEO,
       },
       {
         name: "Iframe",

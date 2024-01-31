@@ -211,6 +211,8 @@ Text here
 | `hPosition`      | Horizontal position of the content. (e.g., 'left', 'center', 'right') | `center`                     |
 | `img`            | URL of the background image.                                          | `https://example.com/image`  |
 | `imgAlt`         | Alternate text for the image.                                         | `Hero Image`                 |
+| `video`          | URL of the background video.                                          | `https://example.com/video`  |
+| `videoAlt`       | Alternate text for the video.                                         | `Hero Video`                 |
 | `title`          | Title text for the hero section.                                      | `Welcome to the Story`       |
 | `description`    | Description text.                                                     | `Explore the tales we share` |
 | `subDescription` | Sub-description text.                                                 | `Join us on this journey`    |
