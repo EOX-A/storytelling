@@ -74,6 +74,9 @@ export class StorytellingNavigation extends LitElement {
       align-items: center;
       justify-content: center;
     }
+    .navigation .container {
+      padding: 0px;
+    }
     .navigation .container ul {
       display: flex;
       align-items: center;

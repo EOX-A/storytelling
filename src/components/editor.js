@@ -1,5 +1,5 @@
 import { LitElement, html } from "lit";
-import initEditor from "../helpers/editor";
+import initEditor, { updateSectionLineDecorations } from "../helpers/editor";
 import { when } from "lit/directives/when.js";
 
 // Define LitElement for the editor
@@ -45,6 +45,7 @@ class StoryTellingEditor extends LitElement {
     const resizeHandle = document.querySelector(".resize-handle");
 
     this.editor = initEditor(editorContainer, resizeHandle, this);
+    updateSectionLineDecorations(this.editor);
     this.#editorUpdate = true;
 
     // Event listener for editor content change
@@ -53,7 +54,9 @@ class StoryTellingEditor extends LitElement {
       if (this.#debounceSetTimeoutEvent)
         clearTimeout(this.#debounceSetTimeoutEvent);
       document.querySelector(".editor-saver").style.display = "inline-block";
+
       this.#debounceSetTimeoutEvent = setTimeout(() => {
+        updateSectionLineDecorations(this.editor);
         this.dispatchEvent(
           new CustomEvent("change", {
             detail: { markdown: this.getCurrentValue() },
@@ -247,12 +250,12 @@ class StoryTellingEditor extends LitElement {
 
 
     .editor-saver {
-      width: 20px;
-      height: 20px;
+      width: 22px;
+      height: 22px;
       border-radius: 50%;
       position: absolute;
-      top: 30px;
-      right: 50px;
+      top: 10px;
+      left: 10px;
       animation: rotate 1s linear infinite;
       display: none;
     }
@@ -372,6 +375,24 @@ class StoryTellingEditor extends LitElement {
       .switch-button {
         right: 20px;
       }
+    }
+    .section-line-decoration {
+      background: #757575;
+      z-index: 1;
+      align-items: center;
+      justify-content: center;
+      display: flex;
+      color: #ffffff;
+      font-size: 12px;
+      font-weight: 700;
+    }
+    .margin-view-overlays {
+      background: #e6e6e6;
+    }
+    .monaco-editor .margin-view-overlays .line-numbers {
+      font-weight: 600;
+      font-size: small;
+      color: #737373;
     }
   `;
 }

@@ -108,6 +108,54 @@ function handleResizeHandleMouseDown(e, StoryTellingEditor) {
   StoryTellingEditor.lastY = e.clientY;
 }
 
+// Function to update start section decorations
+let currentDecorations = [];
+
+export function updateSectionLineDecorations(editor) {
+  const model = editor.getModel();
+  const lineCount = model.getLineCount();
+  let newDecorations = [];
+  let lineNumbersWithDecoration = [];
+
+  for (let i = 1; i <= lineCount; i++) {
+    const lineContent = model.getLineContent(i);
+    if (lineContent === "---") {
+      newDecorations.push({
+        range: new monaco.Range(i, 1, i, 1),
+        options: {
+          isWholeLine: true,
+          marginClassName: `section-line-decoration line-number-${i}`,
+        },
+      });
+      lineNumbersWithDecoration.push(i);
+    }
+  }
+
+  // Replace old decorations with new ones
+  currentDecorations = editor.deltaDecorations(
+    currentDecorations,
+    newDecorations,
+  );
+  updateSectionDynamicCSS(lineNumbersWithDecoration);
+}
+
+function updateSectionDynamicCSS(lineNumbers) {
+  let styleElement = document.getElementById("dynamic-line-number-styles");
+  if (!styleElement) {
+    styleElement = document.createElement("style");
+    styleElement.id = "dynamic-line-number-styles";
+    document.head.appendChild(styleElement);
+  }
+
+  let cssRules = lineNumbers
+    .map((lineNumber, index) => {
+      return `.line-number-${lineNumber}::after { content: "Section ${index + 1}"; }`;
+    })
+    .join("\n");
+
+  styleElement.textContent = cssRules;
+}
+
 // Function to create Monaco editor
 function createMonacoEditor(StoryTellingEditor) {
   monaco.languages.registerCompletionItemProvider("markdown", {
