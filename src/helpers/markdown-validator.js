@@ -1,19 +1,6 @@
 import Joi from "joi";
 import { processNode } from "./render-html";
 
-export const storyMetaSchema = Joi.object({
-  id: Joi.string().pattern(new RegExp("^[a-zA-Z0-9-]*$")).required(),
-  type: Joi.string().valid("pagination", "scrollytelling").required(),
-  numOfSections: Joi.number(),
-  navigations: Joi.array().items(Joi.object().pattern(Joi.string(), Joi.any())),
-});
-
-const basicMeta = {
-  id: Joi.string().pattern(new RegExp("^[a-zA-Z0-9-]*$")).required(),
-  sectionType: Joi.string().valid("basic", "hero", "map", "media").required(),
-  section: Joi.string(),
-};
-
 const customHtmlValidation = (value, helpers, sectionType) => {
   // Common setup
   const parser = new DOMParser();
@@ -87,8 +74,25 @@ const customHtmlValidation = (value, helpers, sectionType) => {
   return error || value;
 };
 
+// Schema for basic sections
+const basicMeta = {
+  id: Joi.string().pattern(new RegExp("^[a-zA-Z0-9-]*$")).required(),
+  sectionType: Joi.string().valid("basic", "hero", "map", "media").required(),
+  section: Joi.string(),
+};
+
+// Schema for story meta
+export const storyMetaSchema = Joi.object({
+  id: Joi.string().pattern(new RegExp("^[a-zA-Z0-9-]*$")).required(),
+  type: Joi.string().valid("pagination", "scrollytelling").required(),
+  numOfSections: Joi.number(),
+  navigations: Joi.array().items(Joi.object().pattern(Joi.string(), Joi.any())),
+});
+
+// Schema for basic sections
 export const basicSectionMetaSchema = Joi.object(basicMeta);
 
+// Schema for hero sections
 export const heroSectionMetaSchema = Joi.object({
   ...basicMeta,
   subType: Joi.string().valid("full").required(),
@@ -101,6 +105,7 @@ export const heroSectionMetaSchema = Joi.object({
   subDescription: Joi.string(),
 });
 
+// Schema for map sections
 export const mapSectionMetaSchema = Joi.object({
   ...basicMeta,
   subType: Joi.string()
@@ -129,6 +134,7 @@ export const mapSectionMetaSchema = Joi.object({
   }),
 });
 
+// Schema for media sections
 export const mediaSectionMetaSchema = Joi.object({
   ...basicMeta,
   subType: Joi.string()
