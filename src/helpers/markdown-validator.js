@@ -123,7 +123,7 @@ export const mapSectionMetaSchema = Joi.object({
       then: Joi.required(),
       otherwise: Joi.optional(),
     }),
-  steps: Joi.array().items(Joi.array().items(Joi.number()).length(3)),
+  steps: Joi.array().items(Joi.array().items(Joi.number()).min(3)),
   layersVisible: Joi.array().items(Joi.array().items(Joi.string())),
   section: Joi.string().when("subType", {
     is: Joi.valid("sidecar", "tour"),
