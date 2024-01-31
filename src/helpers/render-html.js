@@ -34,7 +34,7 @@ export function renderHtmlString(htmlString, eventObj) {
       const sectionBottom = sectionTop + rect.height;
 
       const threshold =
-        sectionTop + rect.height * (subType === "sidecar" ? -0.3 : -2);
+        sectionTop + rect.height * (subType === "sidecar" ? -0.4 : -7);
 
       if (scrollY >= threshold && scrollY < sectionBottom) {
         newCurrentSection = {
