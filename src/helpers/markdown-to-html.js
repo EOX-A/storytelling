@@ -107,10 +107,9 @@ function parseSectionHtml(
     case "basic":
     case "map":
     case "media":
-    case undefined:
       sectionHTML = getSectionHTML(metadata, renderedContent);
       break;
-    default:
+    case "hero":
       sectionHTML = getSectionHTML(metadata);
       break;
   }
@@ -181,7 +180,6 @@ function parseJsonLikeValue(value) {
   try {
     return JSON.parse(value.replace(/'/g, '"'));
   } catch (e) {
-    console.error("Error parsing array: ", e);
     return value;
   }
 }
