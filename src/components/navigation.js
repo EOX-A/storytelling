@@ -44,7 +44,7 @@ export class StorytellingNavigation extends LitElement {
             <div class="container">
               <ul>
                 ${Object.keys(currentNavigation)
-                  .slice(0, 5)
+                  .slice(0, 10)
                   .map(
                     (id) => html`
                       <li class="nav-${id}">
