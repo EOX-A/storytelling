@@ -9,7 +9,7 @@
     "vite": "vite",
     "preview": "vite preview",
     "storybook": "storybook dev -p 6007",
-    "build-storybook": "storybook build",
+    "build-storybook": "storybook build -o docs",
     "format": "prettier --write .",
     "format:all": "npm run format --ws",
     "format:check:all": "prettier --check ."
