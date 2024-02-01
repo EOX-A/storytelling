@@ -96,6 +96,18 @@ export class StoryTellingMedia extends LitElement {
               height="${this.height}"
             ></img>
           `;
+      case "video":
+        return html`
+          <video
+            src="${url}"
+            id="media-${this.id}"
+            alt="${caption || ""}"
+            height="${this.height}"
+            autoplay
+            muted
+            loop
+          ></video>
+        `;
       case "iframe":
         return html`
           <iframe
@@ -209,7 +221,6 @@ export class StoryTellingMedia extends LitElement {
       object-fit: cover;
     }
 
-    .media.sidecar iframe, 
     .media.tour iframe {
       pointer-events: none;
     }
