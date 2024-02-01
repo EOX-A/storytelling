@@ -11,7 +11,7 @@ export default {
 export const DemoStory = {
   args: {
     editorMode: false,
-    url: `${window.location.origin}/demo/scrollytelling.md`,
+    url: `./demo/scrollytelling.md`,
   },
   render: (args) => StoryTelling(args),
 };
