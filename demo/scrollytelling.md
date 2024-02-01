@@ -40,17 +40,17 @@ Every story you read here originates from a Markdown file. Why Markdown? It's a 
 
 Markdown allows us to structure our text without getting bogged down in complex code, making it accessible to a broad audience.
 
-![](/demo/md-1.png)
+![](./demo/md-1.png)
 
 The markdown file is structured into sections (think of them as the "story blocks"), and, optionally, into individual steps within those sections.
 
-![](/demo/md-2.png)
+![](./demo/md-2.png)
 
 But it's not just about convenience in writing—Markdown comes with an extra perk. When we host our Markdown files on GitHub, the platform automatically renders them. This means we get a neatly formatted, readable story without any additional effort.
 
 So, from the simplicity of writing to the seamless rendering on platforms like GitHub, Markdown plays a crucial role in bringing these stories to our readers effortlessly.
 
-![](/demo/md-3.png)
+![](./demo/md-3.png)
 
 ---
 <!--
@@ -61,11 +61,11 @@ So, from the simplicity of writing to the seamless rendering on platforms like G
 
 Welcome to our user-friendly in-browser Markdown editor! You have the power to toggle it on and off, giving you control over when and where you want to make edits to our Markdown files. The best part? As you tweak the text, the story preview updates in real-time, allowing you to see the changes instantly.
 
-![](/demo/editor-1.png)
+![](./demo/editor-1.png)
 
 This editor is designed for convenience. It boasts syntax highlighting, making it easier to spot errors or emphasize important elements. Row numbers provide quick orientation, and you can resize or drag the editor to suit your preferences.
 
-![](/demo/editor-2.png)
+![](./demo/editor-2.png)
 So, whether you're fine-tuning a narrative or adding a fresh perspective, this intuitive in-browser Markdown editor puts the creative reins in your hands, ensuring a seamless and interactive editing experience.
 
 ---
@@ -79,17 +79,17 @@ Dive into our storytelling software with three dynamic rendering modes—Simple,
 ### 1. Simple Mode:
 
 Default Magic: This is where the GitHub magic happens. The story is rendered effortlessly in its default format, making it easy for you to read without any extra steps.
-<video src="/demo/mode-1.webm" autoplay loop muted width="100%" height="300" />
+<video src="./demo/mode-1.webm" autoplay loop muted width="100%" height="300" />
 
 ### 2. Paginated Mode:
 
 Page-Turning Experience: In this mode, each section becomes a page. Navigate through the story with user-friendly buttons, turning pages as you go. It's a structured journey, offering a seamless reading experience.
-<video src="/demo/mode-2.webm" autoplay loop muted width="100%" height="300" />
+<video src="./demo/mode-2.webm" autoplay loop muted width="100%" height="300" />
 
 ### 3. Scrollytelling Mode:
 
 Vertical Exploration: Brace yourself for a vertical adventure! Scrollytelling turns your screen into a storytelling canvas. Scroll your way through the narrative, unveiling each section as you journey down. It's an engaging and visually dynamic mode that brings a sense of flow to your reading experience.
-<video src="/demo/mode-3.webm" autoplay loop muted width="100%" height="300" />
+<video src="./demo/mode-3.webm" autoplay loop muted width="100%" height="300" />
 
 With these versatile rendering modes, your reading adventure can be as simple or interactive as you desire, offering a tailored experience for every storytelling preference.
 
@@ -224,7 +224,7 @@ Move the map between locations fron one step to the other, either without animat
     [subType]:sidecar
     [mediaTypes]:["iframe","iframe"]
     [stepPosition]:left
-    [urls]:["/demo/widget-python.html","https://vega.github.io/editor/#/examples/vega/connected-scatter-plot/view"]
+    [urls]:["./demo/widget-python.html","https://vega.github.io/editor/#/examples/vega/connected-scatter-plot/view"]
 -->
 <section-step>
 <h1>Embeddable external Blocks</h1>
@@ -258,7 +258,7 @@ The story rendering can be adapted to fit the look & feel of the application usi
   "body-font-family": "'Mukta', sans-serif",
 ```
 
-![](/demo/branding-1.png)
+![](./demo/branding-1.png)
 
 ---
 <!--
@@ -270,8 +270,8 @@ The story rendering can be adapted to fit the look & feel of the application usi
 
 On mobile, sidecar and tour blocks become stacked on top of each other:
 
-![](/demo/mobile-1.png)
-![](/demo/mobile-2.png)
+![](./demo/mobile-1.png)
+![](./demo/mobile-2.png)
 ---
 <!--
 [id]: deployment-section
