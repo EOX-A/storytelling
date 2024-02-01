@@ -1,6 +1,6 @@
 <!--
     [type]: scrollytelling
-    [navigations]:[{"hero-section":"Hero","intro-section":"Introduction"}]
+    [navigations]:[{"hero-section":"Hero","intro-section":"Introduction","format-section":"Format","editor-section":"Editor","mode-section":"Modes","blocks-section":"Blocks","branding-section":"Branding","mobile-section":"Mobile","deployment-section":"Deoloyment"}]
 -->
 
 ---
@@ -95,7 +95,7 @@ With these versatile rendering modes, your reading adventure can be as simple or
 
 ---
 <!--
-    [id]: modes-section
+    [id]: blocks-section
     [sectionType]: basic
 -->
 ## Storytelling building blocks
@@ -239,6 +239,7 @@ Move the map between locations fron one step to the other, either without animat
 
 ---
 <!--
+[id]: branding-section
 [sectionType]:basic
 
 -->
@@ -261,6 +262,7 @@ The story rendering can be adapted to fit the look & feel of the application usi
 
 ---
 <!--
+[id]: mobile-section
 [sectionType]:basic
 
 -->
@@ -272,6 +274,7 @@ On mobile, sidecar and tour blocks become stacked on top of each other:
 ![](/demo/mobile-2.png)
 ---
 <!--
+[id]: deployment-section
 [sectionType]:basic
 
 -->
