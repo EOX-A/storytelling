@@ -8,6 +8,14 @@ export default {
   render: (args) => StoryTelling(args),
 };
 
+export const DemoStory = {
+  args: {
+    editorMode: false,
+    url: `${window.location.origin}/demo/scrollytelling.md`,
+  },
+  render: (args) => StoryTelling(args),
+};
+
 export const ScrollyTellingPreview = {
   args: {
     editorMode: false,
