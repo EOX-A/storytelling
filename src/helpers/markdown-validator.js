@@ -142,7 +142,7 @@ export const mediaSectionMetaSchema = Joi.object({
   subType: Joi.string()
     .valid("basic", "container", "full", "sidecar", "tour")
     .required(),
-  mediaTypes: Joi.array().items(Joi.string().valid("img", "iframe")),
+  mediaTypes: Joi.array().items(Joi.string().valid("img", "video", "iframe")),
   urls: Joi.array().items(Joi.string().uri()),
   captions: Joi.array().items(Joi.string()),
   stepPosition: Joi.string()

@@ -96,6 +96,18 @@ export class StoryTellingMedia extends LitElement {
               height="${this.height}"
             ></img>
           `;
+      case "video":
+        return html`
+          <video
+            src="${url}"
+            id="media-${this.id}"
+            alt="${caption || ""}"
+            height="${this.height}"
+            autoplay
+            muted
+            loop
+          ></video>
+        `;
       case "iframe":
         return html`
           <iframe
@@ -204,7 +216,9 @@ export class StoryTellingMedia extends LitElement {
       order: 2;
     }
 
-    .media img, .media iframe {
+    .media img, 
+    .media iframe, 
+    .media video {
       width: 100%;
       object-fit: cover;
     }
@@ -215,7 +229,8 @@ export class StoryTellingMedia extends LitElement {
     }
 
     .media.sidecar img, .media.tour img,
-    .media.sidecar iframe, .media.tour iframe {
+    .media.sidecar iframe, .media.tour iframe,
+    .media.sidecar video, .media.tour video, {
       height: 100vh;
     }
 
@@ -231,7 +246,8 @@ export class StoryTellingMedia extends LitElement {
       height: 100vh;
       padding: 0rem 0rem;
     }
-    .media.full img {
+    .media.full img,
+    .media.full video {
       height: 100vh;
     }
     .media.sidecar, .media.tour {
@@ -248,6 +264,9 @@ export class StoryTellingMedia extends LitElement {
     .navigation-enabled .media.full img,
     .navigation-enabled .media.sidecar img, 
     .navigation-enabled .media.tour img,
+    .navigation-enabled .media.full video,
+    .navigation-enabled .media.sidecar video, 
+    .navigation-enabled .media.tour video,
     .navigation-enabled .media.sidecar iframe, 
     .navigation-enabled .media.tour iframe {
       height: calc(100vh - 60px);

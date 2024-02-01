@@ -155,6 +155,24 @@ GHG emissions are measure in terms of carbon dioxide equivalents because each gr
 
 **More research:** Further data and research on this topic can be found at the _Our World in Data_ topic page on [Greenhouse Gas Emissions](https://ourworldindata.org/co2-and-other-greenhouse-gas-emissions).
 
+---
+
+<!--
+    [sectionType]:media
+    [subType]:container
+    [mediaTypes]:["video"]
+    [urls]:["https://i.imgur.com/i9nkrTM.mp4"]
+    [captions]:["Lore ipsum"]
+    [height]:100%
+-->
+
+---
+
+<!--
+    [id]:policy-3
+    [sectionType]:basic
+-->
+
 #### Additional charts
 
 - [Per capita GHG emissions](https://ourworldindata.org/grapher/per-capita-ghg-emissions)

@@ -246,7 +246,7 @@ Text here
 | `sectionType`  | Type of section to be rendered.                                                              | `media`                                                              |
 | `content`      | HTML content for display alongside the media.                                                | `<section-step>Text here </section-step>`                            |
 | `subType`      | Type of media display. (e.g., 'simple', 'container', 'full', 'sidecar', 'tour', 'slideshow') | `full`                                                               |
-| `mediaTypes`   | Types of media included (e.g., 'iframe', 'img', 'video').                                    | `["img", "video"]`                                                   |
+| `mediaTypes`   | Types of media included (e.g., 'iframe', 'img', 'video').                                    | `["img", "video", "iframe"]`                                         |
 | `urls`         | Array of URLs for the media content.                                                         | `["https://example.com/image.jpg", "https://example.com/video.mp4"]` |
 | `captions`     | Array of captions for each media item.                                                       | `["A beautiful image", "An engaging iframe"]`                        |
 | `stepPosition` | Position for media section content (left, center or right).                                  | `right`                                                              |
